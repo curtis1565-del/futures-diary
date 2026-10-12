@@ -253,6 +253,13 @@ details.more summary { cursor: pointer; font-size: 13.5px; color: var(--ink-2); 
 .set-list { display: grid; gap: 8px; }
 .set-list .btn { text-align: left; }
 .hidden { display: none !important; }
+.sync-badge { font-size: 12px; font-weight: 700; padding: 4px 10px; border-radius: 999px; white-space: nowrap; background: color-mix(in srgb, var(--down-mark) 16%, var(--card)); color: var(--down); border: 1px solid color-mix(in srgb, var(--down-mark) 30%, transparent); }
+.sync-badge.syncing { background: color-mix(in srgb, var(--accent) 14%, var(--card)); color: var(--accent); border-color: transparent; }
+.sync-badge.fail { background: color-mix(in srgb, var(--gold) 18%, var(--card)); color: var(--gold); border-color: transparent; }
+.sync-badge.view { background: var(--grad); color: #fff; border: 0; }
+.sync-line { margin-top: -8px !important; }
+body.view-mode #setBtn { display: none; }
+body.view-mode #tabAdd { visibility: hidden; }
 
 /* ---------- 手機版：底部分頁、單張圖表、卡片式紀錄、底部滑出輸入 ---------- */
 .dlg-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
@@ -288,6 +295,7 @@ body:not(.m) .sum-group > summary { pointer-events: none; }
   .brand span:last-child { overflow: hidden; text-overflow: ellipsis; }
   body.m [data-tab]:not(.tab-on) { display: none !important; }
   body.m [data-chart]:not(.chart-on) { display: none !important; }
+  body.m .toast { bottom: calc(92px + env(safe-area-inset-bottom)); }
   body.m .wrap { padding-bottom: calc(100px + env(safe-area-inset-bottom)); }
   .card { padding: 14px; border-radius: 14px; margin-top: 12px; }
   .card-head { margin-bottom: 8px; }
@@ -458,6 +466,7 @@ body.intro #app > *:nth-child(n+6) { animation-delay: .25s; }
       <a href="#sec-summary">總表</a><a href="#sec-curve">權益曲線</a><a href="#sec-perf">績效與風險</a>
       <a href="#sec-calendar">報酬日曆</a><a href="#sec-cost">漏水筒</a><a href="#sec-log">紀錄</a>
     </nav>
+    <span class="sync-badge hidden" id="syncBadge" role="status"></span>
     <button class="icon-btn" id="themeBtn" title="切換深淺色" aria-label="切換深淺色">🌓</button>
     <button class="icon-btn" id="setBtn" title="設定與備份" aria-label="設定與備份">⚙️</button>
   </div>
@@ -515,7 +524,8 @@ body.intro #app > *:nth-child(n+6) { animation-delay: .25s; }
 <dialog id="setDlg" aria-labelledby="setTitle">
   <form class="dlg" id="setForm" method="dialog" autocomplete="off">
     <h2 id="setTitle">設定與備份</h2>
-    <p class="sub">資料只存在這台裝置的瀏覽器裡，記得每週匯出備份一次。</p>
+    <p class="sub">資料存在這台裝置的瀏覽器裡，記得每週匯出備份一次。</p>
+    <p class="sub sync-line hidden" id="sSync"></p>
     <div class="row2">
       <label class="field"><span>暱稱</span><input id="sName" maxlength="20" placeholder="例如 小明"></label>
       <label class="field"><span>初始本金（元）</span><input type="number" id="sCapital" inputmode="decimal" min="1" step="1" required></label>
@@ -556,9 +566,84 @@ state.settings = Object.assign(defaultState().settings, state.settings || {});
 state.records = Array.isArray(state.records) ? state.records : [];
 let bench = Object.assign({ closes: {}, months: {} }, load(BENCH_KEY, {}));
 let demo = null;            // 範例資料只放記憶體，不會存起來
+/* ---------- 雲端同步（Google Apps Script） ---------- */
+const SYNC_URL = '';        // 部署後貼上 Apps Script 的 /exec 網址
+const SYNC_KEY_STORE = 'futures-nav-diary.sync';
+const qs = new URLSearchParams(location.search);
+const viewKey = qs.get('view');   // 觀看連結：唯讀
+let writeKey = viewKey ? null : qs.get('k');
+if (!viewKey) { if (writeKey) save(SYNC_KEY_STORE, writeKey); else writeKey = load(SYNC_KEY_STORE, null); }
+let remote = null;          // 觀看模式的資料（只在記憶體）
+let syncState = 'off', lastSyncAt = null;
+if (viewKey) { state = defaultState(); document.documentElement.classList.add('view-mode'); }
 let benchStatus = 'idle';   // idle | loading | ok | fail
-const persist = () => save(KEY, state);
-const view = () => demo || state;
+const persist = () => { if (viewKey) return; state.updatedAt = new Date().toISOString(); save(KEY, state); schedulePush(); };
+const view = () => remote || demo || state;
+let pushT = null;
+function schedulePush() { if (!SYNC_URL || !writeKey) return; clearTimeout(pushT); pushT = setTimeout(pushCloud, 400); }
+async function pushCloud() {
+  syncState = 'syncing'; renderSync();
+  try {
+    const res = await fetch(`${SYNC_URL}?key=${encodeURIComponent(writeKey)}`, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify({ settings: state.settings, records: state.records, updatedAt: state.updatedAt }) });
+    const j = await res.json(); if (!j.ok) throw new Error(j.error);
+    syncState = 'ok'; lastSyncAt = new Date();
+  } catch (e) { syncState = 'fail'; clearTimeout(pushT); pushT = setTimeout(pushCloud, 60000); }
+  renderSync();
+}
+async function pullCloud(key) {
+  const res = await fetch(`${SYNC_URL}?key=${encodeURIComponent(key)}&t=${Date.now()}`);
+  const j = await res.json(); if (!j.ok) throw new Error(j.error); return j;
+}
+async function refreshRemote() {
+  syncState = 'syncing'; renderSync();
+  try {
+    const j = await pullCloud(viewKey);
+    const next = { settings: Object.assign(defaultState().settings, j.settings || {}), records: j.records || [], updatedAt: j.updatedAt, lastBackup: Date.now() };
+    const changed = !remote || JSON.stringify([next.settings, next.records]) !== JSON.stringify([remote.settings, remote.records]);
+    remote = next; syncState = 'ok'; lastSyncAt = new Date();
+    if (changed) { render(); syncBench(); } else render();
+  } catch (e) { syncState = 'fail'; render(); }
+}
+async function initSync() {
+  if (!SYNC_URL) { if (viewKey) { syncState = 'fail'; render(); } return; }
+  if (viewKey) {
+    await refreshRemote();
+    setInterval(() => { if (document.visibilityState === 'visible') refreshRemote(); }, 3 * 60 * 1000);
+    document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible') refreshRemote(); });
+    return;
+  }
+  if (!writeKey) return;
+  syncState = 'syncing'; renderSync();
+  try {
+    const j = await pullCloud(writeKey);
+    const cloud = j.records || [];
+    const cloudNewer = cloud.length && (!state.records.length || (j.updatedAt && state.updatedAt ? j.updatedAt > state.updatedAt : cloud.length > state.records.length));
+    if (cloudNewer) {
+      const restored = !state.records.length;
+      state.settings = Object.assign(defaultState().settings, j.settings || {}); state.records = cloud; state.updatedAt = j.updatedAt;
+      save(KEY, state); syncState = 'ok'; lastSyncAt = new Date(); calMonth = null; render(); syncBench();
+      if (restored) toast(`☁️ 已從雲端還原 ${cloud.length} 天紀錄`);
+    } else if (state.records.length && JSON.stringify(cloud) !== JSON.stringify(state.records)) {
+      if (!state.updatedAt) state.updatedAt = new Date().toISOString();
+      await pushCloud();
+    } else { syncState = 'ok'; lastSyncAt = new Date(); }
+  } catch (e) { syncState = 'fail'; }
+  renderSync();
+}
+const hm = d => `${pad(d.getHours())}:${pad(d.getMinutes())}`;
+function fmtUpdated(iso) { if (!iso) return '—'; const d = new Date(iso); return isNaN(d) ? '—' : `${d.getMonth() + 1}/${d.getDate()} ${hm(d)}`; }
+function renderSync() {
+  const b = $('#syncBadge'), line = $('#sSync');
+  if (!b) return;
+  if (viewKey) { b.className = 'sync-badge view'; b.textContent = syncState === 'syncing' ? '👀 讀取中…' : '👀 觀看模式'; return; }
+  const on = !!(SYNC_URL && writeKey);
+  b.classList.toggle('hidden', !on); line.classList.toggle('hidden', !on);
+  if (!on) return;
+  b.className = 'sync-badge' + (syncState === 'syncing' ? ' syncing' : syncState === 'fail' ? ' fail' : '');
+  b.textContent = syncState === 'syncing' ? '☁️ 同步中…' : syncState === 'fail' ? '⚠️ 未同步' : '☁️ 已同步';
+  b.title = syncState === 'fail' ? '暫時連不上雲端，資料已存在手機，等一下會自動再試' : lastSyncAt ? `最後同步 ${hm(lastSyncAt)}` : '';
+  line.textContent = syncState === 'fail' ? '⚠️ 雲端同步：暫時連不上，資料已存在手機，會自動重試。' : `☁️ 雲端同步：已開啟${lastSyncAt ? `（最後同步 ${hm(lastSyncAt)}）` : ''}，每次儲存都會自動備份到雲端。`;
+}
 
 /* ---------- formatting ---------- */
 const nf0 = new Intl.NumberFormat('zh-TW', { maximumFractionDigits: 0 });
@@ -837,6 +922,7 @@ function sumRow(k, v, cls = '', key = null, en = '') {
 }
 
 function render() {
+  renderSync();
   const st = view();
   $('#brandName').textContent = st.settings.name ? `${st.settings.name}的期貨日記` : '林智勳的期貨日記';
   document.title = st.settings.name ? `${st.settings.name}的期貨日記` : '林智勳的期貨日記';
@@ -845,7 +931,7 @@ function render() {
   document.body.classList.toggle('m', isM() && has);
   $('#tabbar').classList.toggle('hidden', !has);
   document.querySelectorAll('[data-tab-btn]').forEach(b => b.setAttribute('aria-current', b.dataset.tabBtn === curTab ? 'page' : 'false'));
-  if (!has) { app.innerHTML = bannersHtml() + onboardHtml(); wire(); return; }
+  if (!has) { app.innerHTML = bannersHtml() + (viewKey ? (remote ? `<section class="card onboard"><div class="emoji">🌱</div><h2>還沒有任何紀錄</h2><p>等他記下第一天，這裡就會出現圖表。</p></section>` : '') : onboardHtml()); wire(); return; }
   const C = compute(st);
   app.innerHTML = bannersHtml() + heroHtml(C) + summaryHtml(C) +
     `<div class="chips" data-tab="charts" role="tablist" aria-label="選擇圖表">${CHARTS.map(([k, l]) => `<button role="tab" data-chart-btn="${k}" aria-selected="${curChart === k}">${l}</button>`).join('')}</div>` +
@@ -896,7 +982,11 @@ function bannersHtml() {
   let h = '';
   if (demo) h += `<div class="banner warn"><span>👀 你正在看<b>範例資料</b>（假的，不會存起來）。</span><span class="sp"></span><button class="btn small primary" data-act="exitDemo">清除範例，開始記我自己的</button></div>`;
   if (!storageOk) h += `<div class="banner warn">⚠️ 這個瀏覽器不讓網頁存資料（可能是無痕模式）。記錄完請到 ⚙️ 匯出備份。</div>`;
-  if (!demo && state.records.length >= 5) {
+  if (viewKey) {
+    h += remote ? `<div class="banner"><span>👀 <b>觀看模式</b>：只能看、不能改。最後更新 <b>${fmtUpdated(remote.updatedAt)}</b>，每 3 分鐘自動更新。</span><span class="sp"></span><button class="btn small" data-act="refresh">重新整理</button></div>`
+      : syncState === 'fail' ? `<div class="banner warn">📡 讀不到雲端資料${SYNC_URL ? '（網路不穩或連結不完整）' : '（雲端還沒設定好）'}。</div>` : `<div class="banner">⏳ 正在讀取雲端資料…</div>`;
+  }
+  if (!demo && !viewKey && state.records.length >= 5) {
     const days = state.lastBackup ? Math.floor((Date.now() - state.lastBackup) / 864e5) : null;
     if (days == null || days >= 7) h += `<div class="banner warn"><span>💾 ${days == null ? '還沒備份過' : `已經 ${days} 天沒備份`}。資料只存在這台裝置，換手機或清除瀏覽器就會不見。</span><span class="sp"></span><button class="btn small" data-act="export">立刻備份</button></div>`;
   }
@@ -912,12 +1002,12 @@ function heroHtml(C) {
   const L = C.last, s = C.s, t = todayIso();
   const recordedToday = view().records.some(r => r.date === t);
   const hr = new Date().getHours();
-  const rem = demo ? '' : recordedToday ? `<span class="reminder done">✓ 今天記好了</span>` : hr >= 21 ? `<span class="reminder">⏰ 今晚還沒記錄喔</span>` : `<span class="reminder" style="opacity:.8">晚上 10 點記得來記錄</span>`;
+  const rem = demo ? '' : viewKey ? (recordedToday ? `<span class="reminder done">✓ 今天記好了</span>` : `<span class="reminder">今天還沒記錄</span>`) : recordedToday ? `<span class="reminder done">✓ 今天記好了</span>` : hr >= 21 ? `<span class="reminder">⏰ 今晚還沒記錄喔</span>` : `<span class="reminder" style="opacity:.8">晚上 10 點記得來記錄</span>`;
   return `<section class="card" id="sec-hero" data-tab="home"><div class="hero"><div>
     <p class="eyebrow">目前權益總值 · ${L.date.replaceAll('-', '/')}（${wd(L.date)}）</p>
     <div class="hero-eq num"><span id="heroNum" data-v="${L.equity}">${money(L.equity)}</span><small>元</small></div>
     <div class="hero-today ${tone(L.pnl)}">今日 ${arrow(L.pnl)} ${sMoney(L.pnl)} 元（${sPct(L.ret)}）<span class="muted">${L.flow ? ` · 含${L.flow > 0 ? '入金' : '出金'} ${money(Math.abs(L.flow))} 已排除` : ''}</span></div>
-    <div class="hero-cta"><button class="btn primary big" data-act="entry">✍️ 記錄今天</button>${rem}</div>
+    <div class="hero-cta">${viewKey ? '' : '<button class="btn primary big" data-act="entry">✍️ 記錄今天</button>'}${rem}</div>
   </div><div class="tiles">
     <div class="tile"><span>📈 累積報酬率</span><b class="${tone(s.cum)}">${arrow(s.cum)} ${sPct(s.cum)}</b><em>從 ${money(C.capital)} 元起算</em></div>
     <div class="tile"><span>🏁 同期大盤</span><b class="${tone(s.benchCum)}">${s.benchCum == null ? '—' : arrow(s.benchCum) + ' ' + sPct(s.benchCum)}</b><em>${s.benchCum == null ? '大盤資料讀取中' : (s.cum >= s.benchCum ? '🏆 目前贏大盤' : '目前輸大盤')}</em></div>
@@ -1155,6 +1245,7 @@ function wire() {
     if (a === 'demo') { demo = makeDemo(); calMonth = null; render(); syncBench(); window.scrollTo({ top: 0 }); }
     if (a === 'exitDemo') { demo = null; calMonth = null; history.replaceState(null, '', location.pathname); render(); }
     if (a === 'export') exportJson();
+    if (a === 'refresh') refreshRemote();
     if (a === 'toggleLog') { showAllLog = !showAllLog; render(); }
   });
   document.querySelectorAll('[data-edit]').forEach(b => b.onclick = () => openEntry(b.dataset.edit));
@@ -1185,6 +1276,7 @@ function setFlow(kind) {
   updatePreview();
 }
 function openEntry(iso) {
+  if (viewKey) { toast('觀看模式只能看，不能修改'); return; }
   if (demo) { toast('範例模式不能修改，先按「清除範例」開始記自己的'); return; }
   const date = iso || todayIso();
   fillEntry(date);
@@ -1252,7 +1344,7 @@ $('#entryForm').addEventListener('submit', ev => {
 
 /* ---------- settings / backup ---------- */
 const setDlg = $('#setDlg');
-$('#setBtn').onclick = () => { $('#sName').value = state.settings.name || ''; $('#sCapital').value = state.settings.capital; $('#sErr').textContent = ''; setDlg.showModal(); };
+$('#setBtn').onclick = () => { renderSync(); $('#sName').value = state.settings.name || ''; $('#sCapital').value = state.settings.capital; $('#sErr').textContent = ''; setDlg.showModal(); };
 $('#sClose').onclick = () => setDlg.close();
 $('#setForm').addEventListener('submit', ev => {
   ev.preventDefault();
@@ -1267,7 +1359,7 @@ function download(name, text, type) {
   document.body.appendChild(a); a.click(); setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 500);
 }
 function exportJson() {
-  if (demo) { toast('範例資料不用備份'); return; }
+  if (demo || viewKey) { toast(viewKey ? '觀看模式不能匯出' : '範例資料不用備份'); return; }
   download(`期貨日記備份_${todayIso()}.json`, JSON.stringify({ app: 'futures-nav-diary', version: 1, exportedAt: new Date().toISOString(), settings: state.settings, records: state.records }, null, 2), 'application/json');
   state.lastBackup = Date.now(); persist(); render(); toast('備份檔已下載，傳到 LINE 或雲端存好');
 }
@@ -1336,10 +1428,13 @@ function makeDemo() {
 }
 
 /* ---------- start ---------- */
-if (location.hash === '#demo' && !state.records.length) demo = makeDemo();
+if (viewKey) document.body.classList.add('view-mode');
+if (!viewKey && location.hash === '#demo' && !state.records.length) demo = makeDemo();
 render();
 playIntro();
+renderSync();
 syncBench();
+initSync();
 setInterval(() => { if (document.visibilityState === 'visible') syncBench(); }, 30 * 60 * 1000);
 })();
 </script>
