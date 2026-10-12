@@ -435,7 +435,7 @@ function load(key, fallback) {
 function save(key, val) {
   try { localStorage.setItem(key, JSON.stringify(val)); return true; } catch (e) { storageOk = false; return false; }
 }
-const defaultState = () => ({ settings: { name: '', capital: 20000 }, records: [], lastBackup: null });
+const defaultState = () => ({ settings: { name: '', capital: 22000 }, records: [], lastBackup: null });
 let state = Object.assign(defaultState(), load(KEY, {}));
 state.settings = Object.assign(defaultState().settings, state.settings || {});
 state.records = Array.isArray(state.records) ? state.records : [];
@@ -763,7 +763,7 @@ function onboardHtml() {
   return `<section class="card onboard"><div class="emoji">🌱</div><h2>從 ${money(state.settings.capital)} 元開始的期貨日記</h2>
   <p>每天晚上 10 點，打開期貨 APP 把「權益總值」抄進來。損益、勝率、回撤、跟大盤比，全部自動幫你算。</p>
   <div class="hero-cta" style="justify-content:center"><button class="btn primary big" data-act="entry">✍️ 記錄第一天</button><button class="btn big" data-act="demo">看範例長怎樣</button></div>
-  <div class="steps"><div><b>① 確認本金</b>預設 2 萬，不一樣請到右上 ⚙️ 改。</div><div><b>② 每晚抄一個數字</b>只要「權益總值」，其他都是選填。</div><div><b>③ 每週備份一次</b>⚙️ → 匯出備份，傳到 LINE 給自己。</div></div></section>`;
+  <div class="steps"><div><b>① 確認本金</b>預設 22,000 元，不一樣請到右上 ⚙️ 改。</div><div><b>② 每晚抄一個數字</b>只要「權益總值」，其他都是選填。</div><div><b>③ 每週備份一次</b>⚙️ → 匯出備份，傳到 LINE 給自己。</div></div></section>`;
 }
 function heroHtml(C) {
   const L = C.last, s = C.s, t = todayIso();
@@ -1178,7 +1178,7 @@ function makeDemo() {
   const gauss = () => { let u = 0, v = 0; while (!u) u = rnd(); while (!v) v = rnd(); return Math.sqrt(-2 * Math.log(u)) * Math.cos(2 * Math.PI * v); };
   const days = []; const d = new Date(); d.setHours(0, 0, 0, 0); d.setDate(d.getDate() - 1);
   while (days.length < 48) { if (d.getDay() % 6) days.unshift(isoOf(d)); d.setDate(d.getDate() - 1); }
-  let eq = 20000; const notes = { 3: '第一次用停損單，有照做', 9: '追高被巴，下次等回測', 17: '連賠三天，今天休息只看盤', 24: '入金一萬，口數不加', 31: '順勢抱單，賺最多的一天', 40: '手癢多做了幾趟，手續費好痛' };
+  let eq = 22000; const notes = { 3: '第一次用停損單，有照做', 9: '追高被巴，下次等回測', 17: '連賠三天，今天休息只看盤', 24: '入金一萬，口數不加', 31: '順勢抱單，賺最多的一天', 40: '手癢多做了幾趟，手續費好痛' };
   const records = days.map((date, i) => {
     const flow = i === 24 ? 10000 : 0;
     const lots = rnd() < 0.18 ? 0 : 1 + Math.floor(rnd() * (i === 40 ? 12 : 5));
@@ -1188,7 +1188,7 @@ function makeDemo() {
     eq = Math.round(eq + flow + gross - cost);
     return { date, equity: eq, flow, cost, lots, note: notes[i] || '' };
   });
-  return { settings: { name: '範例', capital: 20000 }, records, lastBackup: Date.now() };
+  return { settings: { name: '範例', capital: 22000 }, records, lastBackup: Date.now() };
 }
 
 /* ---------- start ---------- */
