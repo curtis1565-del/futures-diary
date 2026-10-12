@@ -261,6 +261,12 @@ details.more summary { cursor: pointer; font-size: 13.5px; color: var(--ink-2); 
 .sync-badge.fail { background: color-mix(in srgb, var(--gold) 18%, var(--card)); color: var(--gold); border-color: transparent; }
 .sync-badge.view { background: var(--grad); color: #fff; border: 0; }
 .sync-line { margin-top: -8px !important; }
+.code-box { background: var(--grad-soft); border-radius: 12px; padding: 10px 12px 2px; margin-bottom: 12px; }
+.code-box .field { margin-bottom: 4px; }
+.code-row { display: flex; gap: 8px; }
+.code-row input { flex: 1; min-width: 0; font-size: 15px !important; }
+.code-on { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; font-size: 13.5px; font-weight: 600; padding: 4px 0 2px; }
+.code-on span { flex: 1 1 100%; }
 .install { position: relative; margin-top: 12px; padding: 14px 16px; border-radius: 16px; background: var(--grad); color: #fff; box-shadow: 0 12px 28px -14px var(--glow); }
 .install b { font-size: 16px; }
 .install ol { margin: 8px 0 4px; padding-left: 20px; font-size: 14px; line-height: 1.7; }
@@ -536,6 +542,12 @@ body.intro #app > *:nth-child(n+6) { animation-delay: .25s; }
     <h2 id="setTitle">設定與備份</h2>
     <p class="sub">資料存在這台裝置的瀏覽器裡，記得每週匯出備份一次。</p>
     <p class="sub sync-line hidden" id="sSync"></p>
+    <div class="code-box hidden" id="codeBox">
+      <div class="field" id="codeOff"><span>☁️ 雲端同步碼 <small>貼上一次就好，之後每次儲存都會自動備份到雲端</small></span>
+        <div class="code-row"><input id="sCode" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" enterkeyhint="go" placeholder="貼上同步碼" aria-label="雲端同步碼"><button type="button" class="btn primary" id="bCode">連線</button></div></div>
+      <div class="code-on hidden" id="codeOn"><span id="codeOnText">☁️ 雲端同步已開啟</span><button type="button" class="btn small" id="bCopyCode">📋 複製同步碼</button><button type="button" class="btn small danger" id="bUnlink">中斷同步</button></div>
+      <p class="err" id="codeErr"></p>
+    </div>
     <div class="row2">
       <label class="field"><span>暱稱</span><input id="sName" maxlength="20" placeholder="例如 小明"></label>
       <label class="field"><span>初始本金（元）</span><input type="number" id="sCapital" inputmode="decimal" min="1" step="1" required></label>
@@ -577,14 +589,14 @@ state.records = Array.isArray(state.records) ? state.records : [];
 let bench = Object.assign({ closes: {}, months: {} }, load(BENCH_KEY, {}));
 let demo = null;            // 範例資料只放記憶體，不會存起來
 /* ---------- 雲端同步（Google Apps Script） ---------- */
-const SYNC_URL = '';        // 部署後貼上 Apps Script 的 /exec 網址
+const SYNC_URL = 'https://script.google.com/macros/s/AKfycby6gW8YhJ8w6BF2iG9B2DP1RK9cg001rJL6_IxA-FxKAw7YQd3V_0L8iQefgG94kWvb/exec'; // Apps Script 網頁應用程式（沒有鑰匙會被拒絕）
 const SYNC_KEY_STORE = 'futures-nav-diary.sync';
 const qs = new URLSearchParams(location.search);
 const viewKey = qs.get('view');   // 觀看連結：唯讀
 let writeKey = viewKey ? null : qs.get('k');
 if (!viewKey) { if (writeKey) save(SYNC_KEY_STORE, writeKey); else writeKey = load(SYNC_KEY_STORE, null); }
 let remote = null;          // 觀看模式的資料（只在記憶體）
-let syncState = 'off', lastSyncAt = null;
+let syncState = 'off', lastSyncAt = null, syncError = null;
 if (viewKey) { state = defaultState(); document.documentElement.classList.add('view-mode'); }
 let benchStatus = 'idle';   // idle | loading | ok | fail
 const persist = () => { if (viewKey) return; state.updatedAt = new Date().toISOString(); save(KEY, state); schedulePush(); };
@@ -597,7 +609,10 @@ async function pushCloud() {
     const res = await fetch(`${SYNC_URL}?key=${encodeURIComponent(writeKey)}`, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify({ settings: state.settings, records: state.records, updatedAt: state.updatedAt }) });
     const j = await res.json(); if (!j.ok) throw new Error(j.error);
     syncState = 'ok'; lastSyncAt = new Date();
-  } catch (e) { syncState = 'fail'; clearTimeout(pushT); pushT = setTimeout(pushCloud, 60000); }
+  } catch (e) {
+    syncState = 'fail'; clearTimeout(pushT);
+    if (e.message === 'readonly' || e.message === 'key') syncError = e.message; else pushT = setTimeout(pushCloud, 60000);
+  }
   renderSync();
 }
 async function pullCloud(key) {
@@ -642,7 +657,33 @@ async function initSync() {
 }
 const hm = d => `${pad(d.getHours())}:${pad(d.getMinutes())}`;
 function fmtUpdated(iso) { if (!iso) return '—'; const d = new Date(iso); return isNaN(d) ? '—' : `${d.getMonth() + 1}/${d.getDate()} ${hm(d)}`; }
+function renderCodeBox() {
+  const box = $('#codeBox'); if (!box) return;
+  box.classList.toggle('hidden', !SYNC_URL || !!viewKey);
+  $('#codeOff').classList.toggle('hidden', !!writeKey);
+  $('#codeOn').classList.toggle('hidden', !writeKey);
+}
+async function connectCode() {
+  const code = $('#sCode').value.replace(/\s+/g, ''), err = $('#codeErr'), btn = $('#bCode');
+  err.textContent = '';
+  if (!code) { err.textContent = '請貼上同步碼'; return; }
+  if (code[0] === 'v') { err.textContent = '這是「觀看碼」，只能看不能記。請貼上寫入用的同步碼。'; return; }
+  btn.disabled = true; btn.textContent = '連線中…';
+  try {
+    await pullCloud(code);
+    writeKey = code; syncError = null; save(SYNC_KEY_STORE, code); $('#sCode').value = '';
+    await initSync(); renderCodeBox(); toast('☁️ 雲端同步已開啟');
+  } catch (e) { err.textContent = e.message === 'key' ? '同步碼不對，請確認有完整貼上' : '連不上雲端，請確認網路後再試'; }
+  finally { btn.disabled = false; btn.textContent = '連線'; }
+}
+async function copyCode() {
+  if (!writeKey) return;
+  try { await navigator.clipboard.writeText(writeKey); }
+  catch (e) { const t = document.createElement('textarea'); t.value = writeKey; document.body.appendChild(t); t.select(); document.execCommand('copy'); t.remove(); }
+  toast('📋 同步碼已複製');
+}
 function renderSync() {
+  renderCodeBox();
   const b = $('#syncBadge'), line = $('#sSync');
   if (!b) return;
   if (viewKey) { b.className = 'sync-badge view'; b.textContent = syncState === 'syncing' ? '👀 讀取中…' : '👀 觀看模式'; return; }
@@ -652,7 +693,7 @@ function renderSync() {
   b.className = 'sync-badge' + (syncState === 'syncing' ? ' syncing' : syncState === 'fail' ? ' fail' : '');
   b.textContent = syncState === 'syncing' ? '☁️ 同步中…' : syncState === 'fail' ? '⚠️ 未同步' : '☁️ 已同步';
   b.title = syncState === 'fail' ? '暫時連不上雲端，資料已存在手機，等一下會自動再試' : lastSyncAt ? `最後同步 ${hm(lastSyncAt)}` : '';
-  line.textContent = syncState === 'fail' ? '⚠️ 雲端同步：暫時連不上，資料已存在手機，會自動重試。' : `☁️ 雲端同步：已開啟${lastSyncAt ? `（最後同步 ${hm(lastSyncAt)}）` : ''}，每次儲存都會自動備份到雲端。`;
+  line.textContent = syncError ? '⚠️ 這個同步碼不能寫入（可能貼到觀看碼），請中斷後重新貼上同步碼。' : syncState === 'fail' ? '⚠️ 雲端同步：暫時連不上，資料已存在手機，會自動重試。' : `☁️ 雲端同步：已開啟${lastSyncAt ? `（最後同步 ${hm(lastSyncAt)}）` : ''}，每次儲存都會自動備份到雲端。`;
 }
 
 /* ---------- formatting ---------- */
@@ -998,19 +1039,20 @@ function installHtml() {
   if (viewKey || demo || isStandalone() || load(INSTALL_KEY, false)) return '';
   const x = '<button class="x" data-act="hideInstall" aria-label="關閉">✕</button>';
   if (isIOS() && inLineApp()) return `<div class="install">${x}<b>📲 先用 Safari 打開</b><ol><li>點右下角 <b>⋯</b>（或右上角選單）</li><li>選「<b>用預設瀏覽器開啟</b>」或「在 Safari 中開啟」</li><li>在 Safari 裡照著出現的步驟加入主畫面</li></ol></div>`;
-  if (isIOS()) return `<div class="install">${x}<b>📲 加到主畫面，變成一個 App</b><ol><li>點 Safari 下方（或上方）的 <span class="share">⬆︎</span> 分享</li><li>往下滑，選「<b>加入主畫面</b>」</li><li>右上角按「<b>新增</b>」</li></ol><small>之後每天都從主畫面的圖示打開來記錄。iPhone 的主畫面 App 跟 Safari 資料是分開存的，在 Safari 裡記的不會帶過去。</small></div>`;
+  if (isIOS()) return `<div class="install">${x}<b>📲 加到主畫面，變成一個 App</b><ol><li>點 Safari 下方（或上方）的 <span class="share">⬆︎</span> 分享</li><li>往下滑，選「<b>加入主畫面</b>」</li><li>右上角按「<b>新增</b>」</li>${writeKey && SYNC_URL ? '<li>從主畫面打開後，點右上 ⚙️ → 貼上<b>同步碼</b> → 連線</li>' : ''}</ol>${writeKey && SYNC_URL ? '<button class="btn small" data-act="copyCode">📋 先複製同步碼</button>' : ''}<small>之後每天都從主畫面的圖示打開來記錄。iPhone 的主畫面 App 跟 Safari 資料是分開存的，在 Safari 裡記的不會帶過去。</small></div>`;
   if (installEvt) return `<div class="install">${x}<b>📲 安裝成 App</b><small>安裝後主畫面會出現圖示，打開就是全螢幕。</small><button class="btn small" data-act="install">安裝</button></div>`;
   return '';
 }
 function bannersHtml() {
   let h = installHtml();
+  if (SYNC_URL && !viewKey && !demo && !writeKey && (isStandalone() || state.records.length)) h += `<div class="banner"><span>☁️ 還沒開啟雲端同步：輸入一次同步碼，資料就會自動備份到雲端。</span><span class="sp"></span><button class="btn small primary" data-act="openCode">輸入同步碼</button></div>`;
   if (demo) h += `<div class="banner warn"><span>👀 你正在看<b>範例資料</b>（假的，不會存起來）。</span><span class="sp"></span><button class="btn small primary" data-act="exitDemo">清除範例，開始記我自己的</button></div>`;
   if (!storageOk) h += `<div class="banner warn">⚠️ 這個瀏覽器不讓網頁存資料（可能是無痕模式）。記錄完請到 ⚙️ 匯出備份。</div>`;
   if (viewKey) {
     h += remote ? `<div class="banner"><span>👀 <b>觀看模式</b>：只能看、不能改。最後更新 <b>${fmtUpdated(remote.updatedAt)}</b>，每 3 分鐘自動更新。</span><span class="sp"></span><button class="btn small" data-act="refresh">重新整理</button></div>`
       : syncState === 'fail' ? `<div class="banner warn">📡 讀不到雲端資料${SYNC_URL ? '（網路不穩或連結不完整）' : '（雲端還沒設定好）'}。</div>` : `<div class="banner">⏳ 正在讀取雲端資料…</div>`;
   }
-  if (!demo && !viewKey && state.records.length >= 5) {
+  if (!demo && !viewKey && !(writeKey && SYNC_URL && !syncError) && state.records.length >= 5) {
     const days = state.lastBackup ? Math.floor((Date.now() - state.lastBackup) / 864e5) : null;
     if (days == null || days >= 7) h += `<div class="banner warn"><span>💾 ${days == null ? '還沒備份過' : `已經 ${days} 天沒備份`}。資料只存在這台裝置，換手機或清除瀏覽器就會不見。</span><span class="sp"></span><button class="btn small" data-act="export">立刻備份</button></div>`;
   }
@@ -1270,6 +1312,8 @@ function wire() {
     if (a === 'exitDemo') { demo = null; calMonth = null; history.replaceState(null, '', location.pathname); render(); }
     if (a === 'export') exportJson();
     if (a === 'refresh') refreshRemote();
+    if (a === 'copyCode') copyCode();
+    if (a === 'openCode') { $('#setBtn').click(); setTimeout(() => $('#sCode').focus(), 120); }
     if (a === 'hideInstall') { save(INSTALL_KEY, true); render(); }
     if (a === 'install' && installEvt) { installEvt.prompt(); installEvt.userChoice.finally(() => { installEvt = null; render(); }); }
     if (a === 'toggleLog') { showAllLog = !showAllLog; render(); }
@@ -1338,7 +1382,11 @@ function updatePreview() {
     (Math.abs(ret) > 0.5 ? `<br><span class="up" style="font-size:12.5px">⚠️ 變動超過 50%，確認一下有沒有打錯、或忘了填入出金？</span>` : '');
 }
 ['#fEquity', '#fFlow', '#fDate'].forEach(s => $(s).addEventListener('input', updatePreview));
-$('#fDate').addEventListener('change', () => { const d = $('#fDate').value; if (d && state.records.some(r => r.date === d) && d !== editing) fillEntry(d); else updatePreview(); });
+$('#fDate').addEventListener('change', () => {
+  const d = $('#fDate').value;
+  // 換到有紀錄的日子 → 載入那天；從「修改某天」換到空白日子 → 改成新增，避免存檔時把原本那天刪掉
+  if (d && d !== editing && (editing || state.records.some(r => r.date === d))) fillEntry(d); else updatePreview();
+});
 dlg.querySelectorAll('[data-flow]').forEach(b => b.addEventListener('click', () => { setFlow(b.dataset.flow); if (b.dataset.flow !== 'none') $('#fFlow').focus(); }));
 $('#fCancel').onclick = () => dlg.close();
 $('#fClose').onclick = () => dlg.close();
@@ -1372,6 +1420,10 @@ $('#entryForm').addEventListener('submit', ev => {
 const setDlg = $('#setDlg');
 $('#setBtn').onclick = () => { renderSync(); $('#sName').value = state.settings.name || ''; $('#sCapital').value = state.settings.capital; $('#sErr').textContent = ''; setDlg.showModal(); };
 $('#sClose').onclick = () => setDlg.close();
+$('#bCode').onclick = connectCode;
+$('#sCode').addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); connectCode(); } });
+$('#bCopyCode').onclick = copyCode;
+$('#bUnlink').onclick = () => { writeKey = null; syncError = null; save(SYNC_KEY_STORE, null); clearTimeout(pushT); syncState = 'off'; render(); toast('已中斷雲端同步（手機裡的資料還在）'); };
 $('#setForm').addEventListener('submit', ev => {
   ev.preventDefault();
   const cap = Number($('#sCapital').value);

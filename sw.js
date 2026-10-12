@@ -1,5 +1,5 @@
 // 離線快取：有網路時拿最新版，沒網路時用上次存的版本。
-const CACHE = 'futures-diary-v2';
+const CACHE = 'futures-diary-v3';
 const ASSETS = ['./', './index.html', './manifest.webmanifest', './icons/apple-touch-icon.png', './icons/icon-192.png', './icons/icon-512.png'];
 self.addEventListener('install', e => { e.waitUntil(caches.open(CACHE).then(c => c.addAll(ASSETS))); self.skipWaiting(); });
 self.addEventListener('activate', e => {
