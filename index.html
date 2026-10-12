@@ -3,12 +3,12 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#f6f4ef">
+<meta name="theme-color" content="#fdf6ff">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-title" content="期貨日記">
+<meta name="apple-mobile-web-app-title" content="智勳期貨日記">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
-<title>期貨淨值日記</title>
+<title>林智勳的期貨日記</title>
 <style>
 :root {
   color-scheme: light;
@@ -333,12 +333,127 @@ body:not(.m) .sum-group > summary { pointer-events: none; }
   .flow-seg button { padding: 10px 6px; }
 }
 @media (prefers-reduced-motion: reduce) { dialog { animation: none; } }
+/* ================= 活潑版配色（覆蓋上面的基本色） ================= */
+:root {
+  --bg: #fdf6ff; --card: #ffffff; --card-2: #f6f0ff; --ink: #1f1535; --ink-2: #574b70; --muted: #8d82a3;
+  --line: #ece3fb; --grid: #f1ebfa;
+  --up: #e11d48; --up-mark: #ff3d6e; --up-soft: #ffe4ec;
+  --down: #047857; --down-mark: #10b981; --down-soft: #d1fae5;
+  --mine: #7c3aed; --bench: #ea580c; --accent: #7c3aed; --gold: #d97706; --water: #22d3ee;
+  --grad: linear-gradient(135deg, #7c3aed 0%, #db2777 52%, #f97316 100%);
+  --grad-soft: linear-gradient(135deg, #f1eaff 0%, #fde7f3 55%, #fff0e0 100%);
+  --glow: rgba(219, 39, 119, .45);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #110b1f; --card: #1b1430; --card-2: #251b40; --ink: #f5f0ff; --ink-2: #cfc3ea; --muted: #9a8fb8;
+    --line: #352a52; --grid: #2a2142;
+    --up: #ff6b8b; --up-mark: #ff4d79; --up-soft: #3d1424; --down: #34d399; --down-mark: #10b981; --down-soft: #0f2e24;
+    --mine: #8b5cf6; --bench: #ea580c; --accent: #a78bfa; --gold: #fbbf24; --water: #22d3ee;
+    --grad: linear-gradient(135deg, #7c3aed 0%, #db2777 55%, #f59e0b 100%);
+    --grad-soft: linear-gradient(135deg, #2a1d4a 0%, #3a1838 55%, #3a2414 100%);
+    --glow: rgba(219, 39, 119, .55);
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #110b1f; --card: #1b1430; --card-2: #251b40; --ink: #f5f0ff; --ink-2: #cfc3ea; --muted: #9a8fb8;
+  --line: #352a52; --grid: #2a2142;
+  --up: #ff6b8b; --up-mark: #ff4d79; --up-soft: #3d1424; --down: #34d399; --down-mark: #10b981; --down-soft: #0f2e24;
+  --mine: #8b5cf6; --bench: #ea580c; --accent: #a78bfa; --gold: #fbbf24; --water: #22d3ee;
+  --grad: linear-gradient(135deg, #7c3aed 0%, #db2777 55%, #f59e0b 100%);
+  --grad-soft: linear-gradient(135deg, #2a1d4a 0%, #3a1838 55%, #3a2414 100%);
+  --glow: rgba(219, 39, 119, .55);
+}
+body {
+  background:
+    radial-gradient(900px 520px at -5% -10%, color-mix(in srgb, #a855f7 24%, transparent), transparent 62%),
+    radial-gradient(800px 520px at 105% 0%, color-mix(in srgb, #f472b6 22%, transparent), transparent 62%),
+    radial-gradient(900px 620px at 50% 115%, color-mix(in srgb, #22d3ee 18%, transparent), transparent 62%),
+    var(--bg);
+  background-attachment: fixed;
+}
+.top { background: color-mix(in srgb, var(--card) 72%, transparent); }
+.brand-logo { background: var(--grad); box-shadow: 0 4px 14px -2px var(--glow); }
+.brand span:last-child { background: var(--grad); -webkit-background-clip: text; background-clip: text; color: transparent; font-weight: 800; }
+.btn { transition: transform .15s, filter .15s, box-shadow .15s; }
+.btn:active { transform: scale(.97); }
+.btn.primary { background: var(--grad); border: 0; color: #fff; box-shadow: 0 8px 20px -6px var(--glow); }
+.btn.primary:hover { filter: brightness(1.08) saturate(1.1); transform: translateY(-1px); }
+.icon-btn { transition: transform .15s; }
+.icon-btn:hover { transform: rotate(-8deg) scale(1.06); }
+
+/* 每個區塊自己的主題色 */
+.card { --hue: #7c3aed; position: relative; border-color: color-mix(in srgb, var(--hue) 20%, var(--line)); box-shadow: 0 12px 32px -16px color-mix(in srgb, var(--hue) 45%, transparent); }
+.card::before { content: ''; position: absolute; top: -1px; left: -1px; right: -1px; height: 5px; border-radius: inherit; border-bottom-left-radius: 0; border-bottom-right-radius: 0; background: linear-gradient(90deg, var(--hue), color-mix(in srgb, var(--hue) 35%, #ffd6f0)); }
+#sec-summary { --hue: #7c3aed; } #sec-curve { --hue: #06b6d4; } #sec-perf { --hue: #ea580c; }
+[data-chart="daily"] { --hue: #e11d48; } [data-chart="win"] { --hue: #db2777; } [data-chart="dd"] { --hue: #2563eb; }
+#sec-calendar { --hue: #f59e0b; } #sec-cost { --hue: #0ea5e9; } #sec-log { --hue: #10b981; } .onboard { --hue: #db2777; }
+.eyebrow { color: color-mix(in srgb, var(--hue, #7c3aed) 72%, var(--ink)); font-weight: 700; }
+.card h2 { letter-spacing: -.01em; }
+
+/* 主視覺卡：漸層 */
+#sec-hero { background: var(--grad); border: 0; color: #fff; overflow: hidden; box-shadow: 0 20px 44px -18px var(--glow); }
+#sec-hero::before { content: ''; top: auto; bottom: -120px; left: -60px; right: auto; width: 280px; height: 280px; border-radius: 50%; background: radial-gradient(circle, rgba(255,255,255,.22), transparent 70%); pointer-events: none; }
+#sec-hero::after { content: ''; position: absolute; width: 300px; height: 300px; right: -90px; top: -120px; border-radius: 50%; background: radial-gradient(circle, rgba(255,255,255,.3), transparent 70%); pointer-events: none; }
+#sec-hero .hero { position: relative; z-index: 1; }
+#sec-hero .eyebrow { color: rgba(255,255,255,.88); }
+#sec-hero .hero-eq { text-shadow: 0 2px 12px rgba(0,0,0,.15); }
+#sec-hero .hero-eq small { color: rgba(255,255,255,.82); }
+#sec-hero .hero-today { display: inline-flex; align-items: baseline; gap: 4px; flex-wrap: wrap; background: color-mix(in srgb, var(--card) 95%, transparent); padding: 5px 14px; border-radius: 999px; font-size: 15px; box-shadow: 0 6px 16px -8px rgba(0,0,0,.35); }
+#sec-hero .btn.primary { background: #fff; color: #7c3aed; box-shadow: 0 8px 20px -8px rgba(0,0,0,.4); }
+#sec-hero .reminder { background: rgba(255,255,255,.22); color: #fff; }
+#sec-hero .tile { background: color-mix(in srgb, var(--card) 95%, transparent); color: var(--ink); box-shadow: 0 8px 18px -10px rgba(0,0,0,.4); }
+.tile span { font-weight: 600; }
+
+/* 總表三組各有底色 */
+.sum-group[data-grp="0"] { --g: #f59e0b; } .sum-group[data-grp="1"] { --g: #db2777; } .sum-group[data-grp="2"] { --g: #06b6d4; }
+.sum-group { background: color-mix(in srgb, var(--g) 8%, var(--card)); border-radius: 12px; padding: 8px 12px; }
+body.m .sum-group { background: color-mix(in srgb, var(--g) 10%, var(--card)); }
+.sum-group h3 { color: color-mix(in srgb, var(--g) 70%, var(--ink)) !important; font-weight: 800; }
+.sum-row { border-bottom-color: color-mix(in srgb, var(--g, #7c3aed) 22%, var(--line)); }
+.tips li { background: var(--grad-soft); }
+.wr-box { background: var(--grad-soft); }
+.q { background: color-mix(in srgb, var(--accent) 16%, var(--card)); color: var(--accent); font-weight: 700; }
+.explain { background: var(--grad-soft); }
+
+/* 切換按鈕：漸層 */
+.chips button[aria-selected="true"], .seg button[aria-pressed="true"], .date-chips button[aria-pressed="true"] { background: var(--grad); color: #fff; border-color: transparent; box-shadow: 0 6px 14px -6px var(--glow); }
+.flow-seg button[aria-pressed="true"] { border-color: #db2777; background: color-mix(in srgb, #db2777 12%, var(--bg)); }
+body.m .chips { background: color-mix(in srgb, var(--bg) 85%, transparent); backdrop-filter: blur(10px); }
+.preview { background: var(--grad-soft); }
+.dlg h2 { background: var(--grad); -webkit-background-clip: text; background-clip: text; color: transparent; font-weight: 800; }
+.toast { background: var(--grad); color: #fff; box-shadow: 0 10px 28px -8px var(--glow); }
+
+/* 底部分頁：發光的＋ */
+.tabbar button[aria-current="page"] .ic { transform: translateY(-2px) scale(1.12); }
+.tabbar .ic { transition: transform .2s; }
+.tabbar .add .ic { background: var(--grad) !important; box-shadow: 0 8px 22px -4px var(--glow) !important; animation: glowPulse 2.6s ease-in-out infinite; }
+@keyframes glowPulse { 0%, 100% { box-shadow: 0 8px 22px -4px var(--glow), 0 0 0 0 color-mix(in srgb, #db2777 40%, transparent); } 50% { box-shadow: 0 8px 22px -4px var(--glow), 0 0 0 10px transparent; } }
+
+/* 日曆、紀錄卡片 */
+.cal-cell { transition: transform .15s; }
+.cal-cell:has(.cell-btn):hover { transform: translateY(-2px); }
+.cal-cell.week { border-color: color-mix(in srgb, #f59e0b 40%, var(--line)); }
+.cal-cell.today { box-shadow: inset 0 0 0 2px #db2777; }
+.log-card { border-left: 4px solid var(--muted); }
+.log-card.lc-up { border-left-color: var(--up-mark); }
+.log-card.lc-down { border-left-color: var(--down-mark); }
+.lc-month b { font-weight: 800; }
+
+/* 彩帶與進場動畫 */
+.confetti { position: fixed; top: 0; z-index: 60; pointer-events: none; border-radius: 2px; }
+@keyframes rise { from { opacity: 0; transform: translateY(14px) scale(.985); } to { opacity: 1; transform: none; } }
+body.intro #app > * { animation: rise .5s cubic-bezier(.2, .8, .2, 1) both; }
+body.intro #app > *:nth-child(2) { animation-delay: .05s; } body.intro #app > *:nth-child(3) { animation-delay: .1s; }
+body.intro #app > *:nth-child(4) { animation-delay: .15s; } body.intro #app > *:nth-child(5) { animation-delay: .2s; }
+body.intro #app > *:nth-child(n+6) { animation-delay: .25s; }
+@media (prefers-reduced-motion: reduce) { body.intro #app > * { animation: none; } .tabbar .add .ic { animation: none; } }
 </style>
 </head>
 <body>
 <header class="top">
   <div class="top-in">
-    <div class="brand"><span class="brand-logo" aria-hidden="true">📈</span><span id="brandName">期貨淨值日記</span></div>
+    <div class="brand"><span class="brand-logo" aria-hidden="true">📈</span><span id="brandName">林智勳的期貨日記</span></div>
     <nav class="nav" aria-label="區塊">
       <a href="#sec-summary">總表</a><a href="#sec-curve">權益曲線</a><a href="#sec-perf">績效與風險</a>
       <a href="#sec-calendar">報酬日曆</a><a href="#sec-cost">漏水筒</a><a href="#sec-log">紀錄</a>
@@ -435,7 +550,7 @@ function load(key, fallback) {
 function save(key, val) {
   try { localStorage.setItem(key, JSON.stringify(val)); return true; } catch (e) { storageOk = false; return false; }
 }
-const defaultState = () => ({ settings: { name: '', capital: 22000 }, records: [], lastBackup: null });
+const defaultState = () => ({ settings: { name: '林智勳', capital: 22000 }, records: [], lastBackup: null });
 let state = Object.assign(defaultState(), load(KEY, {}));
 state.settings = Object.assign(defaultState().settings, state.settings || {});
 state.records = Array.isArray(state.records) ? state.records : [];
@@ -608,6 +723,7 @@ function xLabelIdx(n, w) {
 /**
  * o = { labels:[iso|'起點'], series:[{name,color,values,dashed,area}], bars:{values,colorOf}, fmt, height, zero, refs:[{v,label}], tip:(i)=>html, aria }
  */
+let gradSeq = 0;
 function chart(host, o) {
   host.innerHTML = '';
   const W = Math.max(260, host.clientWidth || 600), H = o.height || 220;
@@ -655,7 +771,8 @@ function chart(host, o) {
     if (s.area && pts.length > 1) {
       const by = y(Math.max(lo, Math.min(0, hi)));
       const a = pts.map((i, k) => (k ? 'L' : 'M') + x(i).toFixed(1) + ',' + y(s.values[i]).toFixed(1)).join('') + `L${x(pts[pts.length - 1])},${by}L${x(pts[0])},${by}Z`;
-      g += `<path d="${a}" fill="${s.color}" opacity="${s.areaOpacity || 0.12}"/>`;
+      const gid = 'ag' + (++gradSeq), o1 = s.areaFlip ? 0 : 0.34, o2 = s.areaFlip ? 0.3 : 0;
+      g += `<defs><linearGradient id="${gid}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${s.color}" stop-opacity="${o1}"/><stop offset="1" stop-color="${s.color}" stop-opacity="${o2}"/></linearGradient></defs><path d="${a}" fill="url(#${gid})"/>`;
     }
     g += `<path d="${d}" fill="none" stroke="${s.color}" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"${s.dashed ? ' stroke-dasharray="6 4"' : ''}/>`;
     if (s.dots) pts.forEach(i => { g += `<circle cx="${x(i)}" cy="${y(s.values[i])}" r="3" fill="${s.dotColor ? s.dotColor(s.values[i]) : s.color}" stroke="var(--card)" stroke-width="1.5"/>`; });
@@ -721,8 +838,8 @@ function sumRow(k, v, cls = '', key = null, en = '') {
 
 function render() {
   const st = view();
-  $('#brandName').textContent = st.settings.name ? `${st.settings.name}的期貨日記` : '期貨淨值日記';
-  document.title = st.settings.name ? `${st.settings.name}的期貨日記` : '期貨淨值日記';
+  $('#brandName').textContent = st.settings.name ? `${st.settings.name}的期貨日記` : '林智勳的期貨日記';
+  document.title = st.settings.name ? `${st.settings.name}的期貨日記` : '林智勳的期貨日記';
   const app = $('#app');
   const has = st.records.length > 0;
   document.body.classList.toggle('m', isM() && has);
@@ -747,6 +864,32 @@ function render() {
   drawCharts(C);
   renderBenchNote();
   wire();
+  countUp();
+}
+const reduceMotion = () => matchMedia('(prefers-reduced-motion: reduce)').matches;
+let heroShown = null;
+function countUp() {
+  const el = document.getElementById('heroNum'); if (!el) return;
+  const to = Number(el.dataset.v), from = heroShown == null ? to * 0.8 : heroShown;
+  heroShown = to;
+  if (from === to || reduceMotion()) return;
+  const t0 = performance.now(), D = 900;
+  const step = t => { const k = Math.min(1, (t - t0) / D), e = 1 - Math.pow(1 - k, 3); el.textContent = money(from + (to - from) * e); if (k < 1) requestAnimationFrame(step); };
+  requestAnimationFrame(step);
+}
+function playIntro() { if (reduceMotion()) return; document.body.classList.remove('intro'); void document.body.offsetWidth; document.body.classList.add('intro'); clearTimeout(playIntro.t); playIntro.t = setTimeout(() => document.body.classList.remove('intro'), 900); }
+function confetti() {
+  if (reduceMotion()) return;
+  const colors = ['#7c3aed', '#db2777', '#f97316', '#f59e0b', '#10b981', '#06b6d4', '#ff3d6e', '#facc15'];
+  for (let i = 0; i < 70; i++) {
+    const el = document.createElement('i'); el.className = 'confetti';
+    const w = 6 + Math.random() * 7;
+    Object.assign(el.style, { background: colors[i % colors.length], left: Math.random() * 100 + 'vw', width: w + 'px', height: (w * 0.45 + 4) + 'px' });
+    document.body.appendChild(el);
+    const dx = (Math.random() - 0.5) * 240, rot = (Math.random() - 0.5) * 1080;
+    el.animate([{ transform: 'translate(0,-24px) rotate(0deg)', opacity: 1 }, { transform: `translate(${dx}px, ${innerHeight + 40}px) rotate(${rot}deg)`, opacity: 0.9 }],
+      { duration: 1700 + Math.random() * 1500, easing: 'cubic-bezier(.25,.6,.4,1)', delay: Math.random() * 300 }).onfinish = () => el.remove();
+  }
 }
 
 function bannersHtml() {
@@ -772,14 +915,14 @@ function heroHtml(C) {
   const rem = demo ? '' : recordedToday ? `<span class="reminder done">✓ 今天記好了</span>` : hr >= 21 ? `<span class="reminder">⏰ 今晚還沒記錄喔</span>` : `<span class="reminder" style="opacity:.8">晚上 10 點記得來記錄</span>`;
   return `<section class="card" id="sec-hero" data-tab="home"><div class="hero"><div>
     <p class="eyebrow">目前權益總值 · ${L.date.replaceAll('-', '/')}（${wd(L.date)}）</p>
-    <div class="hero-eq num">${money(L.equity)}<small>元</small></div>
+    <div class="hero-eq num"><span id="heroNum" data-v="${L.equity}">${money(L.equity)}</span><small>元</small></div>
     <div class="hero-today ${tone(L.pnl)}">今日 ${arrow(L.pnl)} ${sMoney(L.pnl)} 元（${sPct(L.ret)}）<span class="muted">${L.flow ? ` · 含${L.flow > 0 ? '入金' : '出金'} ${money(Math.abs(L.flow))} 已排除` : ''}</span></div>
     <div class="hero-cta"><button class="btn primary big" data-act="entry">✍️ 記錄今天</button>${rem}</div>
   </div><div class="tiles">
-    <div class="tile"><span>累積報酬率</span><b class="${tone(s.cum)}">${arrow(s.cum)} ${sPct(s.cum)}</b><em>從 ${money(C.capital)} 元起算</em></div>
-    <div class="tile"><span>同期大盤</span><b class="${tone(s.benchCum)}">${s.benchCum == null ? '—' : arrow(s.benchCum) + ' ' + sPct(s.benchCum)}</b><em>${s.benchCum == null ? '大盤資料讀取中' : (s.cum >= s.benchCum ? '🏆 目前贏大盤' : '目前輸大盤')}</em></div>
-    <div class="tile"><span>淨損益</span><b class="${tone(s.netPnl)}">${sMoney(s.netPnl)}</b><em>已扣成本、排除入出金</em></div>
-    <div class="tile"><span>最大回撤</span><b class="${s.maxDd < 0 ? 'down' : 'flat'}">${s.maxDd < 0 ? sPct(s.maxDd) : '0.00%'}</b><em>目前離高點 ${sPct(s.curDd)}</em></div>
+    <div class="tile"><span>📈 累積報酬率</span><b class="${tone(s.cum)}">${arrow(s.cum)} ${sPct(s.cum)}</b><em>從 ${money(C.capital)} 元起算</em></div>
+    <div class="tile"><span>🏁 同期大盤</span><b class="${tone(s.benchCum)}">${s.benchCum == null ? '—' : arrow(s.benchCum) + ' ' + sPct(s.benchCum)}</b><em>${s.benchCum == null ? '大盤資料讀取中' : (s.cum >= s.benchCum ? '🏆 目前贏大盤' : '目前輸大盤')}</em></div>
+    <div class="tile"><span>💰 淨損益</span><b class="${tone(s.netPnl)}">${sMoney(s.netPnl)}</b><em>已扣成本、排除入出金</em></div>
+    <div class="tile"><span>🧯 最大回撤</span><b class="${s.maxDd < 0 ? 'down' : 'flat'}">${s.maxDd < 0 ? sPct(s.maxDd) : '0.00%'}</b><em>目前離高點 ${sPct(s.curDd)}</em></div>
   </div></div></section>`;
 }
 function tipsFor(C) {
@@ -896,8 +1039,8 @@ function leakHtml(C) {
   const mStats = months.map(m => { const rs = rows.filter(r => r.date.startsWith(m)); const cost = rs.reduce((a, r) => a + r.cost, 0), pnl = rs.reduce((a, r) => a + r.pnl, 0), lots = rs.reduce((a, r) => a + r.lots, 0); return { m, cost, pnl, gross: pnl + cost, lots, days: rs.filter(r => r.cost > 0).length }; });
   const thisM = mStats[0];
   const bucket = `<svg viewBox="0 0 160 190" aria-hidden="true">
-    <defs><clipPath id="bk"><path d="M22 30 L138 30 L124 136 Q122 146 112 146 L48 146 Q38 146 36 136 Z"/></clipPath></defs>
-    <rect x="0" y="${yTop}" width="160" height="${160 - yTop}" fill="var(--water)" opacity=".55" clip-path="url(#bk)"/>
+    <defs><linearGradient id="wg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#67e8f9"/><stop offset="1" stop-color="#8b5cf6"/></linearGradient><clipPath id="bk"><path d="M22 30 L138 30 L124 136 Q122 146 112 146 L48 146 Q38 146 36 136 Z"/></clipPath></defs>
+    <rect x="0" y="${yTop}" width="160" height="${160 - yTop}" fill="url(#wg)" opacity=".75" clip-path="url(#bk)"/>
     <path d="M22 30 L138 30 L124 136 Q122 146 112 146 L48 146 Q38 146 36 136 Z" fill="none" stroke="var(--ink-2)" stroke-width="3" stroke-linejoin="round"/>
     <path d="M18 30 H142" stroke="var(--ink-2)" stroke-width="4" stroke-linecap="round"/>
     <path d="M40 30 Q80 -4 120 30" fill="none" stroke="var(--muted)" stroke-width="2.5"/>
@@ -928,7 +1071,7 @@ function logHtml(C) {
     const m = r.date.slice(0, 7);
     if (m !== curM) { curM = m; const mt = C.rows.filter(x => x.date.startsWith(m)).reduce((a, x) => a + x.pnl, 0); cards += `<div class="lc-month"><span>${+m.slice(0, 4)} 年 ${+m.slice(5)} 月</span><span>月損益 <b class="${tone(mt)}">${sMoney(mt)}</b></span></div>`; }
     const tags = (r.flow ? `<span class="lc-tag">${r.flow > 0 ? '入金' : '出金'} ${money(Math.abs(r.flow))}</span>` : '') + (r.cost ? `<span class="lc-tag">💸 ${money(r.cost)}</span>` : '') + (r.lots ? `<span class="lc-tag">${r.lots} 口</span>` : '');
-    cards += `<button class="log-card" data-edit="${r.date}" aria-label="${r.date} 損益 ${sMoney(r.pnl)}，點擊修改"><span class="lc-date">${md(r.date)}<small>週${wd(r.date)}</small></span><span class="lc-main"><b class="${tone(r.pnl)}">${arrow(r.pnl)} ${sMoney(r.pnl)}</b><small class="${tone(r.ret)}">${sPct(r.ret)}</small></span><span class="lc-eq">權益 ${money(r.equity)} ${tags}</span>${r.note ? `<span class="lc-note">「${esc(r.note)}」</span>` : ''}<span class="lc-go" aria-hidden="true">›</span></button>`;
+    cards += `<button class="log-card lc-${tone(r.pnl)}" data-edit="${r.date}" aria-label="${r.date} 損益 ${sMoney(r.pnl)}，點擊修改"><span class="lc-date">${md(r.date)}<small>週${wd(r.date)}</small></span><span class="lc-main"><b class="${tone(r.pnl)}">${arrow(r.pnl)} ${sMoney(r.pnl)}</b><small class="${tone(r.ret)}">${sPct(r.ret)}</small></span><span class="lc-eq">權益 ${money(r.equity)} ${tags}</span>${r.note ? `<span class="lc-note">「${esc(r.note)}」</span>` : ''}<span class="lc-go" aria-hidden="true">›</span></button>`;
   });
   return `<section class="card" id="sec-log" data-tab="log"><div class="card-head"><div><p class="eyebrow">Daily Log</p><h2>每日紀錄</h2><p class="sub">記錯了？點一下那天（或「改」）就能修正，所有圖表會自動重算。</p></div><button class="btn small" data-act="export">💾 備份</button></div>
   <div class="log-cards">${cards}</div>
@@ -983,7 +1126,7 @@ function drawCharts(C) {
   // 5. 回撤
   chart($('#cDd'), {
     labels, height: T(170), zero: true, fmt: pctAxis, aria: '回撤比較：我的投組實線、大盤虛線',
-    series: [{ name: '我的投組', color: mine, values: [0, ...rows.map(r => r.dd)], area: true, areaOpacity: 0.1 }, ...(hasB ? [{ name: '大盤', color: bch, dashed: true, values: [0, ...rows.map(r => r.bDd)] }] : [])],
+    series: [{ name: '我的投組', color: mine, values: [0, ...rows.map(r => r.dd)], area: true, areaFlip: true }, ...(hasB ? [{ name: '大盤', color: bch, dashed: true, values: [0, ...rows.map(r => r.bDd)] }] : [])],
     tip: i => i === 0 ? tipHead('起點') + tipRow('回撤', '0%') : tipHead(at(i).date) + tipRow('我的回撤', sPct(at(i).dd), mine, tone(at(i).dd)) + tipRow('金額', sMoney(at(i).ddMoney)) + tipRow('大盤回撤', at(i).bDd == null ? '—' : sPct(at(i).bDd), bch, tone(at(i).bDd))
   });
   const s = C.s, lastB = [...rows].reverse().find(r => r.bDd != null);
@@ -993,7 +1136,7 @@ function pctAxis(v) { const a = Math.abs(v * 100), t = (v * 100).toFixed(a === 0
 function compactAxis(v) { const a = Math.abs(v); return a >= 10000 ? (v / 10000).toFixed(a % 10000 ? 1 : 0) + '萬' : nf0.format(v); }
 
 /* ---------- events ---------- */
-function setTab(t) { curTab = t; render(); window.scrollTo(0, 0); }
+function setTab(t) { curTab = t; render(); window.scrollTo(0, 0); playIntro(); }
 function wire() {
   document.querySelectorAll('[data-chart-btn]').forEach(b => b.onclick = () => { curChart = b.dataset.chartBtn; render(); const c = document.querySelector(`[data-chart-btn="${curChart}"]`); if (c) c.scrollIntoView({ inline: 'center', block: 'nearest' }); window.scrollTo(0, 0); });
   document.querySelectorAll('.sum-group').forEach(d => d.addEventListener('toggle', () => { if (!isM()) return; if (d.open) sumOpen.add(+d.dataset.grp); else sumOpen.delete(+d.dataset.grp); }));
@@ -1103,7 +1246,8 @@ $('#entryForm').addEventListener('submit', ev => {
   if (isM()) { curTab = 'home'; window.scrollTo(0, 0); }
   render(); syncBench();
   const row = compute(state).rows.find(r => r.date === date);
-  toast(row ? `已記錄！${md(date)} ${arrow(row.pnl)} ${sMoney(row.pnl)} 元（${sPct(row.ret)}）` : '已記錄');
+  toast(row ? `${row.pnl > 0 ? '🎉 ' : row.pnl < 0 ? '💪 ' : ''}已記錄！${md(date)} ${arrow(row.pnl)} ${sMoney(row.pnl)} 元（${sPct(row.ret)}）${row.pnl < 0 ? '　守住紀律，明天再來' : ''}` : '已記錄');
+  if (row && row.pnl > 0) confetti();
 });
 
 /* ---------- settings / backup ---------- */
@@ -1155,7 +1299,7 @@ $('#bWipe').onclick = () => {
 function applyTheme(t) {
   if (t) document.documentElement.setAttribute('data-theme', t); else document.documentElement.removeAttribute('data-theme');
   const dark = t ? t === 'dark' : matchMedia('(prefers-color-scheme: dark)').matches;
-  document.querySelector('meta[name="theme-color"]').content = dark ? '#121211' : '#f6f4ef';
+  document.querySelector('meta[name="theme-color"]').content = dark ? '#110b1f' : '#fdf6ff';
 }
 let theme = null; try { theme = localStorage.getItem(THEME_KEY); } catch (e) {}
 applyTheme(theme);
@@ -1194,6 +1338,7 @@ function makeDemo() {
 /* ---------- start ---------- */
 if (location.hash === '#demo' && !state.records.length) demo = makeDemo();
 render();
+playIntro();
 syncBench();
 setInterval(() => { if (document.visibilityState === 'visible') syncBench(); }, 30 * 60 * 1000);
 })();
