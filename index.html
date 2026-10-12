@@ -9,6 +9,9 @@
 <meta name="apple-mobile-web-app-title" content="智勳期貨日記">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <title>林智勳的期貨日記</title>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<link rel="icon" type="image/png" href="icons/favicon-64.png">
 <style>
 :root {
   color-scheme: light;
@@ -70,7 +73,7 @@ h2 { font-size: 18px; }
 .top { position: sticky; top: 0; z-index: 20; background: color-mix(in srgb, var(--bg) 88%, transparent); backdrop-filter: blur(10px); border-bottom: 1px solid var(--line); }
 .top-in { max-width: 1080px; margin: 0 auto; padding: 8px 16px; display: flex; align-items: center; gap: 10px; }
 .brand { display: flex; align-items: center; gap: 8px; font-weight: 700; white-space: nowrap; }
-.brand-logo { width: 28px; height: 28px; border-radius: 8px; background: var(--accent); color: #fff; display: grid; place-items: center; font-size: 15px; }
+.brand-logo { width: 28px; height: 28px; border-radius: 8px; object-fit: cover; background: var(--accent); color: #fff; display: grid; place-items: center; font-size: 15px; }
 .nav { display: flex; gap: 4px; overflow-x: auto; scrollbar-width: none; flex: 1; }
 .nav::-webkit-scrollbar { display: none; }
 .nav a { text-decoration: none; color: var(--ink-2); font-size: 13px; padding: 5px 10px; border-radius: 999px; white-space: nowrap; }
@@ -258,6 +261,13 @@ details.more summary { cursor: pointer; font-size: 13.5px; color: var(--ink-2); 
 .sync-badge.fail { background: color-mix(in srgb, var(--gold) 18%, var(--card)); color: var(--gold); border-color: transparent; }
 .sync-badge.view { background: var(--grad); color: #fff; border: 0; }
 .sync-line { margin-top: -8px !important; }
+.install { position: relative; margin-top: 12px; padding: 14px 16px; border-radius: 16px; background: var(--grad); color: #fff; box-shadow: 0 12px 28px -14px var(--glow); }
+.install b { font-size: 16px; }
+.install ol { margin: 8px 0 4px; padding-left: 20px; font-size: 14px; line-height: 1.7; }
+.install .share { display: inline-grid; place-items: center; width: 22px; height: 22px; border-radius: 6px; background: rgba(255,255,255,.25); font-size: 13px; vertical-align: -4px; }
+.install small { display: block; font-size: 12.5px; opacity: .92; }
+.install .x { position: absolute; top: 8px; right: 8px; border: 0; background: rgba(255,255,255,.22); color: #fff; width: 28px; height: 28px; border-radius: 50%; cursor: pointer; font-size: 14px; }
+.install .btn { background: #fff; color: #7c3aed; border: 0; margin-top: 6px; }
 body.view-mode #setBtn { display: none; }
 body.view-mode #tabAdd { visibility: hidden; }
 
@@ -461,7 +471,7 @@ body.intro #app > *:nth-child(n+6) { animation-delay: .25s; }
 <body>
 <header class="top">
   <div class="top-in">
-    <div class="brand"><span class="brand-logo" aria-hidden="true">📈</span><span id="brandName">林智勳的期貨日記</span></div>
+    <div class="brand"><img class="brand-logo" src="icons/icon-192.png" alt="" aria-hidden="true"><span id="brandName">林智勳的期貨日記</span></div>
     <nav class="nav" aria-label="區塊">
       <a href="#sec-summary">總表</a><a href="#sec-curve">權益曲線</a><a href="#sec-perf">績效與風險</a>
       <a href="#sec-calendar">報酬日曆</a><a href="#sec-cost">漏水筒</a><a href="#sec-log">紀錄</a>
@@ -978,8 +988,22 @@ function confetti() {
   }
 }
 
+const INSTALL_KEY = 'futures-nav-diary.install-dismissed';
+const isStandalone = () => navigator.standalone === true || matchMedia('(display-mode: standalone)').matches;
+const isIOS = () => /iPhone|iPad|iPod/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+const inLineApp = () => /\bLine\//i.test(navigator.userAgent) || /FBAN|FBAV|Instagram/i.test(navigator.userAgent);
+let installEvt = null;
+addEventListener('beforeinstallprompt', e => { e.preventDefault(); installEvt = e; render(); });
+function installHtml() {
+  if (viewKey || demo || isStandalone() || load(INSTALL_KEY, false)) return '';
+  const x = '<button class="x" data-act="hideInstall" aria-label="關閉">✕</button>';
+  if (isIOS() && inLineApp()) return `<div class="install">${x}<b>📲 先用 Safari 打開</b><ol><li>點右下角 <b>⋯</b>（或右上角選單）</li><li>選「<b>用預設瀏覽器開啟</b>」或「在 Safari 中開啟」</li><li>在 Safari 裡照著出現的步驟加入主畫面</li></ol></div>`;
+  if (isIOS()) return `<div class="install">${x}<b>📲 加到主畫面，變成一個 App</b><ol><li>點 Safari 下方（或上方）的 <span class="share">⬆︎</span> 分享</li><li>往下滑，選「<b>加入主畫面</b>」</li><li>右上角按「<b>新增</b>」</li></ol><small>之後每天都從主畫面的圖示打開來記錄。iPhone 的主畫面 App 跟 Safari 資料是分開存的，在 Safari 裡記的不會帶過去。</small></div>`;
+  if (installEvt) return `<div class="install">${x}<b>📲 安裝成 App</b><small>安裝後主畫面會出現圖示，打開就是全螢幕。</small><button class="btn small" data-act="install">安裝</button></div>`;
+  return '';
+}
 function bannersHtml() {
-  let h = '';
+  let h = installHtml();
   if (demo) h += `<div class="banner warn"><span>👀 你正在看<b>範例資料</b>（假的，不會存起來）。</span><span class="sp"></span><button class="btn small primary" data-act="exitDemo">清除範例，開始記我自己的</button></div>`;
   if (!storageOk) h += `<div class="banner warn">⚠️ 這個瀏覽器不讓網頁存資料（可能是無痕模式）。記錄完請到 ⚙️ 匯出備份。</div>`;
   if (viewKey) {
@@ -1246,6 +1270,8 @@ function wire() {
     if (a === 'exitDemo') { demo = null; calMonth = null; history.replaceState(null, '', location.pathname); render(); }
     if (a === 'export') exportJson();
     if (a === 'refresh') refreshRemote();
+    if (a === 'hideInstall') { save(INSTALL_KEY, true); render(); }
+    if (a === 'install' && installEvt) { installEvt.prompt(); installEvt.userChoice.finally(() => { installEvt = null; render(); }); }
     if (a === 'toggleLog') { showAllLog = !showAllLog; render(); }
   });
   document.querySelectorAll('[data-edit]').forEach(b => b.onclick = () => openEntry(b.dataset.edit));
@@ -1435,6 +1461,7 @@ playIntro();
 renderSync();
 syncBench();
 initSync();
+if ('serviceWorker' in navigator && location.protocol === 'https:') navigator.serviceWorker.register('sw.js').catch(() => {});
 setInterval(() => { if (document.visibilityState === 'visible') syncBench(); }, 30 * 60 * 1000);
 })();
 </script>
