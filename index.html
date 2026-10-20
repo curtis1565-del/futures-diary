@@ -507,7 +507,7 @@ body.intro #app > *:nth-child(n+6) { animation-delay: .25s; }
       <div class="date-chips" role="group" aria-label="快速選日期"><button type="button" data-day="today" aria-pressed="false">今天</button><button type="button" data-day="prev" aria-pressed="false">上個交易日</button></div>
       <input type="date" id="fDate" required aria-label="日期">
     </div>
-    <label class="field"><span>權益總值（元）<small id="fLastHint"></small></span><input class="huge" type="number" id="fEquity" inputmode="numeric" enterkeyhint="done" step="1" min="0" required placeholder="例如 20350"></label>
+    <label class="field"><span>權益總值（元）<small id="fLastHint"></small></span><input class="huge" type="number" id="fEquity" inputmode="numeric" enterkeyhint="done" step="1" min="0" required placeholder="例如 40350"></label>
     <div class="preview" id="fPreview">輸入權益總值後，這裡會算出今天的損益。</div>
     <div class="field">
       <span>今天有入金或出金嗎？</span>
@@ -571,6 +571,7 @@ body.intro #app > *:nth-child(n+6) { animation-delay: .25s; }
 const KEY = 'futures-nav-diary.v1';
 const BENCH_KEY = 'futures-nav-diary.bench.v1';
 const THEME_KEY = 'futures-nav-diary.theme';
+const CAP_KEY = 'futures-nav-diary.capital40k'; // 本金改 4 萬的一次性記號
 const $ = s => document.querySelector(s);
 const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 
@@ -582,7 +583,8 @@ function load(key, fallback) {
 function save(key, val) {
   try { localStorage.setItem(key, JSON.stringify(val)); return true; } catch (e) { storageOk = false; return false; }
 }
-const defaultState = () => ({ settings: { name: '林智勳', capital: 22000 }, records: [], lastBackup: null });
+const CAPITAL0 = 40000;     // 預設本金（2026/10/20 入金到 4 萬，原本 22,000）
+const defaultState = () => ({ settings: { name: '林智勳', capital: CAPITAL0 }, records: [], lastBackup: null });
 let state = Object.assign(defaultState(), load(KEY, {}));
 state.settings = Object.assign(defaultState().settings, state.settings || {});
 state.records = Array.isArray(state.records) ? state.records : [];
@@ -598,6 +600,13 @@ if (!viewKey) { if (writeKey) save(SYNC_KEY_STORE, writeKey); else writeKey = lo
 let remote = null;          // 觀看模式的資料（只在記憶體）
 let syncState = 'off', lastSyncAt = null, syncError = null;
 if (viewKey) { state = defaultState(); document.documentElement.classList.add('view-mode'); }
+// 本金還停在舊預設 22,000，而且還沒記過、或 10/20 入金後才開始記（第一天沒填入金，例如用舊版記的）→ 改成 4 萬
+// 只做一次，之後在 ⚙️ 自己改的不會再被動到；這裡只存手機，雲端等下次記錄時一起更新
+if (!viewKey && !load(CAP_KEY, false)) {
+  const r0 = state.records.slice().sort((a, b) => a.date.localeCompare(b.date))[0];
+  if (Number(state.settings.capital) === 22000 && (!r0 || (r0.date >= '2026-10-20' && !(Number(r0.flow) > 0)))) { state.settings.capital = CAPITAL0; save(KEY, state); }
+  save(CAP_KEY, true);
+}
 let benchStatus = 'idle';   // idle | loading | ok | fail
 const persist = () => { if (viewKey) return; state.updatedAt = new Date().toISOString(); save(KEY, state); schedulePush(); };
 const view = () => remote || demo || state;
@@ -1062,7 +1071,7 @@ function onboardHtml() {
   return `<section class="card onboard"><div class="emoji">🌱</div><h2>從 ${money(state.settings.capital)} 元開始的期貨日記</h2>
   <p>每天晚上 10 點，打開期貨 APP 把「權益總值」抄進來。損益、勝率、回撤、跟大盤比，全部自動幫你算。</p>
   <div class="hero-cta" style="justify-content:center"><button class="btn primary big" data-act="entry">✍️ 記錄第一天</button><button class="btn big" data-act="demo">看範例長怎樣</button></div>
-  <div class="steps"><div><b>① 確認本金</b>預設 22,000 元，不一樣請到右上 ⚙️ 改。</div><div><b>② 每晚抄一個數字</b>只要「權益總值」，其他都是選填。</div><div><b>③ 每週備份一次</b>⚙️ → 匯出備份，傳到 LINE 給自己。</div></div></section>`;
+  <div class="steps"><div><b>① 確認本金</b>預設 ${money(CAPITAL0)} 元，不一樣請到右上 ⚙️ 改。</div><div><b>② 每晚抄一個數字</b>只要「權益總值」，其他都是選填。</div><div><b>③ 每週備份一次</b>⚙️ → 匯出備份，傳到 LINE 給自己。</div></div></section>`;
 }
 function heroHtml(C) {
   const L = C.last, s = C.s, t = todayIso();
@@ -1377,9 +1386,10 @@ function updatePreview() {
   const p = $('#fPreview');
   if (!$('#fEquity').value || !isFinite(eq) || !date) { p.innerHTML = '輸入權益總值後，這裡會算出今天的損益。'; return; }
   const prev = prevEquityBefore(date), flow = readFlow(), pnl = eq - prev - flow, base = prev + flow;
-  const ret = base > 0 ? pnl / base : 0;
-  p.innerHTML = `今天損益 <b class="${tone(pnl)}">${arrow(pnl)} ${sMoney(pnl)} 元（${sPct(ret)}）</b><br><span class="muted" style="font-size:12.5px">＝ ${money(eq)} − 前一筆 ${money(prev)}${flow ? ` − ${flow > 0 ? '入金' : '出金'} ${sMoney(flow)}` : ''}</span>` +
-    (Math.abs(ret) > 0.5 ? `<br><span class="up" style="font-size:12.5px">⚠️ 變動超過 50%，確認一下有沒有打錯、或忘了填入出金？</span>` : '');
+  const ret = base > 0 ? pnl / base : 0, first = !view().records.some(r => r.date < date);
+  p.innerHTML = `今天損益 <b class="${tone(pnl)}">${arrow(pnl)} ${sMoney(pnl)} 元（${sPct(ret)}）</b><br><span class="muted" style="font-size:12.5px">＝ ${money(eq)} − ${first ? '本金' : '前一筆'} ${money(prev)}${flow ? ` − ${flow > 0 ? '入金' : '出金'} ${sMoney(flow)}` : ''}</span>` +
+    (first && flow > 0 ? `<br><span class="up" style="font-size:12.5px">⚠️ 第一筆：本金 ${money(prev)} 如果已經包含今天入的錢，這裡請選「沒有」，不然會重複扣掉、變成假虧損。</span>`
+      : Math.abs(ret) > 0.5 ? `<br><span class="up" style="font-size:12.5px">⚠️ 變動超過 50%，確認一下有沒有打錯、或忘了填入出金？</span>` : '');
 }
 ['#fEquity', '#fFlow', '#fDate'].forEach(s => $(s).addEventListener('input', updatePreview));
 $('#fDate').addEventListener('change', () => {
@@ -1492,7 +1502,7 @@ function makeDemo() {
   const gauss = () => { let u = 0, v = 0; while (!u) u = rnd(); while (!v) v = rnd(); return Math.sqrt(-2 * Math.log(u)) * Math.cos(2 * Math.PI * v); };
   const days = []; const d = new Date(); d.setHours(0, 0, 0, 0); d.setDate(d.getDate() - 1);
   while (days.length < 48) { if (d.getDay() % 6) days.unshift(isoOf(d)); d.setDate(d.getDate() - 1); }
-  let eq = 22000; const notes = { 3: '第一次用停損單，有照做', 9: '追高被巴，下次等回測', 17: '連賠三天，今天休息只看盤', 24: '入金一萬，口數不加', 31: '順勢抱單，賺最多的一天', 40: '手癢多做了幾趟，手續費好痛' };
+  let eq = CAPITAL0; const notes = { 3: '第一次用停損單，有照做', 9: '追高被巴，下次等回測', 17: '連賠三天，今天休息只看盤', 24: '入金一萬，口數不加', 31: '順勢抱單，賺最多的一天', 40: '手癢多做了幾趟，手續費好痛' };
   const records = days.map((date, i) => {
     const flow = i === 24 ? 10000 : 0;
     const lots = rnd() < 0.18 ? 0 : 1 + Math.floor(rnd() * (i === 40 ? 12 : 5));
@@ -1502,7 +1512,7 @@ function makeDemo() {
     eq = Math.round(eq + flow + gross - cost);
     return { date, equity: eq, flow, cost, lots, note: notes[i] || '' };
   });
-  return { settings: { name: '範例', capital: 22000 }, records, lastBackup: Date.now() };
+  return { settings: { name: '範例', capital: CAPITAL0 }, records, lastBackup: Date.now() };
 }
 
 /* ---------- start ---------- */

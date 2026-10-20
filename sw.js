@@ -1,5 +1,5 @@
 // 離線快取：有網路時拿最新版，沒網路時用上次存的版本。
-const CACHE = 'futures-diary-v3';
+const CACHE = 'futures-diary-v4';
 const ASSETS = ['./', './index.html', './manifest.webmanifest', './icons/apple-touch-icon.png', './icons/icon-192.png', './icons/icon-512.png'];
 self.addEventListener('install', e => { e.waitUntil(caches.open(CACHE).then(c => c.addAll(ASSETS))); self.skipWaiting(); });
 self.addEventListener('activate', e => {
@@ -10,8 +10,8 @@ self.addEventListener('fetch', e => {
   const req = e.request, url = new URL(req.url);
   if (req.method !== 'GET' || url.origin !== location.origin) return; // 大盤、雲端同步不走快取
   const key = req.mode === 'navigate' ? './index.html' : req;
-  e.respondWith(
-    fetch(req).then(res => {
+  e.respondWith( // 打開頁面時一律跟伺服器確認有沒有新版（沒變只回 304），不吃瀏覽器 10 分鐘的舊快取
+    fetch(req.mode === 'navigate' ? new Request(req.url, { cache: 'no-cache' }) : req).then(res => {
       if (res.ok) { const copy = res.clone(); caches.open(CACHE).then(c => c.put(key, copy)); }
       return res;
     }).catch(() => caches.match(key, { ignoreSearch: true }))
