@@ -3,7 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#fdf6ff">
+<meta name="theme-color" content="#fffaf0" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#121b2e" media="(prefers-color-scheme: dark)">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="智勳期貨日記">
@@ -12,6 +13,7 @@
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
 <link rel="icon" type="image/png" href="icons/favicon-64.png">
+<link rel="preload" href="fonts/huninn-diary.woff" as="font" type="font/woff" crossorigin>
 <style>
 :root {
   color-scheme: light;
@@ -357,127 +359,256 @@ body:not(.m) .sum-group > summary { pointer-events: none; }
   .flow-seg button { padding: 10px 6px; }
 }
 @media (prefers-reduced-motion: reduce) { dialog { animation: none; } }
-/* ================= 活潑版配色（覆蓋上面的基本色） ================= */
+/* ================= 吉他貓 × 舊金山（2026-10-20，取代活潑版）：配色照 8906，全部實色、不發光 ================= */
+@font-face { font-family: 'Huninn'; src: url(fonts/huninn-diary.woff) format('woff'); font-display: swap; }
 :root {
-  --bg: #fdf6ff; --card: #ffffff; --card-2: #f6f0ff; --ink: #1f1535; --ink-2: #574b70; --muted: #8d82a3;
-  --line: #ece3fb; --grid: #f1ebfa;
-  --up: #e11d48; --up-mark: #ff3d6e; --up-soft: #ffe4ec;
-  --down: #047857; --down-mark: #10b981; --down-soft: #d1fae5;
-  --mine: #7c3aed; --bench: #ea580c; --accent: #7c3aed; --gold: #d97706; --water: #22d3ee;
-  --grad: linear-gradient(135deg, #7c3aed 0%, #db2777 52%, #f97316 100%);
-  --grad-soft: linear-gradient(135deg, #f1eaff 0%, #fde7f3 55%, #fff0e0 100%);
-  --glow: rgba(219, 39, 119, .45);
+  --bg: #fff6e3; --card: #fffdf9; --card-2: #fff5da; --field: #fffaf0; --ink: #261b36; --ink-2: #4d4260; --muted: #6c6280;
+  --line: #ecdcbf; --grid: #f2e8d5;
+  --up: #c8203f; --up-mark: #ef4444; --up-soft: #fde4e6;
+  --down: #047857; --down-mark: #059669; --down-soft: #d6f3e6;
+  --mine: #7c3aed; --bench: #ea580c; --accent: #db2777; --accent-ink: #ffffff; --accent-deep: #9d174d; --accent-text: #be185d;
+  --gold: #b45309; --gold-fill: #fbbf24; --gold-ink: #422006; --water: #0ea5e9;
+  --hero: #6d28d9; --hero-deep: #4c1d95; --hero-tile: #fff8e6; --topbar: #fffaf0; --frame: #e6a798; --toast: #2b1d3a; --toast-ink: #fff6e3;
+  --c-pink: #db2777; --c-blue: #2563eb; --c-purple: #7c3aed; --c-teal: #0e7490; --c-wood: #8a5a2b; --c-orange: #c2410c; --c-sky: #0369a1; --c-fuchsia: #a21caf; --c-gold: #b45309;
+  --wash: linear-gradient(125deg, #ffe1ea 0%, #fff1d2 20%, #e4f8e2 42%, #dcf2ff 64%, #eae3ff 84%, #ffe2f2 100%);
+  --rainbow: linear-gradient(90deg, #f0476b, #f58a1f, #f2c230, #2fbf71, #1fb5d6, #3b82f6, #8b5cf6, #ec4899);
+  --grad: var(--hero); --grad-soft: var(--card-2); --glow: transparent; --shadow: none;
+  --top-h: 63px;
 }
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
-    --bg: #110b1f; --card: #1b1430; --card-2: #251b40; --ink: #f5f0ff; --ink-2: #cfc3ea; --muted: #9a8fb8;
-    --line: #352a52; --grid: #2a2142;
-    --up: #ff6b8b; --up-mark: #ff4d79; --up-soft: #3d1424; --down: #34d399; --down-mark: #10b981; --down-soft: #0f2e24;
-    --mine: #8b5cf6; --bench: #ea580c; --accent: #a78bfa; --gold: #fbbf24; --water: #22d3ee;
-    --grad: linear-gradient(135deg, #7c3aed 0%, #db2777 55%, #f59e0b 100%);
-    --grad-soft: linear-gradient(135deg, #2a1d4a 0%, #3a1838 55%, #3a2414 100%);
-    --glow: rgba(219, 39, 119, .55);
+    --bg: #0d1424; --card: #151f33; --card-2: #1c2943; --field: #0f182a; --ink: #f4f1ea; --ink-2: #cdd5e4; --muted: #a3aec3;
+    --line: #2b3a57; --grid: #22304d;
+    --up: #ff8a8a; --up-soft: #3a1b26; --down: #34d399; --down-soft: #0f2e27;
+    --mine: #8b5cf6; --bench: #ea580c; --accent: #ff6eb4; --accent-ink: #2a0a1c; --accent-deep: #9d174d; --accent-text: #ff6eb4;
+    --gold: #fbbf24; --water: #38bdf8;
+    --hero: #5b21b6; --hero-deep: #2e1065; --hero-tile: #1c2943; --topbar: #121b2e; --frame: #7a2d21;
+    --wash: linear-gradient(160deg, #0d1424 0%, #121a30 55%, #1a1430 100%);
   }
 }
 :root[data-theme="dark"] {
-  --bg: #110b1f; --card: #1b1430; --card-2: #251b40; --ink: #f5f0ff; --ink-2: #cfc3ea; --muted: #9a8fb8;
-  --line: #352a52; --grid: #2a2142;
-  --up: #ff6b8b; --up-mark: #ff4d79; --up-soft: #3d1424; --down: #34d399; --down-mark: #10b981; --down-soft: #0f2e24;
-  --mine: #8b5cf6; --bench: #ea580c; --accent: #a78bfa; --gold: #fbbf24; --water: #22d3ee;
-  --grad: linear-gradient(135deg, #7c3aed 0%, #db2777 55%, #f59e0b 100%);
-  --grad-soft: linear-gradient(135deg, #2a1d4a 0%, #3a1838 55%, #3a2414 100%);
-  --glow: rgba(219, 39, 119, .55);
+  --bg: #0d1424; --card: #151f33; --card-2: #1c2943; --field: #0f182a; --ink: #f4f1ea; --ink-2: #cdd5e4; --muted: #a3aec3;
+  --line: #2b3a57; --grid: #22304d;
+  --up: #ff8a8a; --up-soft: #3a1b26; --down: #34d399; --down-soft: #0f2e27;
+  --mine: #8b5cf6; --bench: #ea580c; --accent: #ff6eb4; --accent-ink: #2a0a1c; --accent-deep: #9d174d; --accent-text: #ff6eb4;
+  --gold: #fbbf24; --water: #38bdf8;
+  --hero: #5b21b6; --hero-deep: #2e1065; --hero-tile: #1c2943; --topbar: #121b2e; --frame: #7a2d21;
+  --wash: linear-gradient(160deg, #0d1424 0%, #121a30 55%, #1a1430 100%);
 }
-body {
-  background:
-    radial-gradient(900px 520px at -5% -10%, color-mix(in srgb, #a855f7 24%, transparent), transparent 62%),
-    radial-gradient(800px 520px at 105% 0%, color-mix(in srgb, #f472b6 22%, transparent), transparent 62%),
-    radial-gradient(900px 620px at 50% 115%, color-mix(in srgb, #22d3ee 18%, transparent), transparent 62%),
-    var(--bg);
-  background-attachment: fixed;
-}
-.top { background: color-mix(in srgb, var(--card) 72%, transparent); }
-.brand-logo { background: var(--grad); box-shadow: 0 4px 14px -2px var(--glow); }
-.brand span:last-child { background: var(--grad); -webkit-background-clip: text; background-clip: text; color: transparent; font-weight: 800; }
-.btn { transition: transform .15s, filter .15s, box-shadow .15s; }
-.btn:active { transform: scale(.97); }
-.btn.primary { background: var(--grad); border: 0; color: #fff; box-shadow: 0 8px 20px -6px var(--glow); }
-.btn.primary:hover { filter: brightness(1.08) saturate(1.1); transform: translateY(-1px); }
-.icon-btn { transition: transform .15s; }
-.icon-btn:hover { transform: rotate(-8deg) scale(1.06); }
+html { scroll-padding-top: calc(var(--top-h) + 8px); }
+body { font-family: 'Huninn', -apple-system, BlinkMacSystemFont, "PingFang TC", "Noto Sans TC", "Microsoft JhengHei", sans-serif; background: var(--wash), var(--bg); background-attachment: fixed; }
+/* 自己打的字（心得）用系統字，不會一行裡混到兩種字型 */
+.lc-note, td.note, #fNote { font-family: -apple-system, BlinkMacSystemFont, "PingFang TC", "Noto Sans TC", "Microsoft JhengHei", sans-serif; }
+h1, h2, h3 { font-weight: 700; }
 
-/* 每個區塊自己的主題色 */
-.card { --hue: #7c3aed; position: relative; border-color: color-mix(in srgb, var(--hue) 20%, var(--line)); box-shadow: 0 12px 32px -16px color-mix(in srgb, var(--hue) 45%, transparent); }
-.card::before { content: ''; position: absolute; top: -1px; left: -1px; right: -1px; height: 5px; border-radius: inherit; border-bottom-left-radius: 0; border-bottom-right-radius: 0; background: linear-gradient(90deg, var(--hue), color-mix(in srgb, var(--hue) 35%, #ffd6f0)); }
-#sec-summary { --hue: #7c3aed; } #sec-curve { --hue: #06b6d4; } #sec-perf { --hue: #ea580c; }
-[data-chart="daily"] { --hue: #e11d48; } [data-chart="win"] { --hue: #db2777; } [data-chart="dd"] { --hue: #2563eb; }
-#sec-calendar { --hue: #f59e0b; } #sec-cost { --hue: #0ea5e9; } #sec-log { --hue: #10b981; } .onboard { --hue: #db2777; }
-.eyebrow { color: color-mix(in srgb, var(--hue, #7c3aed) 72%, var(--ink)); font-weight: 700; }
-.card h2 { letter-spacing: -.01em; }
+/* 上方：彩虹條＋吉他貓頭像 */
+.top { background: var(--topbar); backdrop-filter: none; border-bottom: 2px solid var(--line); }
+.top::before { content: ''; display: block; height: 5px; background: var(--rainbow); }
+.top-in { padding: 8px 16px; }
+.brand { gap: 10px; }
+.brand-cat { width: 40px; height: 40px; flex: none; border: 0; padding: 3px; border-radius: 14px; cursor: pointer; background: conic-gradient(from 210deg, #f0476b, #f58a1f, #f2c230, #2fbf71, #1fb5d6, #3b82f6, #8b5cf6, #ec4899, #f0476b); -webkit-tap-highlight-color: transparent; }
+.brand-cat svg { display: block; width: 100%; height: 100%; border-radius: 11px; background: #fff3c4; }
+#brandName { font-size: 18px; color: var(--ink); letter-spacing: .02em; }
+.nav a { font-weight: 600; }
+.nav a:hover { background: color-mix(in srgb, var(--accent) 12%, var(--card)); }
+.icon-btn { width: 38px; height: 38px; border: 2px solid var(--line); border-radius: 50%; background: var(--card); box-shadow: 0 3px 0 var(--line); transition: transform .12s, box-shadow .12s; }
+.icon-btn:active { transform: translateY(2px); box-shadow: 0 1px 0 var(--line); }
+.icon-btn:disabled { opacity: .45; box-shadow: none; }
 
-/* 主視覺卡：漸層 */
-#sec-hero { background: var(--grad); border: 0; color: #fff; overflow: hidden; box-shadow: 0 20px 44px -18px var(--glow); }
-#sec-hero::before { content: ''; top: auto; bottom: -120px; left: -60px; right: auto; width: 280px; height: 280px; border-radius: 50%; background: radial-gradient(circle, rgba(255,255,255,.22), transparent 70%); pointer-events: none; }
-#sec-hero::after { content: ''; position: absolute; width: 300px; height: 300px; right: -90px; top: -120px; border-radius: 50%; background: radial-gradient(circle, rgba(255,255,255,.3), transparent 70%); pointer-events: none; }
-#sec-hero .hero { position: relative; z-index: 1; }
-#sec-hero .eyebrow { color: rgba(255,255,255,.88); }
-#sec-hero .hero-eq { text-shadow: 0 2px 12px rgba(0,0,0,.15); }
-#sec-hero .hero-eq small { color: rgba(255,255,255,.82); }
-#sec-hero .hero-today { display: inline-flex; align-items: baseline; gap: 4px; flex-wrap: wrap; background: color-mix(in srgb, var(--card) 95%, transparent); padding: 5px 14px; border-radius: 999px; font-size: 15px; box-shadow: 0 6px 16px -8px rgba(0,0,0,.35); }
-#sec-hero .btn.primary { background: #fff; color: #7c3aed; box-shadow: 0 8px 20px -8px rgba(0,0,0,.4); }
-#sec-hero .reminder { background: rgba(255,255,255,.22); color: #fff; }
-#sec-hero .tile { background: color-mix(in srgb, var(--card) 95%, transparent); color: var(--ink); box-shadow: 0 8px 18px -10px rgba(0,0,0,.4); }
+/* 舊金山明信片＋吉他貓說話 */
+.pc-wrap { max-width: 1080px; margin: 0 auto; padding: 14px 16px 0; }
+.pc-frame { position: relative; overflow: hidden; height: clamp(220px, 26vw, 300px); border: 3px solid var(--frame); border-radius: 22px; background: #cfe6f5; box-shadow: 0 6px 0 color-mix(in srgb, var(--frame) 55%, transparent); }
+.pc-frame > svg.scene { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+.pc-frame #sc-shop, .pc-frame #sc-bridge, .pc-frame .sc-boat, .pc-frame #cat-slot { cursor: pointer; -webkit-tap-highlight-color: transparent; }
+.cat-say { position: relative; margin: 14px 2px 0; padding: 9px 14px; background: var(--card); color: var(--ink); border: 2px solid var(--ink); border-radius: 18px; box-shadow: 0 3px 0 var(--ink); font-size: 15px; line-height: 1.5; min-height: 46px; }
+.cat-say::before { content: ''; position: absolute; top: -11px; left: var(--say-x, 62%); width: 18px; height: 18px; background: var(--card); border-left: 2px solid var(--ink); border-top: 2px solid var(--ink); transform: translateX(-50%) rotate(45deg); border-radius: 4px 0 0 0; }
+.cat-say b { color: var(--accent-text); margin-right: 6px; }
+.fx-note { position: absolute; z-index: 3; pointer-events: none; font-size: 22px; font-weight: 700; animation: noteUp 1.3s ease-out forwards; }
+@keyframes noteUp { from { transform: translate(-50%, 0) scale(.8); opacity: 0; } 15% { opacity: 1; } to { transform: translate(calc(-50% + var(--dx, 0px)), -70px) scale(1.15); opacity: 0; } }
+svg.scene .sc-bob { animation: scBob 3.6s ease-in-out infinite alternate; transform-box: fill-box; transform-origin: 50% 100%; }
+svg.scene .sc-drift { animation: scDrift 16s ease-in-out infinite alternate; }
+@keyframes scBob { from { transform: translateY(0) rotate(-1.2deg); } to { transform: translateY(4px) rotate(1.2deg); } }
+@keyframes scDrift { to { transform: translateX(34px); } }
+.gcat .gc-tail { animation: gcTail 2.8s ease-in-out infinite alternate; }
+@keyframes gcTail { from { transform: rotate(-6deg); } to { transform: rotate(8deg); } }
+.gcat.strumming .gc-strum { animation: gcStrum .16s ease-in-out 6 alternate; }
+@keyframes gcStrum { to { transform: rotate(-14deg); } }
+
+/* 卡片：每區一色，上緣色條＋實色陰影 */
+.card { --hue: var(--c-pink); background: var(--card); border: 2px solid color-mix(in srgb, var(--hue) 26%, var(--line)); border-top: 7px solid var(--hue); border-radius: 22px; box-shadow: 0 5px 0 color-mix(in srgb, var(--hue) 22%, transparent); }
+#sec-summary { --hue: var(--c-pink); } #sec-curve { --hue: var(--c-blue); } #sec-perf { --hue: var(--c-purple); }
+[data-chart="daily"] { --hue: var(--c-orange); } [data-chart="win"] { --hue: var(--c-teal); } [data-chart="dd"] { --hue: var(--c-sky); }
+#sec-calendar { --hue: var(--c-wood); } #sec-cost { --hue: var(--c-fuchsia); } #sec-log { --hue: var(--c-gold); } .onboard { --hue: var(--c-pink); }
+.eyebrow { display: table; margin: 0 0 8px; padding: 3px 12px; border-radius: 999px; background: var(--hue, var(--c-pink)); color: #fff; font-size: 12.5px; font-weight: 700; letter-spacing: .06em; text-transform: none; box-shadow: 0 3px 0 color-mix(in srgb, var(--hue, var(--c-pink)) 62%, #000); }
+.card h2 { display: inline; -webkit-box-decoration-break: clone; box-decoration-break: clone; padding: 0 4px; border-radius: 6px; background: linear-gradient(transparent 56%, color-mix(in srgb, var(--hue) 26%, var(--card)) 56%, color-mix(in srgb, var(--hue) 26%, var(--card)) 94%, transparent 94%); }
+.card-head p.sub { margin-top: 6px; }
+
+/* 主視覺：紫色貓耳卡 */
+#sec-hero { --hue: var(--hero); position: relative; margin-top: 34px; overflow: visible; background: var(--hero); color: #fff; border: 3px solid var(--hero-deep); box-shadow: 0 6px 0 var(--hero-deep); }
+#sec-hero .ear { position: absolute; top: -27px; width: 46px; height: 32px; pointer-events: none; }
+#sec-hero .ear.l { left: 26px; } #sec-hero .ear.r { right: 26px; transform: scaleX(-1); }   /* 斜度畫在形狀裡，不旋轉，耳朵根部才會跟卡片邊框接齊 */
+#sec-hero .ear .o { fill: var(--hero); stroke: var(--hero-deep); stroke-width: 3; stroke-linejoin: round; }
+#sec-hero .ear .i { fill: #f9a8d4; }
+#sec-hero .ear .cover { fill: var(--hero); }
+#sec-hero .eyebrow { background: #fff; color: var(--hero-deep); box-shadow: 0 3px 0 var(--hero-deep); }
+#sec-hero .hero-eq small { color: #ede9fe; }
+#sec-hero .hero-today { display: inline-flex; align-items: baseline; gap: 4px; flex-wrap: wrap; background: var(--hero-tile); padding: 5px 14px; border-radius: 999px; font-size: 15px; border: 2px solid var(--hero-deep); }
+#sec-hero .hero-today .muted { color: var(--muted); }
+#sec-hero .btn.primary { background: var(--gold-fill); color: var(--gold-ink); border: 3px solid #fff; box-shadow: 0 4px 0 #b45309; }
+#sec-hero .btn.primary:active { box-shadow: 0 1px 0 #b45309; }
+#sec-hero .reminder { background: #fff; color: var(--hero-deep); }
+#sec-hero .reminder.done { background: #d1fae5; color: #065f46; }
+#sec-hero .tile { background: var(--hero-tile); color: var(--ink); border: 2px solid var(--hero-deep); border-radius: 16px; }
+#sec-hero .tile span { color: var(--ink-2); }
+#sec-hero .tile em { color: var(--muted); }
 .tile span { font-weight: 600; }
 
-/* 總表三組各有底色 */
-.sum-group[data-grp="0"] { --g: #f59e0b; } .sum-group[data-grp="1"] { --g: #db2777; } .sum-group[data-grp="2"] { --g: #06b6d4; }
-.sum-group { background: color-mix(in srgb, var(--g) 8%, var(--card)); border-radius: 12px; padding: 8px 12px; }
-body.m .sum-group { background: color-mix(in srgb, var(--g) 10%, var(--card)); }
-.sum-group h3 { color: color-mix(in srgb, var(--g) 70%, var(--ink)) !important; font-weight: 800; }
-.sum-row { border-bottom-color: color-mix(in srgb, var(--g, #7c3aed) 22%, var(--line)); }
-.tips li { background: var(--grad-soft); }
-.wr-box { background: var(--grad-soft); }
-.q { background: color-mix(in srgb, var(--accent) 16%, var(--card)); color: var(--accent); font-weight: 700; }
-.explain { background: var(--grad-soft); }
+/* 按鈕：糖果膠囊（下緣實色立體邊） */
+.btn { border: 2px solid var(--line); border-radius: 999px; font-weight: 700; box-shadow: 0 3px 0 var(--line); transition: transform .12s, box-shadow .12s; }
+.btn:active { transform: translateY(2px); box-shadow: 0 1px 0 var(--line); }
+.btn.primary { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); box-shadow: 0 4px 0 var(--accent-deep); }
+.btn.primary:hover { filter: none; border-color: var(--accent-deep); }
+.btn.primary:active { box-shadow: 0 1px 0 var(--accent-deep); }
+.btn.danger { color: var(--up); border-color: color-mix(in srgb, var(--up) 40%, var(--line)); }
 
-/* 切換按鈕：漸層 */
-.chips button[aria-selected="true"], .seg button[aria-pressed="true"], .date-chips button[aria-pressed="true"] { background: var(--grad); color: #fff; border-color: transparent; box-shadow: 0 6px 14px -6px var(--glow); }
-.flow-seg button[aria-pressed="true"] { border-color: #db2777; background: color-mix(in srgb, #db2777 12%, var(--bg)); }
-body.m .chips { background: color-mix(in srgb, var(--bg) 85%, transparent); backdrop-filter: blur(10px); }
-.preview { background: var(--grad-soft); }
-.dlg h2 { background: var(--grad); -webkit-background-clip: text; background-clip: text; color: transparent; font-weight: 800; }
-.toast { background: var(--grad); color: #fff; box-shadow: 0 10px 28px -8px var(--glow); }
+/* 總表、提示、說明 */
+.sum-group[data-grp="0"] { --g: var(--c-gold); } .sum-group[data-grp="1"] { --g: var(--c-pink); } .sum-group[data-grp="2"] { --g: var(--c-teal); }
+.sum-group { background: color-mix(in srgb, var(--g) 7%, var(--card)); border: 2px solid color-mix(in srgb, var(--g) 26%, var(--line)); border-radius: 16px; padding: 8px 12px; }
+body.m .sum-group { background: color-mix(in srgb, var(--g) 8%, var(--card)); padding: 0 12px; }
+.sum-group h3 { color: var(--ink) !important; font-weight: 700; display: flex; align-items: center; gap: 8px; }
+.sum-group h3::before { content: ''; width: 6px; height: 16px; border-radius: 3px; background: var(--g); flex: none; }
+.sum-row { border-bottom-color: color-mix(in srgb, var(--g, var(--c-pink)) 22%, var(--line)); }
+.tips li { background: var(--card-2); border: 2px solid var(--line); border-radius: 14px; }
+.wr-box { background: var(--card-2); border: 2px solid var(--line); border-radius: 16px; }
+.q { position: relative; background: color-mix(in srgb, var(--accent) 14%, var(--card)); color: var(--accent-text); font-weight: 700; }
+.q::after { content: ''; position: absolute; inset: -12px; }   /* 點的範圍放大，圓點本身維持小小的 */
+.explain { background: var(--card-2); border: 2px dashed var(--line); }
+.reminder { font-weight: 700; }
 
-/* 底部分頁：發光的＋ */
-.tabbar button[aria-current="page"] .ic { transform: translateY(-2px) scale(1.12); }
-.tabbar .ic { transition: transform .2s; }
-.tabbar .add .ic { background: var(--grad) !important; box-shadow: 0 8px 22px -4px var(--glow) !important; animation: glowPulse 2.6s ease-in-out infinite; }
-@keyframes glowPulse { 0%, 100% { box-shadow: 0 8px 22px -4px var(--glow), 0 0 0 0 color-mix(in srgb, #db2777 40%, transparent); } 50% { box-shadow: 0 8px 22px -4px var(--glow), 0 0 0 10px transparent; } }
+/* 切換：圖表晶片、單位、日期 */
+.chips button, .date-chips button { border: 2px solid var(--line); background: var(--card); color: var(--ink-2); font-weight: 600; box-shadow: 0 2px 0 var(--line); }
+.chips button[aria-selected="true"], .seg button[aria-pressed="true"], .date-chips button[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); font-weight: 700; box-shadow: 0 3px 0 var(--accent-deep); }
+.seg { background: var(--card-2); border: 2px solid var(--line); border-radius: 999px; }
+.seg button { border-radius: 999px; }
+.seg button[aria-pressed="true"] { box-shadow: none; }
+.flow-seg button { border: 2px solid var(--line); background: var(--field); border-radius: 14px; color: var(--ink); }
+.flow-seg button[aria-pressed="true"] { border-color: var(--accent); background: color-mix(in srgb, var(--accent) 12%, var(--field)); }
+body.m .chips { top: var(--top-h); background: var(--topbar); backdrop-filter: none; border-bottom: 2px solid var(--line); }
+.preview { background: var(--card-2); border: 2px solid var(--line); border-radius: 16px; }
 
-/* 日曆、紀錄卡片 */
-.cal-cell { transition: transform .15s; }
-.cal-cell:has(.cell-btn):hover { transform: translateY(-2px); }
-.cal-cell.week { border-color: color-mix(in srgb, #f59e0b 40%, var(--line)); }
-.cal-cell.today { box-shadow: inset 0 0 0 2px #db2777; }
-.log-card { border-left: 4px solid var(--muted); }
+/* 圖表提示框、日曆、紀錄 */
+.tip { border: 2px solid var(--line); box-shadow: 0 3px 0 var(--line); border-radius: 12px; }
+.cal-cell { border-radius: 12px; }
+.cal-cell:not(.week) .p, .cal-cell:not(.week) .r, .cal-cell:not(.week) .c { color: var(--ink); }   /* 底色已經是紅／綠深淺，字一律用墨色才看得清楚 */
+.cal-cell .cell-btn:focus-visible { outline-color: var(--ink); }
+.cal-cell.today { box-shadow: inset 0 0 0 3px var(--accent); }
+.cal-cell.week { border: 2px dashed color-mix(in srgb, var(--c-wood) 45%, var(--line)); }
+.cal-cell:has(.cell-btn):active { transform: scale(.97); }
+.log-card { border: 2px solid var(--line); border-left: 6px solid var(--muted); border-radius: 14px; background: var(--card); }
 .log-card.lc-up { border-left-color: var(--up-mark); }
 .log-card.lc-down { border-left-color: var(--down-mark); }
-.lc-month b { font-weight: 800; }
+.lc-month b { font-weight: 700; }
+.lc-tag { background: var(--card-2); border: 1px solid var(--line); }
 
-/* 彩帶與進場動畫 */
-.confetti { position: fixed; top: 0; z-index: 60; pointer-events: none; border-radius: 2px; }
+/* 第一次使用 */
+.onboard { padding: 26px 18px; }
+.onboard h2 { display: inline; font-size: 22px; }
+.steps div { background: var(--card-2); border: 2px solid var(--line); border-radius: 16px; }
+.steps b { color: var(--accent-text); }
+.onboard h2 + p { margin-top: 10px; }
+
+/* 對話框（手機＝底部滑出）、輸入框 */
+dialog { background: var(--card); border: 2px solid var(--line); box-shadow: none; }
+dialog::backdrop { background: rgba(38, 27, 54, .5); }
+.dlg::before { background: var(--rainbow) !important; height: 6px !important; }
+.dlg h2 { color: var(--ink); }
+.field input, .field textarea, .date-row input[type=date] { border: 2px solid var(--line); background: var(--field); border-radius: 14px; }
+.field input:focus, .field textarea:focus { outline: 3px solid color-mix(in srgb, var(--accent) 55%, transparent); outline-offset: 0; border-color: var(--accent); }
+.dlg-actions.sticky { border-top: 2px solid var(--line); }
+.toast { background: var(--toast); color: var(--toast-ink); border: 2px solid var(--toast-ink); border-radius: 999px; box-shadow: 0 4px 0 rgba(43, 29, 58, .35); }
+
+/* 輸入提示字、鍵盤焦點、圖表零線、漏水筒警示 */
+::placeholder { color: var(--muted); opacity: 1; }
+#sec-hero :focus-visible, .install :focus-visible { outline-color: #fff; }
+.chart .zerol { opacity: 1; }
+.leak-tiles b.cost-warn { color: var(--gold); }
+.brand-cat.bounce svg { animation: catBounce .45s ease; }
+@keyframes catBounce { 40% { transform: translateY(-4px) rotate(-6deg); } 70% { transform: translateY(1px) rotate(3deg); } }
+
+/* 同步標籤、安裝提示、同步碼 */
+.sync-badge { border-width: 2px; }
+.sync-badge.syncing { color: var(--accent-text); }
+.sync-badge.view { background: var(--hero); color: #fff; }
+.code-box { background: var(--card-2); border: 2px dashed var(--line); }
+.install { background: var(--hero); color: #fff; border: 3px solid var(--hero-deep); box-shadow: 0 5px 0 var(--hero-deep); border-radius: 20px; }
+.install .btn { background: var(--gold-fill); color: var(--gold-ink); border: 2px solid #fff; box-shadow: 0 3px 0 #b45309; }
+.install .x { background: #fff; color: var(--hero-deep); }
+
+/* 底部分頁：中間的＋是有貓耳的按鈕 */
+body.m .tabbar { background: var(--topbar); backdrop-filter: none; border-top: 2px solid var(--line); }
+.tabbar button { font-weight: 600; color: var(--muted); }
+.tabbar .ic { filter: grayscale(.55); opacity: .85; }
+.tabbar button[aria-current="page"] { color: var(--accent-text); font-weight: 700; }
+.tabbar button[aria-current="page"] .ic { filter: none; opacity: 1; transform: translateY(-2px) scale(1.1); }
+.tabbar .ic { transition: transform .2s; }
+.tabbar .add { color: var(--accent-text); }
+.tabbar .add .ic { position: relative; background: var(--accent) !important; color: var(--accent-ink) !important; border: 4px solid var(--topbar) !important; box-shadow: 0 4px 0 var(--accent-deep) !important; filter: none; opacity: 1; animation: none !important; }
+.tabbar .add .ic::before, .tabbar .add .ic::after { content: ''; position: absolute; top: -10px; width: 0; height: 0; border-left: 9px solid transparent; border-right: 9px solid transparent; border-bottom: 15px solid var(--accent); }
+.tabbar .add .ic::before { left: 3px; transform: rotate(-20deg); } .tabbar .add .ic::after { right: 3px; transform: rotate(20deg); }
+
+/* 賺錢日：音符、貓掌、吉他從天而降 */
+.confetti { position: fixed; top: 0; z-index: 60; pointer-events: none; font-size: 22px; font-weight: 700; line-height: 1; }
 @keyframes rise { from { opacity: 0; transform: translateY(14px) scale(.985); } to { opacity: 1; transform: none; } }
 body.intro #app > * { animation: rise .5s cubic-bezier(.2, .8, .2, 1) both; }
 body.intro #app > *:nth-child(2) { animation-delay: .05s; } body.intro #app > *:nth-child(3) { animation-delay: .1s; }
 body.intro #app > *:nth-child(4) { animation-delay: .15s; } body.intro #app > *:nth-child(5) { animation-delay: .2s; }
 body.intro #app > *:nth-child(n+6) { animation-delay: .25s; }
-@media (prefers-reduced-motion: reduce) { body.intro #app > * { animation: none; } .tabbar .add .ic { animation: none; } }
+
+/* 手機 */
+@media (max-width: 760px) {
+  .pc-wrap { padding: 12px 16px 0; }
+  .pc-frame { height: auto; aspect-ratio: 16 / 9; border-radius: 20px; }
+  /* 粉圓的數字比較寬：週合計欄放寬、字距收一點，五位數也放得下 */
+  .cal { grid-template-columns: repeat(5, minmax(0,1fr)) minmax(0,1.12fr); }
+  .cal-cell .p { letter-spacing: -.03em; }
+  .cal-cell.week { padding: 4px 3px; }
+  .cal-cell.week .p { font-size: 12px; }
+  /* 手機上好點：按鈕至少 40px */
+  :root { --top-h: 67px; }
+  .icon-btn { width: 44px; height: 44px; }
+  .btn.small { min-height: 40px; }
+  .seg button { min-height: 40px; }
+  .install .x { width: 40px; height: 40px; }
+  details.more > summary, .card details:not(.sum-group) > summary { padding: 10px 0; }
+  /* 招牌小字在手機上只剩 7px，收起來，大字往下放到招牌正中間 */
+  svg.scene .f-sign-sub { display: none; }
+  svg.scene text[font-size="38"] { transform: translateY(6px); }
+  .cat-say { font-size: 14.5px; }
+  #sec-hero { margin-top: 30px; }
+  #brandName { font-size: 17px; }
+}
+@media (max-width: 380px) { .onboard h2 { font-size: 19px; } }
+/* 不是總覽分頁時收起明信片 */
+body.m:not([data-tab="home"]) .pc-wrap { display: none; }
+@media (prefers-reduced-motion: reduce) {
+  body.intro #app > * { animation: none; }
+  svg.scene .sc-bob, svg.scene .sc-drift, .gcat .gc-tail, .gcat.strumming .gc-strum, .fx-note, .brand-cat.bounce svg { animation: none !important; }
+  .fx-note { display: none; }
+}
 </style>
 </head>
 <body>
 <header class="top">
   <div class="top-in">
-    <div class="brand"><img class="brand-logo" src="icons/icon-192.png" alt="" aria-hidden="true"><span id="brandName">林智勳的期貨日記</span></div>
+    <div class="brand"><button type="button" class="brand-cat" id="brandCat" aria-label="吉他貓：點我彈一個和弦"><svg class="gcat gcat-head" viewBox="0 0 100 100" data-mood="calm" aria-hidden="true"><style>
+.gcat{stroke-linejoin:round;stroke-linecap:round}
+.gcat-full{stroke-width:2.4}
+.gcat-head{stroke-width:3.6}
+.gcat .gc-m-up,.gcat .gc-m-calm,.gcat .gc-m-down,.gcat .gc-notes,.gcat .gc-sweat{display:none}
+.gcat[data-mood="up"] .gc-m-up,.gcat[data-mood="up"] .gc-notes,.gcat[data-mood="calm"] .gc-m-calm,.gcat:not([data-mood]) .gc-m-calm,.gcat[data-mood="down"] .gc-m-down,.gcat[data-mood="down"] .gc-sweat{display:inline}
+.gcat .gc-strum{transform-box:fill-box;transform-origin:20% 3%}
+.gcat .gc-tail{transform-box:fill-box;transform-origin:2% 92%}
+</style><path d="M19,92 C19,78 31,71 50,71 C69,71 81,78 81,92 Q81,94 79,94 H21 Q19,94 19,92Z" fill="#f4a443" stroke="#2b2140"/><ellipse cx="50" cy="86" rx="14" ry="9" fill="#fff"/><g stroke="#2b2140"><path d="M17,36 Q12,10 20,7 Q25,5 41,17Z" fill="#f4a443"/><path d="M83,36 Q88,10 80,7 Q75,5 59,17Z" fill="#f4a443"/></g><path d="M22,29 Q20,15 23,13 Q26,12 35,19Z M78,29 Q80,15 77,13 Q74,12 65,19Z" fill="#f7a8b8"/><path d="M50,16 C72,16 86,28 87.5,46 C89,68 72,80 50,80 C28,80 11,68 12.5,46 C14,28 28,16 50,16Z" fill="#f4a443" stroke="#2b2140"/><path d="M44,19.5 L45,26 M50,19 V26 M56,19.5 L55,26" stroke="#c46a1f" stroke-width="3.4"/><ellipse cx="50" cy="64" rx="15.5" ry="10.5" fill="#fff"/><ellipse cx="23" cy="62.5" rx="6.5" ry="4.2" fill="#f7a8b8"/><ellipse cx="77" cy="62.5" rx="6.5" ry="4.2" fill="#f7a8b8"/><g fill="none" stroke="#2b2140" stroke-width="7.6"><path d="M19,42 L13,40 M81,42 L87,40 M47,41 Q50,38 53,41"/><rect x="18.5" y="32" width="29" height="21" rx="8.5"/><rect x="52.5" y="32" width="29" height="21" rx="8.5"/></g><g stroke="#2f6fd6" stroke-width="3.8"><path d="M19,42 L13,40 M81,42 L87,40 M47,41 Q50,38 53,41" fill="none"/><rect x="18.5" y="32" width="29" height="21" rx="8.5" fill="#2b2d42"/><rect x="52.5" y="32" width="29" height="21" rx="8.5" fill="#2b2d42"/></g><path d="M24,48.5 L31,37.5 M30.5,49 L35,42 M58,48.5 L65,37.5 M64.5,49 L69,42" stroke="#fff" stroke-width="2.6"/><path d="M46.8,56 Q50,54.3 53.2,56 Q51.6,59.6 50,59.6 Q48.4,59.6 46.8,56Z" fill="#f48fb1" stroke="#2b2140" stroke-width="1.8"/><g class="gc-m-calm" fill="none" stroke="#2b2140" stroke-width="2.6"><path d="M50,59.6 V61 M43.5,60.5 Q46.8,66 50,61 Q53.2,66 56.5,60.5"/></g><g class="gc-m-up" stroke="#2b2140" stroke-width="2.4"><path d="M43,60.5 Q50,62.5 57,60.5 Q56.5,72 50,72 Q43.5,72 43,60.5Z" fill="#7b2d43"/><path d="M46,68.5 Q50,64.8 54,68.5 Q52.5,71.3 50,71.3 Q47.5,71.3 46,68.5Z" fill="#f48fb1" stroke="none"/></g><g class="gc-m-down" fill="none" stroke="#2b2140" stroke-width="2.6"><path d="M50,59.6 V61.5 M44.5,65 Q50,61 55.5,65"/><path d="M21,26.5 L39,29.5 M79,26.5 L61,29.5" stroke-width="3.4"/></g><g transform="translate(76.5 84) rotate(-38)"><rect x="-15" y="-3.5" width="17" height="7" fill="#7a4a2a" stroke="#2b2140" stroke-width="2.6"/><g fill="#fff" stroke="#2b2140" stroke-width="1.8"><circle cx="3.5" cy="-7.5" r="2.3"/><circle cx="9" cy="-7.5" r="2.3"/><circle cx="3.5" cy="7.5" r="2.3"/><circle cx="9" cy="7.5" r="2.3"/></g><rect x="0" y="-5.5" width="12" height="11" rx="3" fill="#7a4a2a" stroke="#2b2140" stroke-width="2.6"/></g><circle cx="68.3" cy="88.8" r="5.6" fill="#fff" stroke="#2b2140" stroke-width="2.8"/><g class="gc-notes"><path d="M14.5,84 V69 C18,71 21.5,73 20,79" fill="none" stroke="#2b2140" stroke-width="5"/><ellipse cx="10.5" cy="85" rx="5" ry="3.8" transform="rotate(-20 10.5 85)" fill="#fbbf24" stroke="#2b2140" stroke-width="1.8"/><path d="M14.5,84 V69 C18,71 21.5,73 20,79" fill="none" stroke="#fbbf24" stroke-width="2.2"/></g><path class="gc-sweat" d="M87,18 Q92,26 92,29.5 A5,5 0 0,1 82,29.5 Q82,26 87,18Z" fill="#7dd3fc" stroke="#2b2140" stroke-width="2"/></svg></button><span id="brandName">林智勳的期貨日記</span></div>
     <nav class="nav" aria-label="區塊">
       <a href="#sec-summary">總表</a><a href="#sec-curve">權益曲線</a><a href="#sec-perf">績效與風險</a>
       <a href="#sec-calendar">報酬日曆</a><a href="#sec-cost">漏水筒</a><a href="#sec-log">紀錄</a>
@@ -488,13 +619,26 @@ body.intro #app > *:nth-child(n+6) { animation-delay: .25s; }
   </div>
 </header>
 
+<div class="pc-wrap" id="postcard">
+  <div class="pc-frame" id="pcFrame"><svg class="scene" viewBox="0 0 1200 420" preserveAspectRatio="xMidYMax slice" role="img" aria-label="舊金山灣：金門大橋、帆船與渡輪，和提布隆街上的木吉他店"><style>svg.scene{--sc-sky:#cfe6f5;--sc-sun:#f9a03f;--sc-sun-2:#fcc96b;--sc-cloud:#ffffff;--sc-cheek:#ffb3d1;--sc-hill:#8fbf6a;--sc-hill-2:#b9d98e;--sc-hill-3:#d9e7b0;--sc-sea:#4f9bd0;--sc-sea-2:#3f86bd;--sc-ripple:#e6f4ff;--sc-bridge:#c0362c;--sc-bridge-dark:#8e2a22;--sc-pier:#b9b2a8;--sc-wood:#8a5a2b;--sc-wood-2:#a26c36;--sc-wood-dark:#6b4220;--sc-wood-line:#5a3518;--sc-trim:#fff1c8;--sc-sign:#fff1c8;--sc-sign-ink:#5a2d0c;--sc-sign-sub:#9c5a24;--sc-window:#cfeaf7;--sc-window-2:#a9d4ea;--sc-shutter:#5b8fd6;--sc-flower:#ec4899;--sc-leaf:#4f9a4a;--sc-walk:#e9d3b0;--sc-walk-line:#cfb48a;--sc-walk-edge:#b48a5a;--sc-outline:#2b2140;--sc-hull:#ffffff;--sc-stripe:#2563eb;--sc-sail:#fffaf0;--sc-sail-2:#f58a1f;--sc-lamp:#fff8e6;--sc-iron:#3a3048;--sc-pink:#f6c6c6;--sc-mint:#c9e4c5;--sc-butter:#fbe3a1;--sc-blue:#bcd7ef;--sc-lilac:#e8c4e8;--sc-peach:#ffd2a8;--sc-awn:#ffffff;--sc-pane:#fffaf0;--sc-g-nat:#e8b15e;--sc-g-rim:#9c5a24;--sc-g-hole:#3a2414;--sc-g-neck:#7a4a2a;--sc-g-sb1:#7a3b14;--sc-g-sb2:#c46a1f;--sc-g-sb3:#f2b04a;--sc-g-mah:#b8743a;--sc-moon:#fff3c4;--sc-star:#fff3c4;--sc-light:#ffd166}:root[data-theme="dark"] svg.scene,svg.scene.night{--sc-sky:#14213d;--sc-sun:#f9a03f;--sc-sun-2:#fcc96b;--sc-cloud:#dfe6f0;--sc-cheek:#ffb3d1;--sc-hill:#1f3b2f;--sc-hill-2:#24402f;--sc-hill-3:#2c4636;--sc-sea:#1d3557;--sc-sea-2:#182c4a;--sc-ripple:#3d5a80;--sc-bridge:#b23a2e;--sc-bridge-dark:#6e2019;--sc-pier:#5d6273;--sc-wood:#7a4e25;--sc-wood-2:#8a5a2b;--sc-wood-dark:#55341a;--sc-wood-line:#3f2611;--sc-trim:#f3e2b5;--sc-sign:#fff1c8;--sc-sign-ink:#5a2d0c;--sc-sign-sub:#9c5a24;--sc-window:#ffd166;--sc-window-2:#f5b942;--sc-shutter:#3b5f99;--sc-flower:#d9468f;--sc-leaf:#2f6b3a;--sc-walk:#3a3f55;--sc-walk-line:#2b3044;--sc-walk-edge:#262a3c;--sc-outline:#0e0a1a;--sc-hull:#e8ecf4;--sc-stripe:#3b6fd6;--sc-sail:#e8ecf4;--sc-sail-2:#d9822a;--sc-lamp:#ffd166;--sc-iron:#1b1626;--sc-pink:#8f6f7f;--sc-mint:#6f8a72;--sc-butter:#9a8a5e;--sc-blue:#5f7896;--sc-lilac:#7f6a8c;--sc-peach:#9a7a62;--sc-awn:#d8dce6;--sc-pane:#ffd166;--sc-g-nat:#e8b15e;--sc-g-rim:#9c5a24;--sc-g-hole:#3a2414;--sc-g-neck:#7a4a2a;--sc-g-sb1:#7a3b14;--sc-g-sb2:#c46a1f;--sc-g-sb3:#f2b04a;--sc-g-mah:#b8743a;--sc-moon:#fff3c4;--sc-star:#fff3c4;--sc-light:#ffd166}@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) svg.scene{--sc-sky:#14213d;--sc-sun:#f9a03f;--sc-sun-2:#fcc96b;--sc-cloud:#dfe6f0;--sc-cheek:#ffb3d1;--sc-hill:#1f3b2f;--sc-hill-2:#24402f;--sc-hill-3:#2c4636;--sc-sea:#1d3557;--sc-sea-2:#182c4a;--sc-ripple:#3d5a80;--sc-bridge:#b23a2e;--sc-bridge-dark:#6e2019;--sc-pier:#5d6273;--sc-wood:#7a4e25;--sc-wood-2:#8a5a2b;--sc-wood-dark:#55341a;--sc-wood-line:#3f2611;--sc-trim:#f3e2b5;--sc-sign:#fff1c8;--sc-sign-ink:#5a2d0c;--sc-sign-sub:#9c5a24;--sc-window:#ffd166;--sc-window-2:#f5b942;--sc-shutter:#3b5f99;--sc-flower:#d9468f;--sc-leaf:#2f6b3a;--sc-walk:#3a3f55;--sc-walk-line:#2b3044;--sc-walk-edge:#262a3c;--sc-outline:#0e0a1a;--sc-hull:#e8ecf4;--sc-stripe:#3b6fd6;--sc-sail:#e8ecf4;--sc-sail-2:#d9822a;--sc-lamp:#ffd166;--sc-iron:#1b1626;--sc-pink:#8f6f7f;--sc-mint:#6f8a72;--sc-butter:#9a8a5e;--sc-blue:#5f7896;--sc-lilac:#7f6a8c;--sc-peach:#9a7a62;--sc-awn:#d8dce6;--sc-pane:#ffd166;--sc-g-nat:#e8b15e;--sc-g-rim:#9c5a24;--sc-g-hole:#3a2414;--sc-g-neck:#7a4a2a;--sc-g-sb1:#7a3b14;--sc-g-sb2:#c46a1f;--sc-g-sb3:#f2b04a;--sc-g-mah:#b8743a;--sc-moon:#fff3c4;--sc-star:#fff3c4;--sc-light:#ffd166}}svg.scene .f-sky{fill:var(--sc-sky)}svg.scene .f-sun{fill:var(--sc-sun)}svg.scene .f-sun-2{fill:var(--sc-sun-2)}svg.scene .f-cloud{fill:var(--sc-cloud)}svg.scene .f-cheek{fill:var(--sc-cheek)}svg.scene .f-hill{fill:var(--sc-hill)}svg.scene .f-hill-2{fill:var(--sc-hill-2)}svg.scene .f-hill-3{fill:var(--sc-hill-3)}svg.scene .f-sea{fill:var(--sc-sea)}svg.scene .f-sea-2{fill:var(--sc-sea-2)}svg.scene .f-ripple{fill:var(--sc-ripple)}svg.scene .f-bridge{fill:var(--sc-bridge)}svg.scene .f-bridge-dark{fill:var(--sc-bridge-dark)}svg.scene .f-pier{fill:var(--sc-pier)}svg.scene .f-wood{fill:var(--sc-wood)}svg.scene .f-wood-2{fill:var(--sc-wood-2)}svg.scene .f-wood-dark{fill:var(--sc-wood-dark)}svg.scene .f-wood-line{fill:var(--sc-wood-line)}svg.scene .f-trim{fill:var(--sc-trim)}svg.scene .f-sign{fill:var(--sc-sign)}svg.scene .f-sign-ink{fill:var(--sc-sign-ink)}svg.scene .f-sign-sub{fill:var(--sc-sign-sub)}svg.scene .f-window{fill:var(--sc-window)}svg.scene .f-window-2{fill:var(--sc-window-2)}svg.scene .f-shutter{fill:var(--sc-shutter)}svg.scene .f-flower{fill:var(--sc-flower)}svg.scene .f-leaf{fill:var(--sc-leaf)}svg.scene .f-walk{fill:var(--sc-walk)}svg.scene .f-walk-line{fill:var(--sc-walk-line)}svg.scene .f-walk-edge{fill:var(--sc-walk-edge)}svg.scene .f-outline{fill:var(--sc-outline)}svg.scene .f-hull{fill:var(--sc-hull)}svg.scene .f-stripe{fill:var(--sc-stripe)}svg.scene .f-sail{fill:var(--sc-sail)}svg.scene .f-sail-2{fill:var(--sc-sail-2)}svg.scene .f-lamp{fill:var(--sc-lamp)}svg.scene .f-iron{fill:var(--sc-iron)}svg.scene .f-pink{fill:var(--sc-pink)}svg.scene .f-mint{fill:var(--sc-mint)}svg.scene .f-butter{fill:var(--sc-butter)}svg.scene .f-blue{fill:var(--sc-blue)}svg.scene .f-lilac{fill:var(--sc-lilac)}svg.scene .f-peach{fill:var(--sc-peach)}svg.scene .f-awn{fill:var(--sc-awn)}svg.scene .f-pane{fill:var(--sc-pane)}svg.scene .f-g-nat{fill:var(--sc-g-nat)}svg.scene .f-g-rim{fill:var(--sc-g-rim)}svg.scene .f-g-hole{fill:var(--sc-g-hole)}svg.scene .f-g-neck{fill:var(--sc-g-neck)}svg.scene .f-g-sb1{fill:var(--sc-g-sb1)}svg.scene .f-g-sb2{fill:var(--sc-g-sb2)}svg.scene .f-g-sb3{fill:var(--sc-g-sb3)}svg.scene .f-g-mah{fill:var(--sc-g-mah)}svg.scene .f-moon{fill:var(--sc-moon)}svg.scene .f-star{fill:var(--sc-star)}svg.scene .f-light{fill:var(--sc-light)}svg.scene .ol{stroke:var(--sc-outline);stroke-width:3;stroke-linejoin:round;stroke-linecap:round}svg.scene .ol2{stroke:var(--sc-outline);stroke-width:2;stroke-linejoin:round;stroke-linecap:round}svg.scene .ln{fill:none;stroke-linecap:round}svg.scene .s-rip{stroke:var(--sc-ripple);stroke-width:3}svg.scene .s-br{stroke:var(--sc-bridge)}svg.scene .s-brd{stroke:var(--sc-bridge-dark)}svg.scene .s-wl{stroke:var(--sc-wood-line);stroke-width:2}svg.scene .s-wk{stroke:var(--sc-walk-line);stroke-width:2}svg.scene .s-ol{stroke:var(--sc-outline)}svg.scene .s-iron{stroke:var(--sc-iron)}svg.scene .s-trim{stroke:var(--sc-trim)}svg.scene text{font-family:Huninn,"jf-openhuninn-2.0","Noto Sans TC","Microsoft JhengHei",sans-serif;font-weight:700}svg.scene .sc-night{display:none}:root[data-theme="dark"] svg.scene .sc-day,svg.scene.night .sc-day{display:none}:root[data-theme="dark"] svg.scene .sc-night,svg.scene.night .sc-night{display:inline}@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) svg.scene .sc-day{display:none}:root:not([data-theme="light"]) svg.scene .sc-night{display:inline}}</style><rect class="f-sky" width="1200" height="420"/><g class="sc-night f-star"><circle cx="70" cy="110" r="4"/><circle cx="160" cy="150" r="3"/><circle cx="240" cy="96" r="3"/><circle cx="400" cy="130" r="4"/><circle cx="430" cy="84" r="3"/><circle cx="560" cy="70" r="3"/><circle cx="790" cy="150" r="4"/><circle cx="880" cy="96" r="3"/><circle cx="960" cy="140" r="3"/><circle cx="1040" cy="90" r="4"/><circle cx="1120" cy="130" r="3"/><circle cx="1170" cy="170" r="3"/><circle cx="700" cy="60" r="4"/><circle cx="340" cy="170" r="3"/><circle cx="1000" cy="180" r="3"/></g><g class="sc-night"><circle class="f-moon" cx="830" cy="118" r="26"/><circle class="f-sky" cx="842" cy="108" r="22"/></g><g class="sc-day"><circle class="f-sun-2" cx="935" cy="226" r="52"/><circle class="f-sun" cx="935" cy="226" r="40"/></g><g class="sc-drift sc-day" transform="translate(770 96)"><path class="f-cloud ol" d="M14 52 C-4 52 -4 28 14 28 C14 10 40 4 50 18 C58 2 88 4 90 24 C108 22 114 50 96 52 Z"/><circle class="f-outline" cx="40" cy="36" r="3.5"/><circle class="f-outline" cx="66" cy="36" r="3.5"/><path class="ln ol2" d="M48 42 Q53 47 58 42"/><ellipse class="f-cheek" cx="31" cy="44" rx="6" ry="3.5"/><ellipse class="f-cheek" cx="75" cy="44" rx="6" ry="3.5"/></g><path class="f-hill-3" d="M0 262 L0 200 C60 168 140 150 220 170 C300 190 380 230 470 262 Z"/><path class="f-hill-2" d="M690 262 C780 236 850 206 940 212 C1010 216 1060 196 1120 200 C1160 203 1185 212 1200 218 L1200 262 Z"/><path class="f-hill" d="M820 262 C880 244 940 236 1000 240 C1060 244 1120 232 1200 236 L1200 262 Z"/><path class="f-hill" d="M0 290 L0 238 C50 222 110 226 170 250 C200 262 220 276 232 290 Z"/><rect class="f-sea" y="258" width="1200" height="132"/><rect class="f-sea-2" y="258" width="1200" height="6"/><g class="ln s-rip"><path d="M40 320 q9 -7 18 0 q9 7 18 0"/><path d="M120 300 q9 -7 18 0 q9 7 18 0"/><path d="M200 330 q9 -7 18 0 q9 7 18 0"/><path d="M380 330 q9 -7 18 0 q9 7 18 0"/><path d="M420 360 q9 -7 18 0 q9 7 18 0"/><path d="M350 374 q9 -7 18 0 q9 7 18 0"/><path d="M780 280 q9 -7 18 0 q9 7 18 0"/><path d="M820 330 q9 -7 18 0 q9 7 18 0"/><path d="M990 300 q9 -7 18 0 q9 7 18 0"/><path d="M1060 340 q9 -7 18 0 q9 7 18 0"/><path d="M1150 300 q9 -7 18 0 q9 7 18 0"/><path d="M1120 370 q9 -7 18 0 q9 7 18 0"/><path d="M960 360 q9 -7 18 0 q9 7 18 0"/><path d="M880 370 q9 -7 18 0 q9 7 18 0"/><path d="M250 275 q9 -7 18 0 q9 7 18 0"/><path d="M60 365 q9 -7 18 0 q9 7 18 0"/></g><g id="sc-bridge"><g class="ln s-br" stroke-width="2.5"><path d="M20 221 V226"/><path d="M40 219 V226"/><path d="M60 216 V227"/><path d="M80 212 V227"/><path d="M100 207 V228"/><path d="M120 201 V228"/><path d="M140 194 V229"/><path d="M160 185 V229"/><path d="M180 175 V230"/><path d="M200 163 V230"/><path d="M220 149 V231"/><path d="M240 134 V231"/><path d="M260 116 V232"/></g><g class="ln s-br" stroke-width="1.6"><path d="M340 102 V234"/><path d="M359 115 V234"/><path d="M378 127 V234"/><path d="M396 138 V235"/><path d="M413 148 V235"/><path d="M430 158 V235"/><path d="M446 166 V235"/><path d="M462 174 V236"/><path d="M477 181 V236"/><path d="M491 187 V236"/><path d="M505 193 V236"/><path d="M519 199 V237"/><path d="M532 204 V237"/><path d="M544 208 V237"/><path d="M557 212 V237"/><path d="M568 216 V237"/><path d="M580 219 V238"/><path d="M591 222 V238"/><path d="M601 225 V238"/><path d="M611 228 V238"/><path d="M621 230 V238"/><path d="M630 232 V239"/><path d="M640 234 V239"/><path d="M649 236 V239"/><path d="M658 237 V239"/><path d="M667 239 V239"/><path d="M676 240 V239"/><path d="M685 241 V239"/><path d="M694 242 V240"/><path d="M703 243 V240"/><path d="M712 244 V240"/><path d="M721 245 V240"/><path d="M730 245 V240"/><path d="M739 246 V240"/><path d="M748 246 V241"/><path d="M757 246 V241"/><path d="M766 247 V241"/><path d="M775 247 V241"/><path d="M784 246 V241"/><path d="M793 246 V241"/><path d="M802 246 V241"/><path d="M811 245 V242"/><path d="M820 245 V242"/><path d="M829 244 V242"/><path d="M838 243 V242"/><path d="M847 242 V242"/><path d="M856 241 V242"/><path d="M865 240 V243"/><path d="M874 238 V243"/><path d="M883 237 V243"/><path d="M892 235 V243"/><path d="M901 234 V243"/><path d="M910 232 V243"/><path d="M919 230 V243"/><path d="M928 228 V244"/><path d="M937 226 V244"/><path d="M946 223 V244"/><path d="M955 221 V244"/><path d="M964 219 V244"/><path d="M973 216 V244"/><path d="M982 213 V245"/><path d="M991 210 V245"/><path d="M1000 207 V245"/></g><g class="ln s-br" stroke-width="1.4"><path d="M1030 209 V245"/><path d="M1041 215 V245"/><path d="M1052 220 V245"/><path d="M1063 224 V246"/><path d="M1074 228 V246"/><path d="M1085 231 V246"/><path d="M1096 234 V246"/><path d="M1107 236 V246"/><path d="M1118 238 V246"/><path d="M1129 239 V246"/><path d="M1140 240 V246"/><path d="M1151 240 V246"/><path d="M1162 240 V247"/><path d="M1173 240 V247"/><path d="M1184 239 V247"/><path d="M1195 239 V247"/></g><polygon class="f-bridge" points="0,225 305,233 1010,245 1200,247 1200,252 1010,250 305,246 0,241"/><polygon class="f-bridge-dark" points="0,233 305,240 1010,248 1200,250 1200,252 1010,250 305,246 0,241"/><g class="ln s-br" stroke-width="1.5"><path d="M10 233 L16 241"/><path d="M24 234 L30 241"/><path d="M38 234 L44 242"/><path d="M52 234 L58 242"/><path d="M66 234 L72 242"/><path d="M80 235 L86 242"/><path d="M94 235 L100 243"/><path d="M108 235 L114 243"/><path d="M122 236 L128 243"/><path d="M136 236 L142 243"/><path d="M150 236 L156 243"/><path d="M164 236 L170 244"/><path d="M178 237 L184 244"/><path d="M192 237 L198 244"/><path d="M206 237 L212 244"/><path d="M220 238 L226 245"/><path d="M234 238 L240 245"/><path d="M248 238 L254 245"/><path d="M262 239 L268 245"/><path d="M276 239 L282 246"/><path d="M290 239 L296 246"/><path d="M304 239 L310 246"/><path d="M318 240 L322 246"/><path d="M332 240 L336 246"/><path d="M346 240 L350 246"/><path d="M359 240 L363 246"/><path d="M372 240 L376 246"/><path d="M385 240 L389 246"/><path d="M398 241 L402 247"/><path d="M411 241 L415 247"/><path d="M424 241 L428 247"/><path d="M436 241 L440 247"/><path d="M449 241 L453 247"/><path d="M461 241 L465 247"/><path d="M473 241 L477 247"/><path d="M485 242 L489 247"/><path d="M497 242 L501 247"/><path d="M508 242 L512 247"/><path d="M520 242 L524 247"/><path d="M531 242 L535 247"/><path d="M542 242 L546 247"/><path d="M553 242 L557 247"/><path d="M564 242 L568 247"/><path d="M575 243 L579 248"/><path d="M586 243 L590 248"/><path d="M596 243 L600 248"/><path d="M606 243 L610 248"/><path d="M617 243 L621 248"/><path d="M627 243 L631 248"/><path d="M637 243 L641 248"/><path d="M647 243 L651 248"/><path d="M656 243 L660 248"/><path d="M666 244 L670 248"/><path d="M675 244 L679 248"/><path d="M685 244 L689 248"/><path d="M694 244 L698 248"/><path d="M703 244 L707 248"/><path d="M712 244 L716 248"/><path d="M721 244 L725 248"/><path d="M730 244 L734 248"/><path d="M739 244 L743 248"/><path d="M747 245 L751 249"/><path d="M756 245 L760 249"/><path d="M764 245 L768 249"/><path d="M772 245 L776 249"/><path d="M780 245 L784 249"/><path d="M789 245 L793 249"/><path d="M796 245 L800 249"/><path d="M804 245 L808 249"/><path d="M812 245 L816 249"/><path d="M820 245 L824 249"/><path d="M827 245 L831 249"/><path d="M835 246 L839 249"/><path d="M842 246 L846 249"/><path d="M849 246 L853 249"/><path d="M857 246 L861 249"/><path d="M864 246 L868 249"/><path d="M871 246 L875 249"/><path d="M878 246 L882 249"/><path d="M885 246 L889 249"/><path d="M891 246 L895 249"/><path d="M898 246 L902 249"/><path d="M905 246 L909 249"/><path d="M911 246 L915 249"/><path d="M917 246 L921 249"/><path d="M924 247 L928 250"/><path d="M930 247 L934 250"/><path d="M936 247 L940 250"/><path d="M942 247 L946 250"/><path d="M948 247 L952 250"/><path d="M954 247 L958 250"/><path d="M960 247 L964 250"/><path d="M966 247 L970 250"/><path d="M972 247 L976 250"/><path d="M978 247 L982 250"/><path d="M984 247 L988 250"/><path d="M990 247 L994 250"/><path d="M996 247 L1000 250"/></g><path class="ln s-br" stroke-width="6" d="M282 94 Q170 216 0 222"/><path class="ln s-brd" stroke-width="3" d="M282 94 Q660 322 1004 200"/><path class="ln s-br" stroke-width="5" d="M328 94 Q660 330 1018 201"/><path class="ln s-br" stroke-width="3" d="M1018 201 Q1090 250 1200 238"/><g class="f-bridge"><rect x="998" y="200" width="7" height="64"/><rect x="1015" y="200" width="7" height="64"/><rect x="998" y="208" width="24" height="3"/><rect x="998" y="224" width="24" height="3"/><rect x="996" y="196" width="28" height="5"/></g><rect class="f-pier" x="994" y="260" width="32" height="6"/><rect class="f-pier ol2" x="258" y="292" width="94" height="20" rx="3"/><rect class="f-bridge ol2" x="272" y="178" width="20" height="118"/><rect class="f-bridge ol2" x="274" y="138" width="17" height="42"/><rect class="f-bridge ol2" x="276" y="106" width="14" height="34"/><rect class="f-bridge ol2" x="277" y="92" width="11" height="16"/><path class="ln s-brd" stroke-width="3" d="M282 112 V134 M282 146 V174 M282 186 V224 M282 252 V288"/><rect class="f-bridge ol2" x="318" y="178" width="20" height="118"/><rect class="f-bridge ol2" x="319" y="138" width="17" height="42"/><rect class="f-bridge ol2" x="320" y="106" width="14" height="34"/><rect class="f-bridge ol2" x="322" y="92" width="11" height="16"/><path class="ln s-brd" stroke-width="3" d="M328 112 V134 M328 146 V174 M328 186 V224 M328 252 V288"/><rect class="f-bridge ol2" x="290" y="98" width="30" height="12"/><rect class="f-bridge-dark" x="295" y="101" width="20" height="6"/><rect class="f-bridge ol2" x="290" y="124" width="30" height="9"/><rect class="f-bridge-dark" x="295" y="127" width="20" height="3"/><rect class="f-bridge ol2" x="290" y="150" width="30" height="12"/><rect class="f-bridge-dark" x="295" y="153" width="20" height="6"/><rect class="f-bridge ol2" x="290" y="192" width="30" height="14"/><rect class="f-bridge-dark" x="295" y="195" width="20" height="8"/><rect class="f-bridge ol2" x="290" y="262" width="30" height="10"/><rect class="f-bridge-dark" x="295" y="265" width="20" height="4"/><rect class="f-bridge-dark ol2" x="274" y="86" width="16" height="7" rx="2"/><rect class="f-bridge-dark ol2" x="320" y="86" width="16" height="7" rx="2"/><rect class="f-bridge ol2" x="262" y="230" width="86" height="12"/><rect class="f-bridge-dark" x="263" y="237" width="84" height="4"/><g class="sc-night f-light"><circle cx="20" cy="223" r="2.5"/><circle cx="44" cy="223" r="2.5"/><circle cx="68" cy="224" r="2.5"/><circle cx="92" cy="224" r="2.5"/><circle cx="116" cy="225" r="2.5"/><circle cx="140" cy="226" r="2.5"/><circle cx="164" cy="226" r="2.5"/><circle cx="188" cy="227" r="2.5"/><circle cx="212" cy="228" r="2.5"/><circle cx="236" cy="228" r="2.5"/><circle cx="260" cy="229" r="2.5"/><circle cx="284" cy="229" r="2.5"/><circle cx="308" cy="230" r="2.5"/><circle cx="332" cy="230" r="2.5"/><circle cx="356" cy="231" r="2.5"/><circle cx="380" cy="231" r="2.5"/><circle cx="404" cy="232" r="2"/><circle cx="422" cy="232" r="2"/><circle cx="440" cy="232" r="2"/><circle cx="746" cy="238" r="2"/><circle cx="764" cy="238" r="2"/><circle cx="782" cy="238" r="2"/><circle cx="800" cy="238" r="2"/><circle cx="818" cy="239" r="2"/><circle cx="836" cy="239" r="2"/><circle cx="854" cy="239" r="2"/><circle cx="872" cy="240" r="2"/><circle cx="890" cy="240" r="2"/><circle cx="908" cy="240" r="2"/><circle cx="926" cy="241" r="2"/><circle cx="944" cy="241" r="2"/><circle cx="962" cy="241" r="2"/><circle cx="980" cy="241" r="2"/><circle cx="998" cy="242" r="2"/><circle cx="1016" cy="242" r="2"/><circle cx="1034" cy="242" r="2"/><circle cx="1052" cy="242" r="2"/><circle cx="1070" cy="243" r="2"/><circle cx="1088" cy="243" r="2"/><circle cx="1106" cy="243" r="2"/><circle cx="1124" cy="243" r="2"/><circle cx="1142" cy="243" r="2"/><circle cx="1160" cy="244" r="2"/><circle cx="1178" cy="244" r="2"/><circle cx="282" cy="82" r="4"/><circle cx="328" cy="82" r="4"/><circle cx="1010" cy="192" r="2.5"/></g></g><g class="sc-boat sc-ferry"><g class="sc-bob"><path class="f-hull ol" d="M346 300 L452 300 L444 318 L356 318 Z"/><rect class="f-stripe" x="350" y="307" width="98" height="5"/><rect class="f-hull ol2" x="362" y="284" width="74" height="17" rx="3"/><rect class="f-hull ol2" x="374" y="272" width="46" height="13" rx="3"/><g class="f-window-2"><rect x="368" y="288" width="8" height="7" rx="1.5"/><rect x="380" y="288" width="8" height="7" rx="1.5"/><rect x="392" y="288" width="8" height="7" rx="1.5"/><rect x="404" y="288" width="8" height="7" rx="1.5"/><rect x="416" y="288" width="8" height="7" rx="1.5"/><rect x="428" y="288" width="8" height="7" rx="1.5"/></g><rect class="f-stripe ol2" x="404" y="262" width="9" height="11"/></g></g><rect class="f-butter ol" x="14" y="304" width="96" height="86"/><rect class="f-trim ol2" x="10" y="298" width="104" height="8"/><path class="f-awn" d="M14 322 h16 v16 q-8 7 -16 0 Z"/><path class="f-stripe" d="M30 322 h16 v16 q-8 7 -16 0 Z"/><path class="f-awn" d="M46 322 h16 v16 q-8 7 -16 0 Z"/><path class="f-stripe" d="M62 322 h16 v16 q-8 7 -16 0 Z"/><path class="f-awn" d="M78 322 h16 v16 q-8 7 -16 0 Z"/><path class="f-stripe" d="M94 322 h16 v16 q-8 7 -16 0 Z"/><path class="ln ol2" d="M14 322 h96"/><rect class="f-pane ol2" x="24" y="348" width="50" height="34"/><rect class="f-wood-dark ol2" x="80" y="348" width="22" height="42"/><rect class="f-pink ol" x="978" y="300" width="102" height="90"/><rect class="f-trim ol2" x="974" y="294" width="110" height="8"/><path class="f-awn" d="M978 318 h17 v16 q-8 7 -17 0 Z"/><path class="f-stripe" d="M995 318 h17 v16 q-8 7 -17 0 Z"/><path class="f-awn" d="M1012 318 h17 v16 q-8 7 -17 0 Z"/><path class="f-stripe" d="M1029 318 h17 v16 q-8 7 -17 0 Z"/><path class="f-awn" d="M1046 318 h17 v16 q-8 7 -17 0 Z"/><path class="f-stripe" d="M1063 318 h17 v16 q-8 7 -17 0 Z"/><path class="ln ol2" d="M978 318 h102"/><rect class="f-pane ol2" x="988" y="344" width="56" height="34"/><rect class="f-wood-dark ol2" x="1050" y="344" width="22" height="46"/><rect class="f-blue ol" x="1090" y="310" width="100" height="80"/><rect class="f-trim ol2" x="1086" y="304" width="108" height="8"/><path class="f-awn" d="M1090 328 h17 v16 q-8 7 -17 0 Z"/><path class="f-flower" d="M1107 328 h17 v16 q-8 7 -17 0 Z"/><path class="f-awn" d="M1123 328 h17 v16 q-8 7 -17 0 Z"/><path class="f-flower" d="M1140 328 h17 v16 q-8 7 -17 0 Z"/><path class="f-awn" d="M1157 328 h17 v16 q-8 7 -17 0 Z"/><path class="f-flower" d="M1173 328 h17 v16 q-8 7 -17 0 Z"/><path class="ln ol2" d="M1090 328 h100"/><rect class="f-pane ol2" x="1100" y="354" width="54" height="34"/><rect class="f-wood-dark ol2" x="1160" y="354" width="22" height="36"/><g class="sc-dock"><rect class="f-wood-dark" x="126" y="352" width="7" height="36"/><rect class="f-wood-dark" x="160" y="352" width="7" height="36"/><rect class="f-wood-dark" x="194" y="352" width="7" height="36"/><rect class="f-wood-dark" x="228" y="352" width="7" height="36"/><rect class="f-wood-dark" x="262" y="352" width="7" height="36"/><rect class="f-wood-dark" x="296" y="352" width="7" height="36"/><rect class="f-wood ol2" x="118" y="346" width="214" height="10" rx="2"/><path class="ln s-wl" d="M150 347 V355 M190 347 V355 M230 347 V355 M270 347 V355 M310 347 V355"/><rect class="f-outline" x="300" y="336" width="10" height="11" rx="3"/></g><g class="sc-lamp"><rect class="f-iron" x="246" y="286" width="6" height="62"/><rect class="f-iron" x="241" y="340" width="16" height="8" rx="2"/><path class="f-iron" d="M238 286 h22 l-4 -6 h-14 Z"/><rect class="f-lamp ol2" x="241" y="266" width="16" height="16" rx="3"/><path class="f-iron ol2" d="M237 266 L249 254 L261 266 Z"/></g><rect class="f-walk-edge" y="384" width="1200" height="8"/><rect class="f-walk" y="392" width="1200" height="28"/><path class="ln s-wk" d="M30 396 L20 420 M90 396 L80 420 M150 396 L140 420 M210 396 L200 420 M270 396 L260 420 M330 396 L320 420 M390 396 L380 420 M450 396 L440 420 M510 396 L500 420 M570 396 L560 420 M630 396 L620 420 M690 396 L680 420 M750 396 L740 420 M810 396 L800 420 M870 396 L860 420 M930 396 L920 420 M990 396 L980 420 M1050 396 L1040 420 M1110 396 L1100 420 M1170 396 L1160 420"/><g id="sc-shop"><rect class="f-wood ol" x="460" y="262" width="280" height="128"/><path class="ln s-wl" d="M462 276 H738 M462 290 H738 M462 304 H738 M462 318 H738 M462 332 H738 M462 346 H738 M462 360 H738 M462 374 H738"/><rect class="f-wood-2 ol" x="470" y="176" width="260" height="90"/><path class="ln s-wl" d="M472 188 H728 M472 201 H728 M472 214 H728 M472 227 H728 M472 240 H728 M472 253 H728"/><path class="f-wood-dark ol" d="M460 180 L460 112 L512 112 Q600 78 688 112 L740 112 L740 180 Z"/><circle class="f-trim ol2" cx="600" cy="92" r="6"/><rect class="f-trim ol2" x="456" y="174" width="288" height="8"/><rect class="f-sign ol" x="474" y="104" width="252" height="66" rx="12"/><text class="f-sign-ink" x="600" y="146" font-size="38" text-anchor="middle" letter-spacing="3">木吉他店</text><text class="f-sign-sub" x="600" y="164" font-size="15" text-anchor="middle" letter-spacing="1">提布隆．舊金山灣</text><rect class="f-shutter ol2" x="480" y="190" width="14" height="44"/><rect class="f-shutter ol2" x="564" y="190" width="14" height="44"/><rect class="f-trim ol2" x="496" y="188" width="66" height="48" rx="3"/><rect class="f-window" x="501" y="193" width="56" height="38"/><path class="ln s-trim" stroke-width="4" d="M529 193 V231 M501 212 H557"/><rect class="f-shutter ol2" x="622" y="190" width="14" height="44"/><rect class="f-shutter ol2" x="706" y="190" width="14" height="44"/><rect class="f-trim ol2" x="638" y="188" width="66" height="48" rx="3"/><rect class="f-window" x="643" y="193" width="56" height="38"/><path class="ln s-trim" stroke-width="4" d="M671 193 V231 M643 212 H699"/><circle class="f-trim ol2" cx="600" cy="208" r="13"/><circle class="f-window" cx="600" cy="208" r="8"/><path class="f-wood-dark ol2" d="M474 266 L482 278 L490 266 Z M710 266 L718 278 L726 266 Z"/><rect class="f-wood-dark ol2" x="466" y="258" width="268" height="9" rx="2"/><path class="ln s-trim" stroke-width="4" d="M478 242 V258 M491 242 V258 M504 242 V258 M517 242 V258 M530 242 V258 M543 242 V258 M556 242 V258 M569 242 V258 M582 242 V258 M595 242 V258 M608 242 V258 M621 242 V258 M634 242 V258 M647 242 V258 M660 242 V258 M673 242 V258 M686 242 V258 M699 242 V258 M712 242 V258 M725 242 V258"/><rect class="f-trim ol2" x="466" y="236" width="268" height="7" rx="3"/><rect class="f-wood-dark ol2" x="500" y="242" width="34" height="10" rx="2"/><g class="f-leaf"><circle cx="506" cy="238" r="5"/><circle cx="517" cy="236" r="5"/><circle cx="528" cy="238" r="5"/></g><g class="f-flower"><circle cx="508" cy="233" r="3.5"/><circle cx="518" cy="231" r="3.5"/><circle cx="527" cy="234" r="3.5"/></g><rect class="f-wood-dark ol2" x="668" y="242" width="34" height="10" rx="2"/><g class="f-leaf"><circle cx="674" cy="238" r="5"/><circle cx="685" cy="236" r="5"/><circle cx="696" cy="238" r="5"/></g><g class="f-flower"><circle cx="676" cy="233" r="3.5"/><circle cx="686" cy="231" r="3.5"/><circle cx="695" cy="234" r="3.5"/></g><rect class="f-trim ol" x="474" y="284" width="160" height="92" rx="4"/><rect class="f-window" x="481" y="291" width="146" height="78"/><rect class="f-wood-dark" x="481" y="296" width="146" height="3"/><path class="ln s-ol" stroke-width="1.5" d="M504 298 L510 292 L516 298"/><rect class="f-g-neck ol2" x="504" y="298" width="8" height="18" rx="2"/><rect class="f-g-neck ol2" x="507" y="314" width="6" height="28"/><circle class="f-trim" cx="506" cy="304" r="1.6"/><circle class="f-trim" cx="514" cy="304" r="1.6"/><path class="f-g-nat ol2" d="M510 340 C524 338 526 352 521 357 C534 364 530 384 510 384 C490 384 486 364 499 357 C494 352 496 338 510 340 Z"/><circle class="f-g-hole" cx="510" cy="358" r="5"/><rect class="f-g-hole" x="504" y="373" width="12" height="3" rx="1"/><path class="ln s-ol" stroke-width="1.5" d="M548 298 L554 292 L560 298"/><rect class="f-g-neck ol2" x="548" y="298" width="8" height="18" rx="2"/><rect class="f-g-neck ol2" x="551" y="314" width="6" height="28"/><circle class="f-trim" cx="550" cy="304" r="1.6"/><circle class="f-trim" cx="558" cy="304" r="1.6"/><path class="f-g-sb1 ol2" d="M554 340 C568 338 570 352 565 357 C578 364 574 384 554 384 C534 384 530 364 543 357 C538 352 540 338 554 340 Z"/><ellipse class="f-g-sb2" cx="554" cy="369" rx="15" ry="12"/><ellipse class="f-g-sb3" cx="554" cy="367" rx="9" ry="8"/><ellipse class="f-g-sb3" cx="554" cy="352" rx="7" ry="5"/><circle class="f-g-hole" cx="554" cy="358" r="5"/><rect class="f-g-hole" x="548" y="373" width="12" height="3" rx="1"/><path class="ln s-ol" stroke-width="1.5" d="M592 298 L598 292 L604 298"/><rect class="f-g-neck ol2" x="592" y="298" width="8" height="18" rx="2"/><rect class="f-g-neck ol2" x="595" y="314" width="6" height="28"/><circle class="f-trim" cx="594" cy="304" r="1.6"/><circle class="f-trim" cx="602" cy="304" r="1.6"/><path class="f-g-mah ol2" d="M598 340 C612 338 614 352 609 357 C622 364 618 384 598 384 C578 384 574 364 587 357 C582 352 584 338 598 340 Z"/><circle class="f-g-hole" cx="598" cy="358" r="5"/><rect class="f-g-hole" x="592" y="373" width="12" height="3" rx="1"/><rect class="f-wood-dark ol2" x="470" y="374" width="168" height="8" rx="2"/><rect class="f-trim ol" x="646" y="290" width="58" height="100" rx="4"/><path class="f-wood-dark ol2" d="M652 390 V312 Q675 290 698 312 V390 Z"/><path class="f-window" d="M659 314 Q675 300 691 314 V328 H659 Z"/><rect class="f-wood-line" x="659" y="338" width="32" height="20" rx="2"/><rect class="f-wood-line" x="659" y="364" width="32" height="18" rx="2"/><circle class="f-light ol2" cx="690" cy="352" r="3.5"/><rect class="f-wood-dark ol2" x="640" y="386" width="70" height="6" rx="2"/><path class="f-sail-2 ol2" d="M640 290 L710 290 L716 278 L634 278 Z"/><path class="ln s-iron" stroke-width="4" d="M462 186 H404 M462 204 L430 186"/><path class="ln s-iron" stroke-width="2" d="M412 186 V196 M444 186 V196"/><rect class="f-wood-dark ol2" x="422" y="186" width="12" height="12" rx="2"/><path class="f-sign ol" d="M428 196 C446 196 452 206 446 222 C462 230 460 262 428 264 C396 262 394 230 410 222 C404 206 410 196 428 196 Z"/><circle class="f-wood-dark" cx="428" cy="222" r="3"/><text class="f-sign-ink" x="428" y="216" font-size="17" text-anchor="middle">吉</text><text class="f-sign-ink" x="428" y="252" font-size="22" text-anchor="middle">他</text><rect class="f-wood-dark ol2" x="456" y="384" width="288" height="8"/><path class="f-sail-2 ol2" d="M436 370 H460 L456 390 H440 Z"/><g class="f-leaf"><circle cx="442" cy="364" r="7"/><circle cx="454" cy="362" r="7"/><circle cx="448" cy="354" r="7"/></g></g><g class="sc-boat sc-sailboat"><g class="sc-bob"><path class="f-sail ol2" d="M913 222 L913 298 L956 298 Z"/><path class="f-sail-2" d="M913 262 L913 274 L943 274 L934 262 Z"/><path class="f-sail ol2" d="M907 236 L907 298 L874 298 Z"/><path class="ln s-ol" stroke-width="3" d="M910 216 V302"/><path class="f-flower ol2" d="M910 214 L924 219 L910 224 Z"/><path class="f-hull ol" d="M866 300 L962 300 L950 318 L878 318 Z"/><rect class="f-stripe" x="872" y="307" width="84" height="4"/></g></g><g id="cat-slot" transform="translate(712,226)"><svg class="gcat gcat-full" id="sceneCat" width="150" height="165" viewBox="0 0 150 165" data-mood="calm" role="img" aria-label="彈木吉他的吉他貓"><style>
+.gcat{stroke-linejoin:round;stroke-linecap:round}
+.gcat-full{stroke-width:2.4}
+.gcat-head{stroke-width:3.6}
+.gcat .gc-m-up,.gcat .gc-m-calm,.gcat .gc-m-down,.gcat .gc-notes,.gcat .gc-sweat{display:none}
+.gcat[data-mood="up"] .gc-m-up,.gcat[data-mood="up"] .gc-notes,.gcat[data-mood="calm"] .gc-m-calm,.gcat:not([data-mood]) .gc-m-calm,.gcat[data-mood="down"] .gc-m-down,.gcat[data-mood="down"] .gc-sweat{display:inline}
+.gcat .gc-strum{transform-box:fill-box;transform-origin:20% 3%}
+.gcat .gc-tail{transform-box:fill-box;transform-origin:2% 92%}
+</style><g class="gc-tail" fill="none"><path d="M110,146 C128,150 141,138 136,117" stroke="#2b2140" stroke-width="12.5"/><path d="M110,146 C128,150 141,138 136,117" stroke="#f4a443" stroke-width="7.7"/><path d="M135.2,127.5 L141.2,126.5 M131.5,139.5 L136,143.5" stroke="#c46a1f" stroke-width="3"/></g><ellipse cx="76" cy="131" rx="43" ry="31" fill="#f4a443" stroke="#2b2140"/><ellipse cx="94" cy="141" rx="19" ry="16" fill="#fff"/><ellipse cx="75" cy="101" rx="21" ry="9" fill="#fff"/><g fill="none"><path d="M103,123 L110,110" stroke="#2b2140" stroke-width="15.5"/><path d="M103,123 L110,110" stroke="#f4a443" stroke-width="10.7"/></g><g stroke="#2b2140"><path d="M27,42 Q22,10 30,5 Q36,3 62,19Z" fill="#f4a443"/><path d="M123,42 Q128,10 120,5 Q114,3 88,19Z" fill="#f4a443"/></g><path d="M33,33 Q30,14 34,11 Q38,10 53,21Z M117,33 Q120,14 116,11 Q112,10 97,21Z" fill="#f7a8b8"/><path d="M75,14 C106,14 126,28 128,50 C131,77 108,95 75,95 C42,95 19,77 22,50 C24,28 44,14 75,14Z" fill="#f4a443" stroke="#2b2140"/><path d="M66,17 L68,27 M75,16 V27 M84,17 L82,27" stroke="#c46a1f" stroke-width="3.6"/><path d="M23,58 H30 M24,66 H30 M127,58 H120 M126,66 H120" stroke="#c46a1f" stroke-width="3"/><ellipse cx="75" cy="76" rx="22" ry="14" fill="#fff"/><ellipse cx="37" cy="74" rx="8.5" ry="5.5" fill="#f7a8b8"/><ellipse cx="113" cy="74" rx="8.5" ry="5.5" fill="#f7a8b8"/><g fill="none" stroke="#2b2140" stroke-width="7.4"><path d="M31,46 L22,43 M119,46 L128,43 M69,45 Q75,40 81,45"/><rect x="31" y="36" width="38" height="27" rx="11"/><rect x="81" y="36" width="38" height="27" rx="11"/></g><g stroke="#2f6fd6" stroke-width="3.6"><path d="M31,46 L22,43 M119,46 L128,43 M69,45 Q75,40 81,45" fill="none"/><rect x="31" y="36" width="38" height="27" rx="11" fill="#2b2d42"/><rect x="81" y="36" width="38" height="27" rx="11" fill="#2b2d42"/></g><path d="M39,57 L48,42 M47,58 L54,47 M89,57 L98,42 M97,58 L104,47" stroke="#fff" stroke-width="2.4"/><path d="M71,65.5 Q75,63.5 79,65.5 Q77,70 75,70 Q73,70 71,65.5Z" fill="#f48fb1" stroke="#2b2140" stroke-width="1.6"/><g class="gc-m-calm" fill="none" stroke="#2b2140" stroke-width="2.2"><path d="M75,70 V72 M67,71.5 Q71,77.5 75,72 Q79,77.5 83,71.5"/></g><g class="gc-m-up" stroke="#2b2140" stroke-width="2.2"><path d="M66,71.5 Q75,74 84,71.5 Q83.5,86 75,86 Q66.5,86 66,71.5Z" fill="#7b2d43"/><path d="M70,82 Q75,77.5 80,82 Q78,85.5 75,85.5 Q72,85.5 70,82Z" fill="#f48fb1" stroke="none"/></g><g class="gc-m-down" fill="none" stroke="#2b2140" stroke-width="2.4"><path d="M75,70 V72.5 M68,76 Q75,71.5 82,76"/><path d="M37,30 L59,34.5 M113,30 L91,34.5" stroke-width="3.2"/></g><g transform="rotate(-22 60 128)"><rect x="84" y="124" width="56" height="8" fill="#7a4a2a" stroke="#2b2140"/><g fill="#fff" stroke="#2b2140" stroke-width="1.8"><circle cx="141" cy="118" r="2.4"/><circle cx="147" cy="118" r="2.4"/><circle cx="141" cy="138" r="2.4"/><circle cx="147" cy="138" r="2.4"/></g><rect x="136" y="120.5" width="14" height="15" rx="3.5" fill="#7a4a2a" stroke="#2b2140"/><path d="M48,105.1 A25,25 0 1,0 48,150.9 Q56,141 64,144.1 A18,18 0 1,0 64,111.9 Q56,115 48,105.1Z" fill="#e8b15e" stroke="#9c5a24" stroke-width="6.5"/><path d="M48,105.1 A25,25 0 1,0 48,150.9 Q56,141 64,144.1 A18,18 0 1,0 64,111.9 Q56,115 48,105.1Z" fill="none" stroke="#2b2140" stroke-width="2.4"/><circle cx="65" cy="128" r="10" fill="#9c5a24"/><circle cx="65" cy="128" r="7" fill="#3a2414" stroke="#2b2140" stroke-width="1.6"/><rect x="33" y="120" width="6" height="16" rx="2" fill="#7a4a2a" stroke="#2b2140" stroke-width="1.8"/></g><circle cx="112" cy="107" r="7.5" fill="#fff" stroke="#2b2140"/><g stroke="#2b2140"><ellipse cx="46" cy="156" rx="12" ry="7.8" fill="#fff"/><ellipse cx="102" cy="156" rx="12" ry="7.8" fill="#fff"/></g><g fill="#f48fb1"><ellipse cx="46" cy="158" rx="4.6" ry="3.4"/><circle cx="39.5" cy="153.2" r="2"/><circle cx="46" cy="151.6" r="2"/><circle cx="52.5" cy="153.2" r="2"/><ellipse cx="102" cy="158" rx="4.6" ry="3.4"/><circle cx="95.5" cy="153.2" r="2"/><circle cx="102" cy="151.6" r="2"/><circle cx="108.5" cy="153.2" r="2"/></g><g class="gc-strum"><path d="M45,106 Q41,121 52,129" fill="none" stroke="#2b2140" stroke-width="15.5"/><path d="M45,106 Q41,121 52,129" fill="none" stroke="#f4a443" stroke-width="10.7"/><circle cx="54" cy="131" r="7.5" fill="#fff" stroke="#2b2140"/></g><g class="gc-notes"><g fill="#7c3aed" stroke="#7c3aed"><ellipse cx="135.5" cy="31" rx="4.6" ry="3.4" transform="rotate(-20 135.5 31)" stroke="none"/><path d="M139.6,30 V14 C143,16 147.5,18 146,24" fill="none" stroke-width="2.4"/></g><g fill="#db2777" stroke="#db2777"><ellipse cx="10.5" cy="37" rx="4.6" ry="3.4" transform="rotate(-20 10.5 37)" stroke="none"/><path d="M14.6,36 V20 C18,22 22.5,24 21,30" fill="none" stroke-width="2.4"/></g></g><path class="gc-sweat" d="M137,29 Q143,38 143,42 A6,6 0 0,1 131,42 Q131,38 137,29Z" fill="#7dd3fc" stroke="#2b2140" stroke-width="2"/></svg></g></svg></div>
+  <p class="cat-say" id="catSay" role="status" aria-live="polite"><b>吉他貓</b><span id="catText"></span></p>
+</div>
+
 <main class="wrap" id="app"></main>
 <nav class="tabbar hidden" id="tabbar" aria-label="分頁">
   <button data-tab-btn="home"><span class="ic" aria-hidden="true">🏠</span>總覽</button>
   <button data-tab-btn="charts"><span class="ic" aria-hidden="true">📊</span>圖表</button>
   <button class="add" id="tabAdd"><span class="ic" aria-hidden="true">＋</span>記錄</button>
   <button data-tab-btn="cal"><span class="ic" aria-hidden="true">📅</span>日曆</button>
-  <button data-tab-btn="log"><span class="ic" aria-hidden="true">📝</span>紀錄</button>
+  <button data-tab-btn="log"><span class="ic" aria-hidden="true">📝</span>日記本</button>
 </nav>
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
@@ -555,8 +699,8 @@ body.intro #app > *:nth-child(n+6) { animation-delay: .25s; }
     <p class="err" id="sErr"></p>
     <div class="dlg-actions" style="margin-bottom:16px"><span class="sp"></span><button type="submit" class="btn primary">儲存設定</button></div>
     <div class="set-list">
-      <button type="button" class="btn" id="bExport">💾 匯出備份（.json，換手機也能還原）</button>
-      <button type="button" class="btn" id="bCsv">📄 匯出成 Excel 可開的 CSV</button>
+      <button type="button" class="btn" id="bExport">💾 匯出備份檔（換手機也能還原）</button>
+      <button type="button" class="btn" id="bCsv">📄 匯出成 Excel 表格</button>
       <button type="button" class="btn" id="bImport">📥 從備份檔還原</button>
       <input type="file" id="importFile" accept=".json,application/json" class="hidden">
       <button type="button" class="btn danger" id="bWipe">🗑️ 清除全部資料</button>
@@ -960,7 +1104,7 @@ const css = v => getComputedStyle(document.documentElement).getPropertyValue(v).
 let calMonth = null, dailyMode = 'money', showAllLog = false, openExplain = null;
 let curTab = 'home', curChart = 'equity';
 const sumOpen = new Set([0]);
-const CHARTS = [['equity', '權益曲線'], ['cum', '我 vs 大盤'], ['daily', '每日損益'], ['win', '勝率・賺賠比'], ['dd', '回撤'], ['cost', '漏水筒']];
+const CHARTS = [['equity', '權益曲線'], ['cum', '跟大盤比'], ['daily', '每日損益'], ['win', '勝率・賺賠比'], ['dd', '回撤'], ['cost', '漏水筒']];
 const mq = matchMedia('(max-width: 760px)');
 const isM = () => mq.matches;
 const EXPLAIN = {
@@ -975,9 +1119,9 @@ const EXPLAIN = {
   vol: '每天報酬率的標準差，越大代表淨值上下晃得越兇。',
   costShare: '手續費＋期交稅 ÷ 交易本身賺的錢（毛利）。超過 30% 代表交易可能太頻繁。'
 };
-function sumRow(k, v, cls = '', key = null, en = '') {
+function sumRow(k, v, cls = '', key = null) {
   const q = key ? `<button class="q" data-explain="${key}" aria-label="說明：${esc(k)}" aria-expanded="${openExplain === key}">?</button>` : '';
-  return `<div class="sum-row"><span class="k">${esc(k)}${en ? ` <small>${en}</small>` : ''}${q}</span><span class="v ${cls}">${v}</span></div>` +
+  return `<div class="sum-row"><span class="k">${esc(k)}${q}</span><span class="v ${cls}">${v}</span></div>` +
     (key && openExplain === key ? `<p class="explain">${EXPLAIN[key]}</p>` : '');
 }
 
@@ -989,18 +1133,19 @@ function render() {
   const app = $('#app');
   const has = st.records.length > 0;
   document.body.classList.toggle('m', isM() && has);
+  document.body.dataset.tab = curTab;
   $('#tabbar').classList.toggle('hidden', !has);
   document.querySelectorAll('[data-tab-btn]').forEach(b => b.setAttribute('aria-current', b.dataset.tabBtn === curTab ? 'page' : 'false'));
-  if (!has) { app.innerHTML = bannersHtml() + (viewKey ? (remote ? `<section class="card onboard"><div class="emoji">🌱</div><h2>還沒有任何紀錄</h2><p>等他記下第一天，這裡就會出現圖表。</p></section>` : '') : onboardHtml()); wire(); return; }
+  if (!has) { app.innerHTML = bannersHtml() + (viewKey ? (remote ? `<section class="card onboard"><h2>還沒有任何紀錄</h2><p>等他記下第一天，這裡就會出現圖表。</p></section>` : '') : onboardHtml()); wire(); renderCat(null); return; }
   const C = compute(st);
   app.innerHTML = bannersHtml() + heroHtml(C) + summaryHtml(C) +
     `<div class="chips" data-tab="charts" role="tablist" aria-label="選擇圖表">${CHARTS.map(([k, l]) => `<button role="tab" data-chart-btn="${k}" aria-selected="${curChart === k}">${l}</button>`).join('')}</div>` +
-    `<section class="card" id="sec-curve" data-tab="charts" data-chart="equity"><div class="card-head"><div><p class="eyebrow">Equity Curve</p><h2>每日權益總值曲線</h2><p class="sub">你的帳戶每天值多少錢；虛線是投入的本金（含之後的入出金）。</p></div><div class="legend"><span><i style="border-color:var(--mine)"></i>權益總值</span><span><i class="dash" style="border-color:var(--muted)"></i>投入本金</span></div></div><div class="chart" id="cEquity"></div></section>` +
-    `<section class="card" id="sec-perf" data-tab="charts" data-chart="cum"><div class="card-head"><div><p class="eyebrow">Performance vs. Market</p><h2>累積報酬走勢｜我的投組 vs. 大盤</h2><p class="sub">同一天起跑，看誰跑得比較遠。大盤＝證交所加權指數（自動抓取）。</p></div><div class="legend"><span><i style="border-color:var(--mine)"></i>我的投組</span><span><i class="dash" style="border-color:var(--bench)"></i>大盤</span></div></div><div class="chart-stats" id="cumStats"></div><div class="chart" id="cCum"></div><p class="foot" id="benchNote"></p></section>` +
-    `<section class="card" data-tab="charts" data-chart="daily"><div class="card-head"><div><p class="eyebrow">Daily P&amp;L</p><h2>每日損益｜金額與百分比</h2><p class="sub">紅色往上＝賺，綠色往下＝賠。</p></div><div class="seg" role="group" aria-label="單位"><button data-daily="money" aria-pressed="${dailyMode === 'money'}">金額</button><button data-daily="pct" aria-pressed="${dailyMode === 'pct'}">百分比</button></div></div><div class="chart" id="cDaily"></div></section>` +
+    `<section class="card" id="sec-curve" data-tab="charts" data-chart="equity"><div class="card-head"><div><p class="eyebrow">📈 帳戶成長</p><h2>每日權益總值曲線</h2><p class="sub">你的帳戶每天值多少錢；虛線是投入的本金（含之後的入出金）。</p></div><div class="legend"><span><i style="border-color:var(--mine)"></i>權益總值</span><span><i class="dash" style="border-color:var(--muted)"></i>投入本金</span></div></div><div class="chart" id="cEquity"></div></section>` +
+    `<section class="card" id="sec-perf" data-tab="charts" data-chart="cum"><div class="card-head"><div><p class="eyebrow">🏁 跟大盤賽跑</p><h2>累積報酬｜我的帳戶和大盤比一比</h2><p class="sub">同一天起跑，看誰跑得比較遠。大盤＝證交所加權指數（自動抓取）。</p></div><div class="legend"><span><i style="border-color:var(--mine)"></i>我的帳戶</span><span><i class="dash" style="border-color:var(--bench)"></i>大盤</span></div></div><div class="chart-stats" id="cumStats"></div><div class="chart" id="cCum"></div><p class="foot" id="benchNote"></p></section>` +
+    `<section class="card" data-tab="charts" data-chart="daily"><div class="card-head"><div><p class="eyebrow">📊 每天賺賠</p><h2>每日損益｜金額與百分比</h2><p class="sub">紅色往上＝賺，綠色往下＝賠。</p></div><div class="seg" role="group" aria-label="單位"><button data-daily="money" aria-pressed="${dailyMode === 'money'}">金額</button><button data-daily="pct" aria-pressed="${dailyMode === 'pct'}">百分比</button></div></div><div class="chart" id="cDaily"></div></section>` +
     `<div class="grid2" data-tab="charts">` +
-      `<section class="card" data-chart="win"><div class="card-head"><div><p class="eyebrow">Win Rate · Payoff</p><h2>勝率・賺賠比</h2><p class="sub">每日損益折線：每個點是一天。</p></div></div><div class="chart" id="cDailyLine"></div>${winRateHtml(C)}</section>` +
-      `<section class="card" data-chart="dd"><div class="card-head"><div><p class="eyebrow">Drawdown</p><h2>回撤比較｜Drawdown</h2><p class="sub">離自己最高點掉了多少。越貼近 0 越好。</p></div><div class="legend"><span><i style="border-color:var(--mine)"></i>我的投組</span><span><i class="dash" style="border-color:var(--bench)"></i>大盤</span></div></div><div class="chart-stats" id="ddStats"></div><div class="chart" id="cDd"></div></section>` +
+      `<section class="card" data-chart="win"><div class="card-head"><div><p class="eyebrow">🎯 打得準不準</p><h2>勝率・賺賠比</h2><p class="sub">每日損益折線：每個點是一天。</p></div></div><div class="chart" id="cDailyLine"></div>${winRateHtml(C)}</section>` +
+      `<section class="card" data-chart="dd"><div class="card-head"><div><p class="eyebrow">🧯 安全檢查</p><h2>回撤比較</h2><p class="sub">離自己最高點掉了多少。越貼近 0 越好。</p></div><div class="legend"><span><i style="border-color:var(--mine)"></i>我的帳戶</span><span><i class="dash" style="border-color:var(--bench)"></i>大盤</span></div></div><div class="chart-stats" id="ddStats"></div><div class="chart" id="cDd"></div></section>` +
     `</div>` +
     `<section class="card" id="sec-calendar" data-tab="cal">${calendarHtml(C)}</section>` +
     `<section class="card" id="sec-cost" data-tab="charts" data-chart="cost">${leakHtml(C)}</section>` +
@@ -1011,6 +1156,7 @@ function render() {
   renderBenchNote();
   wire();
   countUp();
+  renderCat(C);
 }
 const reduceMotion = () => matchMedia('(prefers-reduced-motion: reduce)').matches;
 let heroShown = null;
@@ -1024,18 +1170,112 @@ function countUp() {
   requestAnimationFrame(step);
 }
 function playIntro() { if (reduceMotion()) return; document.body.classList.remove('intro'); void document.body.offsetWidth; document.body.classList.add('intro'); clearTimeout(playIntro.t); playIntro.t = setTimeout(() => document.body.classList.remove('intro'), 900); }
-function confetti() {
+function confetti() { // 賺錢日：音符、貓掌、吉他從天而降
   if (reduceMotion()) return;
-  const colors = ['#7c3aed', '#db2777', '#f97316', '#f59e0b', '#10b981', '#06b6d4', '#ff3d6e', '#facc15'];
-  for (let i = 0; i < 70; i++) {
-    const el = document.createElement('i'); el.className = 'confetti';
-    const w = 6 + Math.random() * 7;
-    Object.assign(el.style, { background: colors[i % colors.length], left: Math.random() * 100 + 'vw', width: w + 'px', height: (w * 0.45 + 4) + 'px' });
+  const glyphs = ['♪', '♫', '🐾', '♬', '🎸', '♪', '⭐', '♫'], colors = ['#db2777', '#7c3aed', '#2563eb', '#f59e0b', '#ea580c', '#0e7490'];
+  for (let i = 0; i < 44; i++) {
+    const el = document.createElement('i'); el.className = 'confetti'; el.textContent = glyphs[i % glyphs.length];
+    Object.assign(el.style, { color: colors[i % colors.length], left: Math.random() * 100 + 'vw', fontSize: 16 + Math.random() * 14 + 'px' });
     document.body.appendChild(el);
-    const dx = (Math.random() - 0.5) * 240, rot = (Math.random() - 0.5) * 1080;
-    el.animate([{ transform: 'translate(0,-24px) rotate(0deg)', opacity: 1 }, { transform: `translate(${dx}px, ${innerHeight + 40}px) rotate(${rot}deg)`, opacity: 0.9 }],
-      { duration: 1700 + Math.random() * 1500, easing: 'cubic-bezier(.25,.6,.4,1)', delay: Math.random() * 300 }).onfinish = () => el.remove();
+    const dx = (Math.random() - 0.5) * 200, rot = (Math.random() - 0.5) * 300;
+    el.animate([{ transform: 'translate(0,-30px) rotate(0deg)', opacity: 1 }, { transform: `translate(${dx}px, ${innerHeight + 40}px) rotate(${rot}deg)`, opacity: 0.9 }],
+      { duration: 2000 + Math.random() * 1600, easing: 'cubic-bezier(.25,.6,.4,1)', delay: Math.random() * 400 }).onfinish = () => el.remove();
   }
+  catStrum();
+}
+
+/* ---------- 吉他貓：明信片上的貓會說話，點了會彈和弦 ---------- */
+const G_CHORD = [98, 123.47, 146.83, 196, 246.94, 392];   // G 和弦，六條弦一起刷
+const C_CHORD = [130.81, 164.81, 196, 261.63, 329.63];     // C 和弦
+const CAT_TAPS = ['喵～這是 G 和弦 🎸', '記帳跟練琴一樣，每天一點點就會進步 🎵', '停損就像換弦，該換就要換 ✂️', '先守住本金，再慢慢變富 🐾', '不追高、不攤平，跟著計畫走 🎼'];
+let actx = null, sayT = null, catMsg = '', tapN = 0;
+function audio() { // iOS 背景回來可能是 interrupted，不只 suspended
+  try { actx = actx || new (window.AudioContext || window.webkitAudioContext)(); if (actx.state !== 'running') actx.resume().catch(() => {}); return actx; } catch (e) { return null; }
+}
+function pluck(freqs) { // Karplus–Strong 合成：一根弦一根弦撥下去
+  const ac = audio(); if (!ac) return;
+  const sr = ac.sampleRate, n = Math.floor(sr * 1.8);
+  freqs.forEach((f, i) => {
+    const buf = ac.createBuffer(1, n, sr), d = buf.getChannelData(0), p = Math.max(2, Math.round(sr / f));
+    for (let k = 0; k < p; k++) d[k] = Math.random() * 2 - 1;
+    for (let k = p; k < n; k++) d[k] = 0.996 * 0.5 * (d[k - p] + d[k - p + 1]);
+    const src = ac.createBufferSource(), g = ac.createGain(), t = ac.currentTime + i * 0.035;
+    g.gain.setValueAtTime(0.16, t); g.gain.setValueAtTime(0.16, t + 1.45); g.gain.linearRampToValueAtTime(0, t + 1.78); // 收尾淡出，不會喀一聲
+    src.buffer = buf; src.connect(g); g.connect(ac.destination); src.start(t);
+  });
+}
+function beep(notes, type, dur, vol) {
+  const ac = audio(); if (!ac) return;
+  notes.forEach(([f, at]) => {
+    const t = ac.currentTime + at, o = ac.createOscillator(), g = ac.createGain();
+    o.type = type; o.frequency.value = f; g.gain.setValueAtTime(0.0001, t); g.gain.exponentialRampToValueAtTime(vol, t + 0.01); g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+    o.connect(g); g.connect(ac.destination); o.start(t); o.stop(t + dur + 0.05);
+  });
+}
+const bell = () => beep([[1568, 0], [2093, 0], [1568, 0.22], [2093, 0.22]], 'sine', 0.7, 0.07);
+const horn = () => beep([[110, 0], [147, 0]], 'triangle', 0.9, 0.14);
+function catLine(C) {
+  const st = view(), name = st.settings.name || '林智勳', now = new Date();
+  if (demo) return ['calm', '這是範例資料喵～看完按下面的「清除範例」，就能開始記自己的 🎸'];
+  if (viewKey && !remote) return syncState === 'fail' ? ['calm', SYNC_URL ? '讀不到雲端資料喵 📡 我會自動再試，也可以等一下按「重新整理」。' : '雲端還沒設定好喵 📡 請他確認一下觀看連結。'] : ['calm', '等我一下喵，正在讀雲端資料 ☁️'];
+  if (!C) return viewKey ? ['calm', `${name}還沒開始記錄，我在店門口等他 🐾`] : ['calm', `嗨！我是吉他貓 🎸 從 ${money(st.settings.capital)} 元開始，每晚 10 點陪你記一筆。`];
+  const L = C.last, last = `${md(L.date)}（${wd(L.date)}）`, hr = now.getHours();
+  if (L.date !== todayIso()) {
+    if (now.getDay() % 6 === 0) return L.date < prevTradingDay()
+      ? ['calm', viewKey ? `${name}週五還沒記到，最後一筆是 ${last}。` : '週五還沒記到喔～按「＋記錄」→「上個交易日」補一筆 🐾']
+      : ['calm', `週末休市，好好休息喵～上一筆 ${md(L.date)} ${sMoney(L.pnl)} 元。`];
+    if (viewKey) return ['calm', hr < 22 ? `${name}通常晚上 10 點記錄，最後一筆是 ${last}。` : `${name}今天還沒記錄，最後一筆是 ${last}。`];
+    return hr >= 22 ? ['calm', '⏰ 該記錄囉！打開期貨 APP，抄下「權益總值」就好。'] : hr >= 21 ? ['calm', '快 10 點囉～準備打開期貨 APP 抄「權益總值」⏰'] : ['calm', '今天還沒記錄喵～晚上 10 點記得來找我 🎸'];
+  }
+  if (L.pnl > 0) return ['up', `今天 ${sMoney(L.pnl)} 元！彈一首慶祝 🎶 賺錢的日子更要守紀律。`];
+  if (L.pnl < 0) return ['down', `今天 ${sMoney(L.pnl)} 元。有照停損出場就好，寫一句心得，下個交易日再來 💪`];
+  return ['calm', '今天打平，休息也是一種紀律 ☕'];
+}
+function renderCat(C) {
+  const [mood, text] = catLine(C);
+  document.querySelectorAll('.gcat').forEach(s => s.setAttribute('data-mood', mood));
+  catMsg = text; if (!sayT) $('#catText').textContent = text;
+  placeSay();
+}
+function catSay(text, ms = 4200) {
+  $('#catText').textContent = text;
+  clearTimeout(sayT); sayT = setTimeout(() => { sayT = null; $('#catText').textContent = catMsg; }, ms);
+}
+function placeSay() { // 泡泡的尖角對準貓
+  const f = $('#pcFrame'), c = $('#sceneCat'); if (!f || !c) return;
+  const a = f.getBoundingClientRect(), b = c.getBoundingClientRect(); if (!a.width) return;
+  $('#catSay').style.setProperty('--say-x', Math.min(92, Math.max(8, (b.left + b.width / 2 - a.left) / a.width * 100)).toFixed(1) + '%');
+}
+function notesFrom(el, n = 3) {
+  const f = $('#pcFrame'); if (!f || !el || reduceMotion()) return;
+  const a = f.getBoundingClientRect(), b = el.getBoundingClientRect(); if (!a.width || !b.width) return;
+  const colors = ['#db2777', '#7c3aed', '#2563eb', '#b45309'];
+  for (let i = 0; i < n; i++) setTimeout(() => {
+    const s = document.createElement('span'); s.className = 'fx-note'; s.textContent = i % 2 ? '♫' : '♪';
+    Object.assign(s.style, { left: b.left - a.left + b.width * (0.3 + 0.2 * (i % 3)) + 'px', top: b.top - a.top + b.height * 0.12 + 'px', color: colors[(i + tapN) % colors.length] });
+    s.style.setProperty('--dx', (i % 3 - 1) * 18 + 'px');
+    f.appendChild(s); setTimeout(() => s.remove(), 1400);
+  }, i * 140);
+}
+function catStrum() {
+  const c = $('#sceneCat'); if (!c || reduceMotion()) return;
+  c.classList.remove('strumming'); void c.getBoundingClientRect(); c.classList.add('strumming');
+  setTimeout(() => c.classList.remove('strumming'), 1100);
+}
+function wireScene() {
+  const on = (sel, fn) => document.querySelectorAll(sel).forEach(el => el.addEventListener('click', e => { e.stopPropagation(); fn(el); }));
+  const cat = () => {
+    const line = CAT_TAPS[tapN++ % CAT_TAPS.length], b = $('#brandCat');
+    pluck(G_CHORD); catStrum(); notesFrom($('#sceneCat'));
+    b.classList.remove('bounce'); void b.offsetWidth; b.classList.add('bounce');
+    if ($('#pcFrame').getBoundingClientRect().width) catSay(line); else toast('🐱 ' + line); // 明信片收起來時（其他分頁）改用提示框
+  };
+  on('#sceneCat', cat); on('#brandCat', cat);
+  on('#sc-shop', el => { pluck(C_CHORD); notesFrom(el, 4); catSay('🎸 木吉他店：歡迎光臨喵～今天想試哪一把？'); });
+  on('#sc-bridge', () => { bell(); catSay('🌉 叮叮！金門大橋，1937 年通車。'); });
+  on('.sc-ferry', () => { horn(); catSay('⛴️ 嗚～提布隆和舊金山之間的渡輪。'); });
+  on('.sc-sailboat', () => catSay('⛵ 順風的時候，也要記得適時收帆 🌬️'));
+  addEventListener('resize', placeSay);
 }
 
 const INSTALL_KEY = 'futures-nav-diary.install-dismissed';
@@ -1048,8 +1288,8 @@ function installHtml() {
   if (viewKey || demo || isStandalone() || load(INSTALL_KEY, false)) return '';
   const x = '<button class="x" data-act="hideInstall" aria-label="關閉">✕</button>';
   if (isIOS() && inLineApp()) return `<div class="install">${x}<b>📲 先用 Safari 打開</b><ol><li>點右下角 <b>⋯</b>（或右上角選單）</li><li>選「<b>用預設瀏覽器開啟</b>」或「在 Safari 中開啟」</li><li>在 Safari 裡照著出現的步驟加入主畫面</li></ol></div>`;
-  if (isIOS()) return `<div class="install">${x}<b>📲 加到主畫面，變成一個 App</b><ol><li>點 Safari 下方（或上方）的 <span class="share">⬆︎</span> 分享</li><li>往下滑，選「<b>加入主畫面</b>」</li><li>右上角按「<b>新增</b>」</li>${writeKey && SYNC_URL ? '<li>從主畫面打開後，點右上 ⚙️ → 貼上<b>同步碼</b> → 連線</li>' : ''}</ol>${writeKey && SYNC_URL ? '<button class="btn small" data-act="copyCode">📋 先複製同步碼</button>' : ''}<small>之後每天都從主畫面的圖示打開來記錄。iPhone 的主畫面 App 跟 Safari 資料是分開存的，在 Safari 裡記的不會帶過去。</small></div>`;
-  if (installEvt) return `<div class="install">${x}<b>📲 安裝成 App</b><small>安裝後主畫面會出現圖示，打開就是全螢幕。</small><button class="btn small" data-act="install">安裝</button></div>`;
+  if (isIOS()) return `<div class="install">${x}<b>📲 加到主畫面，變成一個 APP</b><ol><li>點 Safari 下方（或上方）的 <span class="share">⬆︎</span> 分享</li><li>往下滑，選「<b>加入主畫面</b>」</li><li>右上角按「<b>新增</b>」</li>${writeKey && SYNC_URL ? '<li>從主畫面打開後，點右上 ⚙️ → 貼上<b>同步碼</b> → 連線</li>' : ''}</ol>${writeKey && SYNC_URL ? '<button class="btn small" data-act="copyCode">📋 先複製同步碼</button>' : ''}<small>之後每天都從主畫面的圖示打開來記錄。iPhone 的主畫面 App 跟 Safari 資料是分開存的，在 Safari 裡記的不會帶過去。</small></div>`;
+  if (installEvt) return `<div class="install">${x}<b>📲 安裝成 APP</b><small>安裝後主畫面會出現圖示，打開就是全螢幕。</small><button class="btn small" data-act="install">安裝</button></div>`;
   return '';
 }
 function bannersHtml() {
@@ -1059,7 +1299,7 @@ function bannersHtml() {
   if (!storageOk) h += `<div class="banner warn">⚠️ 這個瀏覽器不讓網頁存資料（可能是無痕模式）。記錄完請到 ⚙️ 匯出備份。</div>`;
   if (viewKey) {
     h += remote ? `<div class="banner"><span>👀 <b>觀看模式</b>：只能看、不能改。最後更新 <b>${fmtUpdated(remote.updatedAt)}</b>，每 3 分鐘自動更新。</span><span class="sp"></span><button class="btn small" data-act="refresh">重新整理</button></div>`
-      : syncState === 'fail' ? `<div class="banner warn">📡 讀不到雲端資料${SYNC_URL ? '（網路不穩或連結不完整）' : '（雲端還沒設定好）'}。</div>` : `<div class="banner">⏳ 正在讀取雲端資料…</div>`;
+      : syncState === 'fail' ? `<div class="banner warn"><span>📡 讀不到雲端資料${SYNC_URL ? '（網路不穩或連結不完整）' : '（雲端還沒設定好）'}。</span><span class="sp"></span>${SYNC_URL ? '<button class="btn small" data-act="refresh">重新整理</button>' : ''}</div>` : `<div class="banner">⏳ 正在讀取雲端資料…</div>`;
   }
   if (!demo && !viewKey && !(writeKey && SYNC_URL && !syncError) && state.records.length >= 5) {
     const days = state.lastBackup ? Math.floor((Date.now() - state.lastBackup) / 864e5) : null;
@@ -1068,7 +1308,7 @@ function bannersHtml() {
   return h;
 }
 function onboardHtml() {
-  return `<section class="card onboard"><div class="emoji">🌱</div><h2>從 ${money(state.settings.capital)} 元開始的期貨日記</h2>
+  return `<section class="card onboard"><h2>從 ${money(state.settings.capital)} 元開始的期貨日記</h2>
   <p>每天晚上 10 點，打開期貨 APP 把「權益總值」抄進來。損益、勝率、回撤、跟大盤比，全部自動幫你算。</p>
   <div class="hero-cta" style="justify-content:center"><button class="btn primary big" data-act="entry">✍️ 記錄第一天</button><button class="btn big" data-act="demo">看範例長怎樣</button></div>
   <div class="steps"><div><b>① 確認本金</b>預設 ${money(CAPITAL0)} 元，不一樣請到右上 ⚙️ 改。</div><div><b>② 每晚抄一個數字</b>只要「權益總值」，其他都是選填。</div><div><b>③ 每週備份一次</b>⚙️ → 匯出備份，傳到 LINE 給自己。</div></div></section>`;
@@ -1078,15 +1318,17 @@ function heroHtml(C) {
   const recordedToday = view().records.some(r => r.date === t);
   const hr = new Date().getHours();
   const rem = demo ? '' : viewKey ? (recordedToday ? `<span class="reminder done">✓ 今天記好了</span>` : `<span class="reminder">今天還沒記錄</span>`) : recordedToday ? `<span class="reminder done">✓ 今天記好了</span>` : hr >= 21 ? `<span class="reminder">⏰ 今晚還沒記錄喔</span>` : `<span class="reminder" style="opacity:.8">晚上 10 點記得來記錄</span>`;
-  return `<section class="card" id="sec-hero" data-tab="home"><div class="hero"><div>
+  const ear = side => `<svg class="ear ${side}" viewBox="0 0 46 32" aria-hidden="true"><path class="o" d="M4 31 L15 5 Q19 -1 23 5 L42 31 Z"/><path class="i" d="M13 28 L18.5 12 Q20 9.5 21.5 12 L33 28 Z"/><rect class="cover" x="6" y="27" width="34" height="5"/></svg>`;
+  const dayLbl = L.date === t ? '今日' : `${md(L.date)}（${wd(L.date)}）`;
+  return `<section class="card" id="sec-hero" data-tab="home">${ear('l')}${ear('r')}<div class="hero"><div>
     <p class="eyebrow">目前權益總值 · ${L.date.replaceAll('-', '/')}（${wd(L.date)}）</p>
     <div class="hero-eq num"><span id="heroNum" data-v="${L.equity}">${money(L.equity)}</span><small>元</small></div>
-    <div class="hero-today ${tone(L.pnl)}">今日 ${arrow(L.pnl)} ${sMoney(L.pnl)} 元（${sPct(L.ret)}）<span class="muted">${L.flow ? ` · 含${L.flow > 0 ? '入金' : '出金'} ${money(Math.abs(L.flow))} 已排除` : ''}</span></div>
+    <div class="hero-today ${tone(L.pnl)}">${dayLbl} ${arrow(L.pnl)} ${sMoney(L.pnl)} 元（${sPct(L.ret)}）<span class="muted">${L.flow ? ` · 含${L.flow > 0 ? '入金' : '出金'} ${money(Math.abs(L.flow))} 已排除` : ''}</span></div>
     <div class="hero-cta">${viewKey ? '' : '<button class="btn primary big" data-act="entry">✍️ 記錄今天</button>'}${rem}</div>
   </div><div class="tiles">
     <div class="tile"><span>📈 累積報酬率</span><b class="${tone(s.cum)}">${arrow(s.cum)} ${sPct(s.cum)}</b><em>從 ${money(C.capital)} 元起算</em></div>
     <div class="tile"><span>🏁 同期大盤</span><b class="${tone(s.benchCum)}">${s.benchCum == null ? '—' : arrow(s.benchCum) + ' ' + sPct(s.benchCum)}</b><em>${s.benchCum == null ? '大盤資料讀取中' : (s.cum >= s.benchCum ? '🏆 目前贏大盤' : '目前輸大盤')}</em></div>
-    <div class="tile"><span>💰 淨損益</span><b class="${tone(s.netPnl)}">${sMoney(s.netPnl)}</b><em>已扣成本、排除入出金</em></div>
+    <div class="tile"><span>💰 淨損益</span><b class="${tone(s.netPnl)}">${sMoney(s.netPnl)}</b><em>已扣成本、不含入出金</em></div>
     <div class="tile"><span>🧯 最大回撤</span><b class="${s.maxDd < 0 ? 'down' : 'flat'}">${s.maxDd < 0 ? sPct(s.maxDd) : '0.00%'}</b><em>目前離高點 ${sPct(s.curDd)}</em></div>
   </div></div></section>`;
 }
@@ -1111,38 +1353,38 @@ function summaryHtml(C) {
   const pf = s.profitFactor === Infinity ? '∞（還沒賠過）' : ratio(s.profitFactor);
   const streak = s.cur ? `${s.curKind > 0 ? '連賺' : '連賠'} ${s.cur} 天` : '—';
   const grp = (i, title, peek, peekCls, body) => `<details class="sum-group" data-grp="${i}"${!isM() || sumOpen.has(i) ? ' open' : ''}><summary><h3>${title}</h3><span class="peek ${peekCls}">${peek}</span></summary>${body}</details>`;
-  return `<section class="card" id="sec-summary" data-tab="home"><div class="card-head"><div><p class="eyebrow">Performance Summary</p><h2>損益績效總表</h2><p class="sub">點 <b>?</b> 看每個數字是什麼意思。</p></div></div>
+  return `<section class="card" id="sec-summary" data-tab="home"><div class="card-head"><div><p class="eyebrow">📒 成績單</p><h2>損益績效總表</h2><p class="sub">點 <b>?</b> 看每個數字是什麼意思。</p></div></div>
   <div class="sum-grid">
     ${grp(0, '💰 賺了多少', sMoney(s.netPnl), tone(s.netPnl), `
-      ${sumRow('初始本金', money(C.capital), '', null, 'Initial Capital')}
-      ${sumRow('目前權益', money(C.last.equity), '', null, 'Equity')}
-      ${sumRow('淨損益', sMoney(s.netPnl), tone(s.netPnl), 'netPnl', 'Net Profit')}
-      ${sumRow('累積報酬率', sPct(s.cum), tone(s.cum), 'cum', 'Return')}
-      ${sumRow('同期大盤', s.benchCum == null ? '—' : sPct(s.benchCum), tone(s.benchCum), null, 'TAIEX')}
-      ${sumRow('總獲利', sMoney(s.totalProfit), tone(s.totalProfit), null, 'Total Profit')}
-      ${sumRow('總虧損', sMoney(s.totalLoss), tone(s.totalLoss), null, 'Total Loss')}
+      ${sumRow('初始本金', money(C.capital), '', null)}
+      ${sumRow('目前權益', money(C.last.equity), '', null)}
+      ${sumRow('淨損益', sMoney(s.netPnl), tone(s.netPnl), 'netPnl')}
+      ${sumRow('累積報酬率', sPct(s.cum), tone(s.cum), 'cum')}
+      ${sumRow('同期大盤', s.benchCum == null ? '—' : sPct(s.benchCum), tone(s.benchCum), null)}
+      ${sumRow('總獲利', sMoney(s.totalProfit), tone(s.totalProfit), null)}
+      ${sumRow('總虧損', sMoney(s.totalLoss), tone(s.totalLoss), null)}
       ${sumRow('累計入金／出金', `${money(s.deposits)} ／ ${money(-s.withdrawals)}`, '', null)}
     `)}
     ${grp(1, '🎯 打得準不準', `勝率 ${pct(s.winRate, 0)}`, '', `
-      ${sumRow('紀錄日數', s.days + ' 天', '', null, 'Daily Records')}
-      ${sumRow('獲利／虧損／持平', `${s.winDays}／${s.lossDays}／${s.flatDays} 天`, '', null, 'W/L/F')}
-      ${sumRow('勝率', pct(s.winRate, 1), '', 'winRate', 'Win Rate')}
-      ${sumRow('獲利因子', pf, s.profitFactor >= 1 ? 'up' : s.profitFactor != null ? 'down' : '', 'pf', 'Profit Factor')}
-      ${sumRow('平均獲利', sMoney(s.avgWin), 'up', null, 'Avg. Daily Profit')}
-      ${sumRow('平均虧損', sMoney(s.avgLoss), 'down', null, 'Avg. Daily Loss')}
-      ${sumRow('平均賺賠比', ratio(s.payoff), '', 'payoff', 'Payoff')}
-      ${sumRow('平均每日損益', sMoney(s.avgDaily), tone(s.avgDaily), 'expect', 'Expectancy')}
+      ${sumRow('紀錄日數', s.days + ' 天', '', null)}
+      ${sumRow('獲利／虧損／持平', `${s.winDays}／${s.lossDays}／${s.flatDays} 天`, '', null)}
+      ${sumRow('勝率', pct(s.winRate, 1), '', 'winRate')}
+      ${sumRow('獲利因子', pf, '', 'pf')}
+      ${sumRow('平均獲利', sMoney(s.avgWin), 'up', null)}
+      ${sumRow('平均虧損', sMoney(s.avgLoss), 'down', null)}
+      ${sumRow('平均賺賠比', ratio(s.payoff), '', 'payoff')}
+      ${sumRow('平均每日損益', sMoney(s.avgDaily), tone(s.avgDaily), 'expect')}
     `)}
     ${grp(2, '🛡️ 風險控管', `回撤 ${sPct(s.maxDd, 1)}`, s.maxDd < 0 ? 'down' : '', `
-      ${sumRow('最大回撤', `${sPct(s.maxDd)}（${sMoney(s.maxDdMoney)}）`, s.maxDd < 0 ? 'down' : '', 'mdd', 'MDD')}
-      ${sumRow('目前回撤', sPct(s.curDd), s.curDd < 0 ? 'down' : '', null, 'Current DD')}
-      ${sumRow('報酬回撤比', ratio(s.retOverDd), '', 'rdd', 'Return / MDD')}
-      ${sumRow('最大單日獲利', s.best && s.best.pnl > 0 ? `${sMoney(s.best.pnl)}（${md(s.best.date)}）` : '—', 'up', null, 'Max Day Win')}
-      ${sumRow('最大單日虧損', s.worst && s.worst.pnl < 0 ? `${sMoney(s.worst.pnl)}（${md(s.worst.date)}）` : '—', 'down', null, 'Max Day Loss')}
-      ${sumRow('目前連續', streak, s.curKind > 0 ? 'up' : s.curKind < 0 ? 'down' : '', null, 'Streak')}
+      ${sumRow('最大回撤', `${sPct(s.maxDd)}（${sMoney(s.maxDdMoney)}）`, s.maxDd < 0 ? 'down' : '', 'mdd')}
+      ${sumRow('目前回撤', sPct(s.curDd), s.curDd < 0 ? 'down' : '', null)}
+      ${sumRow('報酬回撤比', ratio(s.retOverDd), '', 'rdd')}
+      ${sumRow('最大單日獲利', s.best && s.best.pnl > 0 ? `${sMoney(s.best.pnl)}（${md(s.best.date)}）` : '—', 'up', null)}
+      ${sumRow('最大單日虧損', s.worst && s.worst.pnl < 0 ? `${sMoney(s.worst.pnl)}（${md(s.worst.date)}）` : '—', 'down', null)}
+      ${sumRow('目前連續', streak, s.curKind > 0 ? 'up' : s.curKind < 0 ? 'down' : '', null)}
       ${sumRow('最長連賺／連賠', `${s.maxW}／${s.maxL} 天`, '', null)}
-      ${sumRow('每日波動', pct(s.vol), '', 'vol', 'Volatility')}
-      ${sumRow('交易成本', `${money(s.totalCost)}${s.totalLots ? `（${money(s.totalLots)} 口）` : ''}`, '', 'costShare', 'Costs')}
+      ${sumRow('每日波動', pct(s.vol), '', 'vol')}
+      ${sumRow('交易成本', `${money(s.totalCost)}${s.totalLots ? `（${money(s.totalLots)} 口）` : ''}`, '', 'costShare')}
     `)}
   </div>
   <ul class="tips">${tipsFor(C).map(([e, t]) => `<li><span aria-hidden="true">${e}</span><span>${esc(t)}</span></li>`).join('')}</ul></section>`;
@@ -1151,11 +1393,11 @@ function winRateHtml(C) {
   const s = C.s, tot = s.winDays + s.lossDays + s.flatDays || 1;
   const maxAbs = Math.max(s.avgWin || 0, -(s.avgLoss || 0)) || 1;
   return `<div class="wr">
-    <div class="wr-box"><div class="lbl">勝率 Win Rate</div><div class="big">${pct(s.winRate, 1)}</div>
+    <div class="wr-box"><div class="lbl">勝率</div><div class="big">${pct(s.winRate, 1)}</div>
       <div class="wr-bar" role="img" aria-label="獲利 ${s.winDays} 天、虧損 ${s.lossDays} 天、持平 ${s.flatDays} 天">
         <div style="width:${s.winDays / tot * 100}%;background:var(--up-mark)"></div><div style="width:${s.flatDays / tot * 100}%;background:var(--muted)"></div><div style="width:${s.lossDays / tot * 100}%;background:var(--down-mark)"></div></div>
       <div class="wr-cap"><span class="up">賺 ${s.winDays} 天</span><span>平 ${s.flatDays}</span><span class="down">賠 ${s.lossDays} 天</span></div></div>
-    <div class="wr-box"><div class="lbl">賺賠比 Payoff ・ 獲利因子 ${s.profitFactor === Infinity ? '∞' : ratio(s.profitFactor)}</div><div class="big">${ratio(s.payoff)}</div>
+    <div class="wr-box"><div class="lbl">賺賠比 ・ 獲利因子 ${s.profitFactor === Infinity ? '∞' : ratio(s.profitFactor)}</div><div class="big">${ratio(s.payoff)}</div>
       <div class="pay-row"><span>平均賺</span><div class="pay-track"><div style="width:${(s.avgWin || 0) / maxAbs * 100}%;background:var(--up-mark)"></div></div><b class="up num">${sMoney(s.avgWin)}</b></div>
       <div class="pay-row"><span>平均賠</span><div class="pay-track"><div style="width:${-(s.avgLoss || 0) / maxAbs * 100}%;background:var(--down-mark)"></div></div><b class="down num">${sMoney(s.avgLoss)}</b></div></div>
   </div><p class="foot">賺賠比 1 以上＋勝率 45% 以上，長期通常會賺；兩個都低就要調整方法。</p>`;
@@ -1188,7 +1430,7 @@ function calendarHtml(C) {
     }
     cells += `<div class="cal-cell week"><span class="d">本週</span>${wkHas ? `<span class="p ${tone(wk)}">${compact(wk)}</span>` : '<span class="d">—</span>'}</div>`;
   }
-  return `<div class="card-head"><div><p class="eyebrow">Return Calendar</p><h2>報酬日曆</h2><p class="sub">顏色越深＝當天賺（紅）或賠（綠）越多；點格子可以修改。</p></div>
+  return `<div class="card-head"><div><p class="eyebrow">📅 每日成績</p><h2>報酬日曆</h2><p class="sub">顏色越深＝當天賺（紅）或賠（綠）越多；點格子可以修改。</p></div>
     <div class="cal-nav"><button class="icon-btn" data-cal="-1" ${idx <= 0 ? 'disabled' : ''} aria-label="上個月">‹</button><strong>${Y} 年 ${M} 月</strong><button class="icon-btn" data-cal="1" ${idx >= months.length - 1 ? 'disabled' : ''} aria-label="下個月">›</button></div></div>
     <div class="cal-sum"><span>月損益 <b class="${tone(mPnl)}">${sMoney(mPnl)}</b></span><span>月報酬 <b class="${tone(mRet)}">${sPct(mRet)}</b></span><span>勝率 <b>${mW + mL ? pct(mW / (mW + mL), 0) : '—'}</b>（${mW} 勝 ${mL} 敗）</span><span>成本 <b>${money(mCost)}</b></span></div>
     <div class="cal">${cells}</div>
@@ -1213,13 +1455,13 @@ function leakHtml(C) {
     ${hasCost ? `<g fill="var(--gold)"><path class="drop" d="M80 152 q-4 7 0 10 q4 -3 0 -10z"/><path class="drop d2" d="M80 152 q-4 7 0 10 q4 -3 0 -10z"/><path class="drop d3" d="M80 152 q-4 7 0 10 q4 -3 0 -10z"/></g>` : ''}
     <text x="80" y="${Math.min(128, yTop + 26)}" text-anchor="middle" font-size="15" font-weight="800" fill="var(--ink)">${money(s.totalCost)}</text>
   </svg>`;
-  return `<div class="card-head"><div><p class="eyebrow">Trading Costs · 被手續費與期交稅拿走的錢</p><h2>交易成本漏水筒</h2><p class="sub">每筆交易都會從桶子漏一點錢出去。新手最常輸給的不是市場，是成本。</p></div></div>
+  return `<div class="card-head"><div><p class="eyebrow">💧 被手續費與期交稅拿走的錢</p><h2>交易成本漏水筒</h2><p class="sub">每筆交易都會從桶子漏一點錢出去。新手最常輸給的不是市場，是成本。</p></div></div>
   ${hasCost ? '' : `<div class="banner" style="margin:0 0 12px">💡 還沒有成本資料。記錄時打開「選填」，填上 APP 裡的手續費＋期交稅，這個桶子就會動起來。</div>`}
   <div class="leak"><div class="bucket">${bucket}</div><div style="width:100%">
     <div class="leak-tiles">
       <div class="tile"><span>累積成本</span><b>${money(s.totalCost)} 元</b><em>等於本金的 ${pct(s.costOfCapital, 1)}</em></div>
       <div class="tile"><span>${thisM ? +thisM.m.slice(5) + ' 月成本' : '本月成本'}</span><b>${money(thisM ? thisM.cost : 0)} 元</b><em>${thisM && thisM.days ? `${thisM.days} 個有交易的日子` : '—'}</em></div>
-      <div class="tile"><span>成本吃掉毛利</span><b class="${s.costShare > 0.3 ? 'up' : ''}">${s.costShare == null ? (hasCost && s.grossPnl <= 0 ? '全部' : '—') : pct(s.costShare, 0)}</b><em>${s.costPerLot ? `平均每口 ${s.costPerLot.toFixed(0)} 元` : '填口數可算每口成本'}</em></div>
+      <div class="tile"><span>成本吃掉毛利</span><b class="${s.costShare > 0.3 ? 'cost-warn' : ''}">${s.costShare > 0.3 ? '⚠️ ' : ''}${s.costShare == null ? (hasCost && s.grossPnl <= 0 ? '全部' : '—') : pct(s.costShare, 0)}${s.costShare > 0.3 ? ' 偏高' : ''}</b><em>${s.costPerLot ? `平均每口 ${s.costPerLot.toFixed(0)} 元` : '填口數可算每口成本'}</em></div>
     </div>
     <div class="leak-eq"><span>交易本身 <b class="${tone(s.grossPnl)}">${sMoney(s.grossPnl)}</b></span><span class="op">−</span><span>💸 成本 <b>${money(s.totalCost)}</b></span><span class="op">＝</span><span>淨損益 <b class="${tone(s.netPnl)}">${sMoney(s.netPnl)}</b></span></div>
   </div></div>
@@ -1238,7 +1480,7 @@ function logHtml(C) {
     const tags = (r.flow ? `<span class="lc-tag">${r.flow > 0 ? '入金' : '出金'} ${money(Math.abs(r.flow))}</span>` : '') + (r.cost ? `<span class="lc-tag">💸 ${money(r.cost)}</span>` : '') + (r.lots ? `<span class="lc-tag">${r.lots} 口</span>` : '');
     cards += `<button class="log-card lc-${tone(r.pnl)}" data-edit="${r.date}" aria-label="${r.date} 損益 ${sMoney(r.pnl)}，點擊修改"><span class="lc-date">${md(r.date)}<small>週${wd(r.date)}</small></span><span class="lc-main"><b class="${tone(r.pnl)}">${arrow(r.pnl)} ${sMoney(r.pnl)}</b><small class="${tone(r.ret)}">${sPct(r.ret)}</small></span><span class="lc-eq">權益 ${money(r.equity)} ${tags}</span>${r.note ? `<span class="lc-note">「${esc(r.note)}」</span>` : ''}<span class="lc-go" aria-hidden="true">›</span></button>`;
   });
-  return `<section class="card" id="sec-log" data-tab="log"><div class="card-head"><div><p class="eyebrow">Daily Log</p><h2>每日紀錄</h2><p class="sub">記錯了？點一下那天（或「改」）就能修正，所有圖表會自動重算。</p></div><button class="btn small" data-act="export">💾 備份</button></div>
+  return `<section class="card" id="sec-log" data-tab="log"><div class="card-head"><div><p class="eyebrow">📝 日記本</p><h2>每日紀錄</h2><p class="sub">記錯了？點一下那天（或「改」）就能修正，所有圖表會自動重算。</p></div><button class="btn small" data-act="export">💾 備份</button></div>
   <div class="log-cards">${cards}</div>
   <div class="tbl-wrap log-table"><table><thead><tr><th>日期</th><th>權益總值</th><th>當日損益</th><th>%</th><th>出入金</th><th>成本</th><th>口數</th><th>心得</th><th></th></tr></thead><tbody>
   ${shown.map(r => `<tr><td>${md(r.date)}（${wd(r.date)}）</td><td>${money(r.equity)}</td><td class="${tone(r.pnl)}">${arrow(r.pnl)}${sMoney(r.pnl)}</td><td class="${tone(r.ret)}">${sPct(r.ret)}</td><td>${r.flow ? sMoney(r.flow) : ''}</td><td>${r.cost ? money(r.cost) : ''}</td><td>${r.lots || ''}</td><td class="note">${esc(r.note)}</td><td><button class="btn small" data-edit="${r.date}">改</button></td></tr>`).join('')}
@@ -1269,12 +1511,12 @@ function drawCharts(C) {
   // 2. 累積報酬 vs 大盤
   const hasB = rows.some(r => r.bCum != null);
   chart($('#cCum'), {
-    labels, height: T(240), zero: true, fmt: pctAxis, aria: '累積報酬走勢：我的投組實線、大盤虛線',
-    series: [{ name: '我的投組', color: mine, values: [0, ...rows.map(r => r.cum)] }, ...(hasB ? [{ name: '大盤', color: bch, dashed: true, values: [0, ...rows.map(r => r.bCum)] }] : [])],
-    tip: i => i === 0 ? tipHead('起點') + tipRow('兩邊都從', '0%') : tipHead(at(i).date) + tipRow('我的投組', sPct(at(i).cum), mine, tone(at(i).cum)) + tipRow('大盤', at(i).bCum == null ? '—' : sPct(at(i).bCum), bch, tone(at(i).bCum)) + (at(i).bCum != null ? tipRow('領先／落後', sPct(at(i).cum - at(i).bCum)) : '')
+    labels, height: T(240), zero: true, fmt: pctAxis, aria: '累積報酬走勢：我的帳戶實線、大盤虛線',
+    series: [{ name: '我的帳戶', color: mine, values: [0, ...rows.map(r => r.cum)] }, ...(hasB ? [{ name: '大盤', color: bch, dashed: true, values: [0, ...rows.map(r => r.bCum)] }] : [])],
+    tip: i => i === 0 ? tipHead('起點') + tipRow('兩邊都從', '0%') : tipHead(at(i).date) + tipRow('我的帳戶', sPct(at(i).cum), mine, tone(at(i).cum)) + tipRow('大盤', at(i).bCum == null ? '—' : sPct(at(i).bCum), bch, tone(at(i).bCum)) + (at(i).bCum != null ? tipRow('領先／落後', sPct(at(i).cum - at(i).bCum)) : '')
   });
   const L = C.last;
-  $('#cumStats').innerHTML = `<span>我的投組 <b class="${tone(L.cum)}">${sPct(L.cum)}</b></span><span>大盤 <b class="${tone(L.bCum)}">${L.bCum == null ? '—' : sPct(L.bCum)}</b></span>${L.bCum != null ? `<span>${L.cum >= L.bCum ? '領先' : '落後'} <b>${Math.abs((L.cum - L.bCum) * 100).toFixed(2)} 個百分點</b></span>` : ''}`;
+  $('#cumStats').innerHTML = `<span>我的帳戶 <b class="${tone(L.cum)}">${sPct(L.cum)}</b></span><span>大盤 <b class="${tone(L.bCum)}">${L.bCum == null ? '—' : sPct(L.bCum)}</b></span>${L.bCum != null ? `<span>${L.cum >= L.bCum ? '領先' : '落後'} <b>${Math.abs((L.cum - L.bCum) * 100).toFixed(2)} 個百分點</b></span>` : ''}`;
   // 3. 每日損益（金額／%）
   const isPct = dailyMode === 'pct';
   chart($('#cDaily'), {
@@ -1290,8 +1532,8 @@ function drawCharts(C) {
   });
   // 5. 回撤
   chart($('#cDd'), {
-    labels, height: T(170), zero: true, fmt: pctAxis, aria: '回撤比較：我的投組實線、大盤虛線',
-    series: [{ name: '我的投組', color: mine, values: [0, ...rows.map(r => r.dd)], area: true, areaFlip: true }, ...(hasB ? [{ name: '大盤', color: bch, dashed: true, values: [0, ...rows.map(r => r.bDd)] }] : [])],
+    labels, height: T(170), zero: true, fmt: pctAxis, aria: '回撤比較：我的帳戶實線、大盤虛線',
+    series: [{ name: '我的帳戶', color: mine, values: [0, ...rows.map(r => r.dd)], area: true, areaFlip: true }, ...(hasB ? [{ name: '大盤', color: bch, dashed: true, values: [0, ...rows.map(r => r.bDd)] }] : [])],
     tip: i => i === 0 ? tipHead('起點') + tipRow('回撤', '0%') : tipHead(at(i).date) + tipRow('我的回撤', sPct(at(i).dd), mine, tone(at(i).dd)) + tipRow('金額', sMoney(at(i).ddMoney)) + tipRow('大盤回撤', at(i).bDd == null ? '—' : sPct(at(i).bDd), bch, tone(at(i).bDd))
   });
   const s = C.s, lastB = [...rows].reverse().find(r => r.bDd != null);
@@ -1422,7 +1664,7 @@ $('#entryForm').addEventListener('submit', ev => {
   if (isM()) { curTab = 'home'; window.scrollTo(0, 0); }
   render(); syncBench();
   const row = compute(state).rows.find(r => r.date === date);
-  toast(row ? `${row.pnl > 0 ? '🎉 ' : row.pnl < 0 ? '💪 ' : ''}已記錄！${md(date)} ${arrow(row.pnl)} ${sMoney(row.pnl)} 元（${sPct(row.ret)}）${row.pnl < 0 ? '　守住紀律，明天再來' : ''}` : '已記錄');
+  toast(row ? `${row.pnl > 0 ? '🎉 ' : row.pnl < 0 ? '💪 ' : ''}已記錄！${md(date)} ${arrow(row.pnl)} ${sMoney(row.pnl)} 元（${sPct(row.ret)}）${row.pnl < 0 ? '　有照停損就好，下個交易日再來' : ''}` : '已記錄');
   if (row && row.pnl > 0) confetti();
 });
 
@@ -1478,8 +1720,8 @@ $('#bWipe').onclick = () => {
 /* ---------- theme / misc ---------- */
 function applyTheme(t) {
   if (t) document.documentElement.setAttribute('data-theme', t); else document.documentElement.removeAttribute('data-theme');
-  const dark = t ? t === 'dark' : matchMedia('(prefers-color-scheme: dark)').matches;
-  document.querySelector('meta[name="theme-color"]').content = dark ? '#110b1f' : '#fdf6ff';
+  // 手動選的深淺色兩個 meta 都跟著換；自動時各自照系統設定
+  document.querySelectorAll('meta[name="theme-color"]').forEach(m => { m.content = (t ? t === 'dark' : /dark/.test(m.media)) ? '#121b2e' : '#fffaf0'; });
 }
 let theme = null; try { theme = localStorage.getItem(THEME_KEY); } catch (e) {}
 applyTheme(theme);
@@ -1518,6 +1760,7 @@ function makeDemo() {
 /* ---------- start ---------- */
 if (viewKey) document.body.classList.add('view-mode');
 if (!viewKey && location.hash === '#demo' && !state.records.length) demo = makeDemo();
+wireScene();
 render();
 playIntro();
 renderSync();
